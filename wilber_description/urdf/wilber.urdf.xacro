@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot name="wilber" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:arg name="tf_prefix" default="" />
+
+    <xacro:arg name="ns" default="" />
+    <xacro:arg name="is_sim" default="true" />
+    <xacro:arg name="parent" default="world" />
+
+    <!-- Includes -->
+    <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
+    <xacro:include filename="$(find wilber_description)/urdf/w200.urdf.xacro" />
+
+    <xacro:w200
+        tf_prefix="$(arg tf_prefix)"
+        is_sim="$(arg is_sim)"
+        ns="$(arg ns)"
+    />
+</robot>
