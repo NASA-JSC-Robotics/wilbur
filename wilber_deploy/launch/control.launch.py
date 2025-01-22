@@ -13,8 +13,6 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     
-    namespace = LaunchConfiguration("namespace")
-    
     pkg_description = get_package_share_directory('wilber_description')
     
     robot_controllers = PathJoinSubstitution(
