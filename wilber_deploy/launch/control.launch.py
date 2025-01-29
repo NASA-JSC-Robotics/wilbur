@@ -87,9 +87,6 @@ def launch_setup(context):
         additional_env={'ROS_SUPER_CLIENT': 'True'},
     )
     
-    print("*********************************************************")
-    print(left_wheel_names)
-    print("*********************************************************")
 
     # Add Velocity Controller
     velocity_controller = Node(
