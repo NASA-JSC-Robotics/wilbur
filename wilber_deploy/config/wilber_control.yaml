@@ -17,12 +17,12 @@
       left_wheel_radius_multiplier: 1.0
       right_wheel_radius_multiplier: 1.0
       publish_rate: 50.0
-      odom_frame_id: 'odom'
-      base_frame_id: 'base_link'
+      odom_frame_id: 'wilber_odom'
+      base_frame_id: 'wilber_base_link'
       pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
       twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
       open_loop: False
-      enable_odom_tf: False
+      enable_odom_tf: True
       tf_frame_prefix_enable: False
       cmd_vel_timeout: 0.25
       use_stamped_vel: False

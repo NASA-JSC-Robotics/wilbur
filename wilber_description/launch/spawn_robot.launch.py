@@ -73,7 +73,7 @@ def generate_launch_description():
             "-topic", "robot_description",
             "-x", "0",
             "-y", "0",
-            "-z", "1.4",
+            "-z", "15.4",
             "-controller_manager", "controller_manager"
         ],
         output="screen",

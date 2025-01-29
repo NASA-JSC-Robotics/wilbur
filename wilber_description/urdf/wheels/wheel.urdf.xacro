@@ -9,7 +9,7 @@
   </xacro:macro>
 
   <xacro:macro name="w200_wheel" params="prefix side *joint_pose">
-    <link name="${prefix}_${side}_wheel_link">
+    <link name="${tf_prefix}${prefix}_${side}_wheel_link">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="${wheel_mass}" />
@@ -29,16 +29,20 @@
         </geometry>
       </collision>
     </link>
-    <joint name="${prefix}_${side}_wheel_joint" type="continuous">
-      <parent link="${side}_diff_unit_link" />
-      <child link="${prefix}_${side}_wheel_link" />
+    <joint name="${tf_prefix}${prefix}_${side}_wheel_joint" type="continuous">
+      <parent link="${tf_prefix}${side}_diff_unit_link" />
+      <child link="${tf_prefix}${prefix}_${side}_wheel_link" />
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
     </joint>
-    <gazebo reference="${prefix}_${side}_wheel_link">
+    <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
       <selfCollide>false</selfCollide>
-      <mu1>0.5</mu1>
-      <mu2>0.5</mu2>
+      <!-- values from
+      https://github.com/unmannedlab/cartographer/blob/main/src/platform_description/urdf/warthog.urdf.xacro-->
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp value="10000000.0" />
+      <kd value="1.0" />
       <fdir1 value="1 0 0" />
       <material>Gazebo/DarkGrey</material>
     </gazebo>

@@ -5,7 +5,7 @@
   <xacro:macro name="w200_track" params="prefix side *joint_pose">
     <xacro:property name="rotate" value="${(prefix=='rear')*math.pi}" />
 
-    <link name="${prefix}_${side}_track_link">
+    <link name="${tf_prefix}${prefix}_${side}_track_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
@@ -26,15 +26,15 @@
         </geometry>
       </collision>
     </link>
-    <joint name="${prefix}_${side}_track_joint" type="fixed">
-      <parent link="${side}_diff_unit_link" />
-      <child link="${prefix}_${side}_track_link" />
+    <joint name="${tf_prefix}${prefix}_${side}_track_joint" type="fixed">
+      <parent link="${tf_prefix}${side}_diff_unit_link" />
+      <child link="${tf_prefix}${prefix}_${side}_track_link" />
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
     </joint>
 
     <!-- This adds wheels that rotate instead of tracks. -->
-    <link name="${prefix}_${side}_wheel_link">
+    <link name="${tf_prefix}${prefix}_${side}_wheel_link">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="${wheel_mass}" />
@@ -47,13 +47,13 @@
         </geometry>
       </collision>
     </link>
-    <joint name="${prefix}_${side}_wheel_joint" type="continuous">
-      <parent link="${prefix}_${side}_track_link" />
-      <child link="${prefix}_${side}_wheel_link" />
+    <joint name="${tf_prefix}${prefix}_${side}_wheel_joint" type="continuous">
+      <parent link="${tf_prefix}${prefix}_${side}_track_link" />
+      <child link="${tf_prefix}${prefix}_${side}_wheel_link" />
       <origin xyz="0.12 0. -0.18" rpy="0 0 ${rotate}" />
       <axis xyz="0 1 0" />
     </joint>
-    <gazebo reference="${prefix}_${side}_wheel_link">
+    <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
       <selfCollide>false</selfCollide>
       <mu1>0.5</mu1>
       <mu2>0.5</mu2>
