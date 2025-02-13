@@ -9,17 +9,31 @@
     <!-- Includes -->
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/w200.urdf.xacro" />
-
-    <!-- Attachments -->
-
     <xacro:include
         filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
+    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/frame.urdf.xacro" />
+
+    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/mesh.urdf.xacro" />
+    <!-- Attachments -->
+
+    <!-- Links -->
+
+
+    <xacro:mesh name="control_frame" parent_link="default_mount"
+        visual="package://wilbur_description/meshes/control_frame.stl">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:mesh>
+
 
     <xacro:bulkhead name="bulkhead" model="$(arg tf_prefix)arm_plate"
         parent_link="$(arg tf_prefix)default_mount"
         tf_prefix="$(arg tf_prefix)">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:bulkhead>
+
+    <!--xacro:frame name="arm_0_end_effector" parent_link="arm_0_tool0">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:frame-->
 
     <xacro:w200
         tf_prefix="$(arg tf_prefix)"
