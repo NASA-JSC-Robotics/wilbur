@@ -84,7 +84,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/chassis.stl" />
+          <mesh filename="package://clearpath_platform_description/meshes/w200/chassis.stl" />
         </geometry>
         <material name="clearpath_black">
           <color rgba="0.15 0.15 0.15 1.0" />
@@ -93,7 +93,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/e-stop.stl" />
+          <mesh filename="package://clearpath_platform_description/meshes/w200/e-stop.stl" />
         </geometry>
         <material name="clearpath_red">
           <color rgba="0.9 0.0 0.0 1.0" />
@@ -102,7 +102,8 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/chassis-collision.stl" />
+          <mesh
+            filename="package://clearpath_platform_description/meshes/w200/chassis-collision.stl" />
         </geometry>
       </collision>
     </link>
@@ -115,21 +116,21 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/diff-link.stl" />
+          <mesh filename="package://clearpath_platform_description/meshes/w200/diff-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/susp-link.stl" />
+          <mesh filename="package://clearpath_platform_description/meshes/w200/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/susp-link.stl" />
+          <mesh filename="package://clearpath_platform_description/meshes/w200/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
