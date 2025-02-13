@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(wilber_deploy)
+project(wilbur_deploy)
 
 find_package(ament_cmake REQUIRED)
 

@@ -54,8 +54,8 @@ def launch_setup(context):
     if use_namespace == "True":
         print("*************************", namespace, "**********************************") 
     
-    pkg_deploy = get_package_share_directory('wilber_deploy')
-    pkg_description = get_package_share_directory('wilber_description')
+    pkg_deploy = get_package_share_directory('wilbur_deploy')
+    pkg_description = get_package_share_directory('wilbur_description')
     
     
     # Start gazebo with the selected World

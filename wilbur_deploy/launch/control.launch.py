@@ -39,7 +39,7 @@ arguments.append(DeclareLaunchArgument(
 
 arguments.append(DeclareLaunchArgument('control_config_filepath', default_value=[
         launch.substitutions.TextSubstitution(text=os.path.join(
-            get_package_share_directory('wilber_deploy'), 'config', '')),
+            get_package_share_directory('wilbur_deploy'), 'config', '')),
         'control', launch.substitutions.TextSubstitution(text='.yaml')]))
 
 def launch_setup(context):
@@ -60,8 +60,8 @@ def launch_setup(context):
 
         
     
-    pkg_deploy = get_package_share_directory('wilber_deploy')
-    pkg_description = get_package_share_directory('wilber_description')
+    pkg_deploy = get_package_share_directory('wilbur_deploy')
+    pkg_description = get_package_share_directory('wilbur_description')
     
     
     robot_controllers = PathJoinSubstitution(
@@ -71,7 +71,7 @@ def launch_setup(context):
             "control.yaml",
         ]
     )
-    urdf_model_path = os.path.join(pkg_description, 'urdf/wilber.urdf.xacro')
+    urdf_model_path = os.path.join(pkg_description, 'urdf/wilbur.urdf.xacro')
     
     joint_state_broadcaster = Node(
         package="controller_manager",
@@ -93,7 +93,7 @@ def launch_setup(context):
         package='controller_manager',
         executable='spawner',
         name="velocity_controller",
-#        parameters=[{"odom_frame_id": "wilber_odom",
+#        parameters=[{"odom_frame_id": "wilbur_odom",
 #                     "left_wheel_names": left_wheel_names,
 #                     "right_wheel_names": right_wheel_names}
 #                ],

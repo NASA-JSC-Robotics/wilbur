@@ -12,15 +12,15 @@
                 ns">
 
     <xacro:arg name="gazebo_controllers"
-      default="$(find wilber_deploy)/config/${tf_prefix}control.yaml" />
+      default="$(find wilbur_deploy)/config/${tf_prefix}control.yaml" />
 
     <xacro:arg name="use_platform_controllers" default="true" />
 
     <!-- Include URDF/XACRO Files -->
-    <xacro:include filename="$(find wilber_description)/urdf/wheels/track.urdf.xacro" />
-    <xacro:include filename="$(find wilber_description)/urdf/wheels/wheel.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/wheels/track.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/wheels/wheel.urdf.xacro" />
     <xacro:property name="PI" value="3.1415926535897931" />
-    <xacro:include filename="$(find wilber_description)/urdf/diff_unit.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/diff_unit.urdf.xacro" />
 
 
     <!-- Colors: yellow, orange, olive, sand -->
@@ -84,7 +84,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/chassis.stl" />
+          <mesh filename="package://wilbur_description/meshes/chassis.stl" />
         </geometry>
         <material name="clearpath_black">
           <color rgba="0.15 0.15 0.15 1.0" />
@@ -93,7 +93,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/e-stop.stl" />
+          <mesh filename="package://wilbur_description/meshes/e-stop.stl" />
         </geometry>
         <material name="clearpath_red">
           <color rgba="0.9 0.0 0.0 1.0" />
@@ -102,7 +102,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/chassis-collision.stl" />
+          <mesh filename="package://wilbur_description/meshes/chassis-collision.stl" />
         </geometry>
       </collision>
     </link>
@@ -115,21 +115,21 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/diff-link.stl" />
+          <mesh filename="package://wilbur_description/meshes/diff-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/susp-link.stl" />
+          <mesh filename="package://wilbur_description/meshes/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilber_description/meshes/susp-link.stl" />
+          <mesh filename="package://wilbur_description/meshes/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
@@ -210,7 +210,7 @@
     </xacro:if>
 
     <!-- Gazebo Controller -->
-    <xacro:include filename="$(find wilber_description)/urdf/gazebo.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/gazebo.urdf.xacro" />
 
     <!-- ROS2 controls -->
     <xacro:if value="$(arg use_platform_controllers)">

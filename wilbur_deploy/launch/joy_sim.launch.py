@@ -21,7 +21,7 @@ arguments.append(DeclareLaunchArgument('ns', default_value=""))
 
 arguments.append(DeclareLaunchArgument('config_filepath', default_value=[
         launch.substitutions.TextSubstitution(text=os.path.join(
-            get_package_share_directory('wilber_deploy'), 'config', '')),
+            get_package_share_directory('wilbur_deploy'), 'config', '')),
         'joy_config', launch.substitutions.TextSubstitution(text='.yaml')]))
     
 

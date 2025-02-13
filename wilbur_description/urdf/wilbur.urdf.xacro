@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="wilber" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:arg name="tf_prefix" default="" />
 
     <xacro:arg name="ns" default="" />
@@ -8,12 +8,12 @@
 
     <!-- Includes -->
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
-    <xacro:include filename="$(find wilber_description)/urdf/w200.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/w200.urdf.xacro" />
 
     <!-- Attachments -->
 
     <xacro:include
-        filename="$(find wilber_description)/urdf/attachments/bulkhead.urdf.xacro" />
+        filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
 
     <xacro:bulkhead name="bulkhead" model="$(arg tf_prefix)arm_plate"
         parent_link="$(arg tf_prefix)default_mount"

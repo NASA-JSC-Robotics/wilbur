@@ -31,13 +31,13 @@ def generate_launch_description():
         have to be updated.",
     ))
 
-    pkg_description = get_package_share_directory('wilber_description')
+    pkg_description = get_package_share_directory('wilbur_description')
 
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilber_description"), "urdf", "wilber.urdf.xacro"]),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
             "tf_prefix:=",
             tf_prefix,
@@ -68,8 +68,8 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         arguments=[
-            "-entity", "wilber",
-            "-name", "wilber",
+            "-entity", "wilbur",
+            "-name", "wilbur",
             "-topic", "robot_description",
             "-x", "0",
             "-y", "0",

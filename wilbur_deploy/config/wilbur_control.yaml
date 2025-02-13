@@ -8,8 +8,8 @@
   velocity_controller:
     ros__parameters:
       use_sim_time: True
-      left_wheel_names: ['wilber_front_left_wheel_joint', 'wilber_rear_left_wheel_joint']
-      right_wheel_names: ['wilber_front_right_wheel_joint', 'wilber_rear_right_wheel_joint']
+      left_wheel_names: ['wilbur_front_left_wheel_joint', 'wilbur_rear_left_wheel_joint']
+      right_wheel_names: ['wilbur_front_right_wheel_joint', 'wilbur_rear_right_wheel_joint']
       wheel_separation: 1.5
       wheels_per_side: 1
       wheel_radius: 0.3
@@ -17,8 +17,8 @@
       left_wheel_radius_multiplier: 1.0
       right_wheel_radius_multiplier: 1.0
       publish_rate: 50.0
-      odom_frame_id: 'wilber_odom'
-      base_frame_id: 'wilber_base_link'
+      odom_frame_id: 'wilbur_odom'
+      base_frame_id: 'wilbur_base_link'
       pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
       twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
       open_loop: False
