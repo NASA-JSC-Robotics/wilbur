@@ -10,6 +10,17 @@
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
     <xacro:include filename="$(find wilber_description)/urdf/w200.urdf.xacro" />
 
+    <!-- Attachments -->
+
+    <xacro:include
+        filename="$(find wilber_description)/urdf/attachments/bulkhead.urdf.xacro" />
+
+    <xacro:bulkhead name="bulkhead" model="$(arg tf_prefix)arm_plate"
+        parent_link="$(arg tf_prefix)default_mount"
+        tf_prefix="$(arg tf_prefix)">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:bulkhead>
+
     <xacro:w200
         tf_prefix="$(arg tf_prefix)"
         is_sim="$(arg is_sim)"

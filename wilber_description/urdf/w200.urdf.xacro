@@ -172,15 +172,15 @@
       </xacro:w200_track>
     </xacro:if>
     <!-- Virtual Mounting Point -->
-    <!--
-    <link name="default_mount"></link>
 
-    <joint name="default_mount_joint" type="fixed">
+    <link name="${tf_prefix}default_mount"></link>
+
+    <joint name="${tf_prefix}default_mount_joint" type="fixed">
       <origin xyz="0 0 0.27218" rpy="0 0 0" />
-      <parent link="chassis_link" />
-      <child link="default_mount" />
+      <parent link="${tf_prefix}chassis_link" />
+      <child link="${tf_prefix}default_mount" />
     </joint>
--->
+
     <!-- Internal IMU -->
     <link name="${tf_prefix}imu_0_link">
       <inertial>
