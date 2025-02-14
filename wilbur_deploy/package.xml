@@ -17,6 +17,7 @@
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>clearpath_desktop</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
   <export>
     <build_type>ament_cmake</build_type>
     <gazebo_ros gazebo_model_path="${prefix}/worlds/models" />

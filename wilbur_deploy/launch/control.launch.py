@@ -44,7 +44,6 @@ arguments.append(DeclareLaunchArgument('control_config_filepath', default_value=
 
 def launch_setup(context):
     
-    
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     tf_prefix_arg = LaunchConfiguration("tf_prefix")
@@ -58,7 +57,7 @@ def launch_setup(context):
     else:
         tf_frame_prefix_enable = "True"
 
-        
+    nodes = []
     
     pkg_deploy = get_package_share_directory('wilbur_deploy')
     pkg_description = get_package_share_directory('wilbur_description')
@@ -86,25 +85,33 @@ def launch_setup(context):
         ],
         additional_env={'ROS_SUPER_CLIENT': 'True'},
     )
-    
+    nodes.append(joint_state_broadcaster)
 
     # Add Velocity Controller
     velocity_controller = Node(
         package='controller_manager',
         executable='spawner',
         name="velocity_controller",
-#        parameters=[{"odom_frame_id": "wilbur_odom",
-#                     "left_wheel_names": left_wheel_names,
-#                     "right_wheel_names": right_wheel_names}
-#                ],
         arguments=['velocity_controller', 
                    '--controller-manager-timeout', '300',
                    ],
         output='screen',
         additional_env={'ROS_SUPER_CLIENT': 'True'},
     )
-
-    nodes = (joint_state_broadcaster, velocity_controller)
+    nodes.append(velocity_controller)
+    
+    arm_0_joint_trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        name="arm_0_joint_trajectory_controller",
+        parameters=[urdf_model_path, 
+                    robot_controllers,],
+        arguments=[
+            'arm_0_joint_trajectory_controller',
+        ],
+        additional_env={'ROS_SUPER_CLIENT': 'True'},
+    )
+    nodes.append(arm_0_joint_trajectory_controller)
     
     return nodes
     
