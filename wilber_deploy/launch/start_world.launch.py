@@ -14,8 +14,8 @@ from launch.actions import ExecuteProcess
 def generate_launch_description():
     
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-    pkg_deploy = get_package_share_directory('phoebe_deploy')
-    pkg_description = get_package_share_directory('phoebe_description')
+    pkg_deploy = get_package_share_directory('wilber_deploy')
+    pkg_description = get_package_share_directory('wilber_description')
     gz_launch_path = PathJoinSubstitution([pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py'])
     gz_model_path = PathJoinSubstitution([pkg_description, 'urdf'])
     
