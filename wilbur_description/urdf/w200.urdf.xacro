@@ -210,6 +210,34 @@
       </gazebo>
     </xacro:if>
 
+    <!-- GPS -->
+    <link name="${tf_prefix}gps_0_link">
+      <inertial>
+        <mass value="0.001" />
+        <origin xyz="0 0.05 0" rpy="0 0 0" />
+        <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0"
+          izz="${dummy_inertia}" />
+      </inertial>
+    </link>
+    <joint name="gps_joint" type="fixed">
+      <parent link="${tf_prefix}chassis_link" />
+      <child link="${tf_prefix}gps_0_link" />
+    </joint>
+
+    <xacro:if value="$(arg is_sim)">
+      <gazebo reference="${tf_prefix}gps_0_link">
+        <sensor type="navsat" name="gps_0">
+          <plugin filename="libignition-gazebo-navsat-system.so" name="ignition::gazebo::systems::NavSat">
+          </plugin>
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <visualize>true</visualize>
+          <ignition_frame_id>${tf_prefix}gps_0_link</ignition_frame_id>
+          <topic>$(arg ns)/sensors/gps_0/data_raw</topic>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+
     <!-- Gazebo Controller -->
     <xacro:include filename="$(find wilbur_description)/urdf/gazebo.urdf.xacro" />
 
