@@ -30,6 +30,24 @@ def generate_launch_description():
         multi-robot setup. If changed, also joint names in the controllers' configuration \
         have to be updated.",
     ))
+    arguments.append(DeclareLaunchArgument(
+        'x',
+        default_value="0.0",
+        description="X position of the robot",
+    ))
+    arguments.append(DeclareLaunchArgument(
+        'y',
+        default_value="0.0",
+        description="y position of the robot",
+    ))
+    arguments.append(DeclareLaunchArgument(
+        'z',
+        default_value="0.0",
+        description="Xz position of the robot",
+    ))
+    x = LaunchConfiguration('x')
+    y = LaunchConfiguration('y')
+    z = LaunchConfiguration('z')
 
     pkg_description = get_package_share_directory('wilbur_description')
 
@@ -71,9 +89,9 @@ def generate_launch_description():
             "-entity", "wilbur",
             "-name", "wilbur",
             "-topic", "robot_description",
-            "-x", "0",
-            "-y", "0",
-            "-z", "15.4",
+            "-x", x,
+            "-y", y,
+            "-z", z,
             "-controller_manager", "controller_manager"
         ],
         output="screen",
