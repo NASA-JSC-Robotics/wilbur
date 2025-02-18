@@ -37,6 +37,22 @@ arguments.append(DeclareLaunchArgument(
     default_value=""
 ))
 
+arguments.append(DeclareLaunchArgument(
+    'robot_x',
+    default_value="0.0",
+    description="X position of the robot",
+))
+arguments.append(DeclareLaunchArgument(
+    'robot_y',
+    default_value="0.0",
+    description="Y position of the robot",
+))
+arguments.append(DeclareLaunchArgument(
+    'robot_z',
+    default_value="6.0",
+    description="Z position of the robot",
+))
+
 def launch_setup(context):
     
     
@@ -45,6 +61,11 @@ def launch_setup(context):
     is_sim = LaunchConfiguration("is_sim")
     headless_mode = LaunchConfiguration("headless_mode")
     namespace = LaunchConfiguration("ns").perform(context)
+    
+    
+    x = LaunchConfiguration('robot_x')
+    y = LaunchConfiguration('robot_y')
+    z = LaunchConfiguration('robot_z')
     
     if not namespace:
         use_namespace = "False"
@@ -78,6 +99,9 @@ def launch_setup(context):
             PythonLaunchDescriptionSource(os.path.join(pkg_description, 'launch', 'spawn_robot.launch.py')),
             launch_arguments = {'is_sim' : is_sim,
                                 'tf_prefix' : tf_prefix,
+                                'x' : x,
+                                'y' : y,
+                                'z' : z,
 #                                'namespace' : namespace
             }.items()
         ),
