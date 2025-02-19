@@ -7,7 +7,8 @@
   <xacro:macro name="w200"
     params="wheel:='default'
                 tf_prefix
-                is_sim:=true
+                sim_ignition:=true
+                use_fake_hardware:=false
                 color:='yellow'
                 ns">
 
@@ -196,7 +197,7 @@
       <child link="${tf_prefix}imu_0_link" />
     </joint>
 
-    <xacro:if value="$(arg is_sim)">
+    <xacro:if value="${sim_ignition}">
       <gazebo reference="${tf_prefix}imu_0_link">
         <sensor type="imu" name="imu_0">
           <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
@@ -224,7 +225,7 @@
       <child link="${tf_prefix}gps_0_link" />
     </joint>
 
-    <xacro:if value="$(arg is_sim)">
+    <xacro:if value="${sim_ignition}">
       <gazebo reference="${tf_prefix}gps_0_link">
         <sensor type="navsat" name="gps_0">
           <plugin filename="libignition-gazebo-navsat-system.so" name="ignition::gazebo::systems::NavSat">
@@ -246,10 +247,13 @@
       <ros2_control
         name="w200_hardware" type="system">
         <hardware>
-          <xacro:if value="$(arg is_sim)">
+          <xacro:if value="${sim_ignition}">
             <plugin>ign_ros2_control/IgnitionSystem</plugin>
           </xacro:if>
-          <xacro:unless value="$(arg is_sim)">
+          <xacro:if value="${use_fake_hardware}">
+            <plugin>mock_components/GenericSystem</plugin>
+          </xacro:if>
+          <xacro:unless value="${sim_ignition or use_fake_hardware}">
             <plugin>clearpath_hardware_interfaces/W200Hardware</plugin>
             <param name="wheel_diameter">0.6</param>
           </xacro:unless>
@@ -288,7 +292,7 @@
         </joint>
       </ros2_control>
     </xacro:if>
-    <xacro:if value="$(arg is_sim)">
+    <xacro:if value="${sim_ignition}">
       <gazebo>
         <plugin filename="libignition-gazebo-wheel-slip-system.so"
           name="ignition::gazebo::systems::WheelSlip">

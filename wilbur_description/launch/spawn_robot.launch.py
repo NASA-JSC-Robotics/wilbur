@@ -12,14 +12,14 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
 
-    is_sim = LaunchConfiguration('is_sim')
+    sim_ignition = LaunchConfiguration('sim_ignition')
     tf_prefix = LaunchConfiguration('tf_prefix')
     namespace = LaunchConfiguration('ns')
-    
+
     arguments = []
-    
+
     arguments.append(DeclareLaunchArgument(
-        'is_sim',
+        'sim_ignition',
         default_value="true",
         description='spawn the robot for simulation'
     ))
@@ -60,8 +60,8 @@ def generate_launch_description():
             "tf_prefix:=",
             tf_prefix,
             " ",
-            "is_sim:=",
-            is_sim,
+            "sim_ignition:=",
+            sim_ignition,
             " ",
             "ns:=",
             namespace,
@@ -73,14 +73,14 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    
+
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
         parameters=[robot_description],
     )
-    
+
     # Spawn the robot in Gazebo
     spawn_entity = Node(
         package="ros_gz_sim",
@@ -96,7 +96,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
-    
+
     sim_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -107,8 +107,8 @@ def generate_launch_description():
         }],
         output='screen'
     )
-    
-    
+
+
     nodes = [robot_state_publisher,
             spawn_entity,
             sim_bridge
