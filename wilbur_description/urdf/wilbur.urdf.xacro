@@ -8,7 +8,7 @@
     <xacro:arg name="parent" default="world" />
     <xacro:arg name="ur_type" default="ur10e" />
     <xacro:arg name="generate_ros2_control_tag" default="false" />
-    <xacro:arg name="use_w200_controllers" value="false" />
+    <xacro:arg name="use_w200_controllers" default="false" />
 
     <!-- Includes -->
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
