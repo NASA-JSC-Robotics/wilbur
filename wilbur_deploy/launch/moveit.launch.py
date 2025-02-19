@@ -40,7 +40,8 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-from clearpath_config.clearpath_config import ClearpathConfig
+
+from moveit_configs_utils import MoveItConfigsBuilder
 
 arguments = []
 
@@ -50,9 +51,8 @@ arguments.append(DeclareLaunchArgument(
     description="tf_prefix of the joint names, useful for \
     multi-robot setup. If changed, also joint names in the controllers' configuration \
     have to be updated.",
-    
-))
 
+))
 
 arguments.append(DeclareLaunchArgument(
     "use_sim_time",
@@ -65,6 +65,13 @@ arguments.append(DeclareLaunchArgument(
     default_value=""
 ))
 
+arguments.append(
+    DeclareLaunchArgument(
+        "launch_rviz",
+        default_value="true",
+        description="Launch rviz?",
+    )
+)
 
 def launch_setup(context, *args, **kwargs):
     # Launch Configurations
@@ -90,7 +97,7 @@ def launch_setup(context, *args, **kwargs):
     }
 
     nodes = []
-    
+
     move_group = Node(package='moveit_ros_move_group',
                       executable='move_group',
                       output='log',
@@ -108,7 +115,7 @@ def launch_setup(context, *args, **kwargs):
                       ]
                     )
     nodes.append(move_group)
-    
+
     return(nodes)
 
 

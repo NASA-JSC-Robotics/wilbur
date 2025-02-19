@@ -1,68 +1,78 @@
 #!/usr/bin/env python3
 
-
 import os
 import launch
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, OpaqueFunction
-from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    TextSubstitution,
+)
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterFile, ParameterValue
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.substitutions import FindPackageShare
 
+def generate_launch_description():
 
-arguments = []
+    declared_arguments = []
 
-arguments.append(DeclareLaunchArgument(
-    "tf_prefix",
-    default_value='""',
-    description="tf_prefix of the joint names, useful for \
-    multi-robot setup. If changed, also joint names in the controllers' configuration \
-    have to be updated.",
-    
-))
-arguments.append(DeclareLaunchArgument(
-    "is_sim",
-    default_value="true",
-    description="Start robot with simulated hardware mirroring command to its states.",
-))
-arguments.append(DeclareLaunchArgument(
-    "headless_mode",
-    default_value="false",
-    description="Enable headless mode for robot control",
-))
-arguments.append(DeclareLaunchArgument(
-    "ns",
-    default_value=""
-))
+    declared_arguments.append(DeclareLaunchArgument(
+        "tf_prefix",
+        default_value="",
+        description="tf_prefix of the joint names, useful for \
+        multi-robot setup. If changed, also joint names in the controllers' configuration \
+        have to be updated.",
 
-arguments.append(DeclareLaunchArgument('control_config_filepath', default_value=[
-        launch.substitutions.TextSubstitution(text=os.path.join(
-            get_package_share_directory('wilbur_deploy'), 'config', '')),
-        'control', launch.substitutions.TextSubstitution(text='.yaml')]))
+    ))
+    declared_arguments.append(DeclareLaunchArgument(
+        "sim_ignition",
+        default_value="false",
+        description="Start robot with simulated hardware mirroring command to its states.",
+    ))
+    declared_arguments.append(DeclareLaunchArgument(
+        "use_fake_hardware",
+        default_value="true",
+        description="Start robot with simulated hardware mirroring command to its states.",
+    ))
+    declared_arguments.append(DeclareLaunchArgument(
+        "parent",
+        default_value="world",
+        description="Namespace for the hardware robot",
+    ))
+    declared_arguments.append(DeclareLaunchArgument(
+        "ns",
+        default_value="",
+        description="Namespace for the hardware robot",
+    ))
 
-def launch_setup(context):
-    
+    declared_arguments.append(DeclareLaunchArgument('control_config_filepath', default_value=[
+            TextSubstitution(text=os.path.join(
+                get_package_share_directory('wilbur_deploy'), 'config', '')),
+            'control', TextSubstitution(text='.yaml')]))
+
     # Initialize Arguments
-    tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
+    tf_prefix = LaunchConfiguration("tf_prefix")
     tf_prefix_arg = LaunchConfiguration("tf_prefix")
-    namespace = LaunchConfiguration("ns").perform(context)
-    is_sim = LaunchConfiguration("is_sim")
+    namespace = LaunchConfiguration("ns")
+    sim_ignition = LaunchConfiguration("sim_ignition")
+    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     headless_mode = LaunchConfiguration("headless_mode")
     config_filepath = LaunchConfiguration('control_config_filepath')
-    
+
+    pkg_deploy = get_package_share_directory('wilbur_deploy')
+    pkg_description = get_package_share_directory('wilbur_description')
+
     if not tf_prefix:
         tf_frame_prefix_enable = "False"
     else:
         tf_frame_prefix_enable = "True"
 
-    nodes = []
-    
-    pkg_deploy = get_package_share_directory('wilbur_deploy')
-    pkg_description = get_package_share_directory('wilbur_description')
-    
-    
     robot_controllers = PathJoinSubstitution(
         [
             pkg_deploy,
@@ -70,14 +80,65 @@ def launch_setup(context):
             "control.yaml",
         ]
     )
-    urdf_model_path = os.path.join(pkg_description, 'urdf/wilbur.urdf.xacro')
-    
+
+    warthog_robot_state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "robot_state_publisher.launch.py")
+        ),
+        launch_arguments={
+            "sim_ignition": sim_ignition,
+            "use_fake_hardware": use_fake_hardware,
+        }.items(),
+    )
+
+    # Each controller manager node will need a slightly different robot description to ensure that the
+    # manager only loads hardware resources for _exactly_ what it needs at construction time. This is
+    # due to the fact that the controller managers's resource manager is not paramerizable in Humble,
+    # so by default it will attempt to load all hardware interfaces defined in the ros2 control xacro.
+    # In this case the UR's ros2 controllers are not loaded, but the
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            " ",
+            "sim_ignition:=",
+            sim_ignition,
+            " ",
+            "use_fake_hardware:=",
+            use_fake_hardware,
+            " ",
+            "generate_ros2_control_tag:=",
+            "false",
+            " ",
+            "use_w200_controllers:=",
+            "true",
+            " ",
+        ]
+    )
+    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+
+    # Declare nodes
+    nodes = []
+
+    # Only launch the control node if using mock hardware, for now
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[
+            robot_description,
+            ParameterFile(robot_controllers, allow_substs=True),
+        ],
+        output="both",
+        condition=IfCondition(use_fake_hardware),
+    )
+    nodes.append(control_node)
+
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
         name="joint_state_broadcaster_control",
-        parameters=[urdf_model_path, 
-                    robot_controllers,],
+        parameters=[robot_controllers,],
         arguments=[
             'joint_state_broadcaster',
             '--controller-manager-timeout',
@@ -87,37 +148,16 @@ def launch_setup(context):
     )
     nodes.append(joint_state_broadcaster)
 
-    # Add Velocity Controller
     velocity_controller = Node(
         package='controller_manager',
         executable='spawner',
         name="velocity_controller",
-        arguments=['velocity_controller', 
+        arguments=['velocity_controller',
                    '--controller-manager-timeout', '300',
                    ],
         output='screen',
         additional_env={'ROS_SUPER_CLIENT': 'True'},
     )
     nodes.append(velocity_controller)
-    
-    arm_0_joint_trajectory_controller = Node(
-        package="controller_manager",
-        executable="spawner",
-        name="arm_0_joint_trajectory_controller",
-        parameters=[urdf_model_path, 
-                    robot_controllers,],
-        arguments=[
-            'arm_0_joint_trajectory_controller',
-        ],
-        additional_env={'ROS_SUPER_CLIENT': 'True'},
-    )
-    nodes.append(arm_0_joint_trajectory_controller)
-    
-    return nodes
-    
-    
-def generate_launch_description():
-    n = OpaqueFunction(function=launch_setup)
-    ld = LaunchDescription(arguments)
-    ld.add_action(n)
-    return ld
+
+    return LaunchDescription([warthog_robot_state_publisher] + declared_arguments + nodes)

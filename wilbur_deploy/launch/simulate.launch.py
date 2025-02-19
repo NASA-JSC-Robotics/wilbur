@@ -20,10 +20,10 @@ arguments.append(DeclareLaunchArgument(
     description="tf_prefix of the joint names, useful for \
     multi-robot setup. If changed, also joint names in the controllers' configuration \
     have to be updated.",
-    
+
 ))
 arguments.append(DeclareLaunchArgument(
-    "is_sim",
+    "sim_ignition",
     default_value="true",
     description="Start robot with simulated hardware mirroring command to its states.",
 ))
@@ -54,31 +54,31 @@ arguments.append(DeclareLaunchArgument(
 ))
 
 def launch_setup(context):
-    
-    
+
+
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
-    is_sim = LaunchConfiguration("is_sim")
+    sim_ignition = LaunchConfiguration("sim_ignition")
     headless_mode = LaunchConfiguration("headless_mode")
     namespace = LaunchConfiguration("ns").perform(context)
-    
-    
+
+
     x = LaunchConfiguration('robot_x')
     y = LaunchConfiguration('robot_y')
     z = LaunchConfiguration('robot_z')
-    
+
     if not namespace:
         use_namespace = "False"
     else:
         use_namespace = "True"
 
     if use_namespace == "True":
-        print("*************************", namespace, "**********************************") 
-    
+        print("*************************", namespace, "**********************************")
+
     pkg_deploy = get_package_share_directory('wilbur_deploy')
     pkg_description = get_package_share_directory('wilbur_description')
-    
-    
+
+
     # Start gazebo with the selected World
     world_group = GroupAction([
         IncludeLaunchDescription(
@@ -88,16 +88,16 @@ def launch_setup(context):
         )])
 
     # add the robot to the world
-    
+
     robot_group = GroupAction([
         PushRosNamespace(
            condition=IfCondition([use_namespace]),
             namespace=namespace),
-        
+
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pkg_description, 'launch', 'spawn_robot.launch.py')),
-            launch_arguments = {'is_sim' : is_sim,
+            launch_arguments = {'sim_ignition' : sim_ignition,
                                 'tf_prefix' : tf_prefix,
                                 'x' : x,
                                 'y' : y,
@@ -108,17 +108,16 @@ def launch_setup(context):
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pkg_deploy, 'launch', 'control.launch.py')),
-            launch_arguments={'is_sim': is_sim,
+            launch_arguments={'sim_ignition': sim_ignition,
                               'tf_prefix' : tf_prefix,
                               'namespace': namespace,
             }.items()
         ),
     ])
-    nodes = (world_group, robot_group)
-    
+    nodes = [world_group, robot_group]
+
     return nodes
-    
-    
+
 def generate_launch_description():
     n = OpaqueFunction(function=launch_setup)
     ld = LaunchDescription(arguments)
