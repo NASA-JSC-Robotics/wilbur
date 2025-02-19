@@ -7,8 +7,8 @@
   <xacro:macro name="w200"
     params="wheel:='default'
                 tf_prefix
-                sim_ignition:=true
-                use_fake_hardware:=false
+                sim_ignition:=false
+                use_fake_hardware:=true
                 color:='yellow'
                 ns">
 
