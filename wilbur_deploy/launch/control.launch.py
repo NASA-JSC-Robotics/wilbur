@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import launch
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
@@ -17,6 +16,7 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterFile, ParameterValue
 from ament_index_python.packages import get_package_share_directory
 from launch_ros.substitutions import FindPackageShare
+
 
 def generate_launch_description():
 
@@ -51,44 +51,35 @@ def generate_launch_description():
         description="Namespace for the hardware robot",
     ))
 
-    declared_arguments.append(DeclareLaunchArgument('control_config_filepath', default_value=[
-            TextSubstitution(text=os.path.join(
-                get_package_share_directory('wilbur_deploy'), 'config', '')),
-            'control', TextSubstitution(text='.yaml')]))
+    declared_arguments.append(DeclareLaunchArgument("control_config_filepath", default_value=[
+        TextSubstitution(text=os.path.join(
+            get_package_share_directory("wilbur_deploy"), "config", "")),
+        "control", TextSubstitution(text=".yaml")]))
 
     # Initialize Arguments
-    tf_prefix = LaunchConfiguration("tf_prefix")
-    tf_prefix_arg = LaunchConfiguration("tf_prefix")
-    namespace = LaunchConfiguration("ns")
     sim_ignition = LaunchConfiguration("sim_ignition")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
-    headless_mode = LaunchConfiguration("headless_mode")
-    config_filepath = LaunchConfiguration('control_config_filepath')
 
-    pkg_deploy = get_package_share_directory('wilbur_deploy')
-    pkg_description = get_package_share_directory('wilbur_description')
-
-    if not tf_prefix:
-        tf_frame_prefix_enable = "False"
-    else:
-        tf_frame_prefix_enable = "True"
-
-    robot_controllers = PathJoinSubstitution(
-        [
-            pkg_deploy,
-            "config",
-            "control.yaml",
-        ]
-    )
-
+    # This is the "definitive" robot state publisher.
+    # This should be launched on whatever machine has the most resources, which
+    # along with whichever controller manager we think should com up first.
     warthog_robot_state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "robot_state_publisher.launch.py")
+            os.path.join(get_package_share_directory("wilbur_deploy"),
+                         "launch", "robot_state_publisher.launch.py")
         ),
         launch_arguments={
             "sim_ignition": sim_ignition,
             "use_fake_hardware": use_fake_hardware,
         }.items(),
+    )
+
+    robot_controllers = PathJoinSubstitution(
+        [
+            get_package_share_directory("wilbur_deploy"),
+            "config",
+            "control.yaml",
+        ]
     )
 
     # Each controller manager node will need a slightly different robot description to ensure that the
@@ -100,7 +91,8 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution(
+                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
             "sim_ignition:=",
             sim_ignition,
@@ -109,14 +101,16 @@ def generate_launch_description():
             use_fake_hardware,
             " ",
             "generate_ros2_control_tag:=",
-            "false",
+            # Only include ROS 2 control here so that gazebo launches the UR HW interface.
+            sim_ignition,
             " ",
             "use_w200_controllers:=",
             "true",
             " ",
         ]
     )
-    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+    robot_description = {"robot_description": ParameterValue(
+        value=robot_description_content, value_type=str)}
 
     # Declare nodes
     nodes = []
@@ -138,25 +132,25 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         name="joint_state_broadcaster_control",
-        parameters=[robot_controllers,],
         arguments=[
-            'joint_state_broadcaster',
-            '--controller-manager-timeout',
-            '300',
+            "joint_state_broadcaster",
+            "--controller-manager-timeout",
+            "300",
         ],
-        additional_env={'ROS_SUPER_CLIENT': 'True'},
+        additional_env={"ROS_SUPER_CLIENT": "True"},
     )
     nodes.append(joint_state_broadcaster)
 
     velocity_controller = Node(
-        package='controller_manager',
-        executable='spawner',
+        package="controller_manager",
+        executable="spawner",
         name="velocity_controller",
-        arguments=['velocity_controller',
-                   '--controller-manager-timeout', '300',
+        arguments=["velocity_controller",
+                   "--controller-manager-timeout",
+                   "300",
                    ],
-        output='screen',
-        additional_env={'ROS_SUPER_CLIENT': 'True'},
+        output="screen",
+        additional_env={"ROS_SUPER_CLIENT": "True"},
     )
     nodes.append(velocity_controller)
 
