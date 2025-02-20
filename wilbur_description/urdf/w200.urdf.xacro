@@ -23,7 +23,6 @@
     <xacro:property name="PI" value="3.1415926535897931" />
     <xacro:include filename="$(find wilbur_description)/urdf/diff_unit.urdf.xacro" />
 
-
     <!-- Colors: yellow, orange, olive, sand -->
     <xacro:property name="warthog_color" value="${'warthog_'+color}" />
     <material name="warthog_yellow">
