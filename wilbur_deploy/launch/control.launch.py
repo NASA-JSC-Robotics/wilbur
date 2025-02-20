@@ -50,15 +50,16 @@ def generate_launch_description():
         default_value="",
         description="Namespace for the hardware robot",
     ))
-
-    declared_arguments.append(DeclareLaunchArgument("control_config_filepath", default_value=[
-        TextSubstitution(text=os.path.join(
-            get_package_share_directory("wilbur_deploy"), "config", "")),
-        "control", TextSubstitution(text=".yaml")]))
+    declared_arguments.append(DeclareLaunchArgument(
+        "controller_file",
+        default_value="control.yaml",
+        description="Name of the defined controllers.yaml file defined in wilbur_deploy/config",
+    ))
 
     # Initialize Arguments
     sim_ignition = LaunchConfiguration("sim_ignition")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    controller_file = LaunchConfiguration("controller_file")
 
     # This is the "definitive" robot state publisher.
     # This should be launched on whatever machine has the most resources, which
@@ -78,7 +79,7 @@ def generate_launch_description():
         [
             get_package_share_directory("wilbur_deploy"),
             "config",
-            "control.yaml",
+            controller_file,
         ]
     )
 
@@ -153,5 +154,7 @@ def generate_launch_description():
         additional_env={"ROS_SUPER_CLIENT": "True"},
     )
     nodes.append(velocity_controller)
+
+
 
     return LaunchDescription([warthog_robot_state_publisher] + declared_arguments + nodes)

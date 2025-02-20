@@ -118,6 +118,17 @@ def generate_launch_description():
                               'use_fake_hardware': 'false',
                               'tf_prefix': tf_prefix,
                               'namespace': namespace,
+                              'controller_file': 'gazebo_controllers.yaml',
+                              }.items()
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(
+                pkg_deploy, 'launch', 'ur_control.launch.py')),
+            launch_arguments={'sim_ignition': sim_ignition,
+                              'use_fake_hardware': 'false',
+                              'tf_prefix': tf_prefix,
+                              'namespace': namespace,
                               }.items()
         ),
     ])

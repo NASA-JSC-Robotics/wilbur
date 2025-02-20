@@ -13,7 +13,7 @@
                 ns">
 
     <xacro:arg name="gazebo_controllers"
-      default="$(find wilbur_deploy)/config/${tf_prefix}control.yaml" />
+      default="$(find wilbur_deploy)/config/gazebo_controllers.yaml" />
 
     <xacro:arg name="use_w200_controllers" default="true" />
 

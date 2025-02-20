@@ -154,7 +154,6 @@ def generate_launch_description():
             "use_fake_hardware": use_fake_hardware,
             "sim_ignition": sim_ignition,
         }.items(),
-        condition=UnlessCondition(sim_ignition),
     )
     launches.append(rsp)
 
