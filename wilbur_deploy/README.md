@@ -20,3 +20,7 @@ This will bring up the mock hardware interfaces, etc.
 # This will bring up the UR and the base
 ros2 launch wilbur_deploy simulate.launch.py
 ```
+
+**NOTE**: You must set `IGN_GAZEBO_RESOURCE_PATH` to include `/opt/ros/${ROS_DISTRO}/share` for models to load.
+
+**NOTE**: For OGRE issues friendly reminder to set `LIBGL_ALWAYS_SOFTWARE=1` before launching.
