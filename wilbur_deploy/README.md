@@ -28,3 +28,10 @@ ros2 launch wilbur_deploy simulate.launch.py
 ## MoveIt Config
 
 There is a WIP moveit configuration but it needs to be cleaned up and properly connected for both sims.
+As of now it is only functional with GZ, as it needs to be modified to support multiple controller managers.
+
+To run:
+
+```bash
+ros2 launch wilbur_moveit_config wilbur_moveit.launch.py
+```

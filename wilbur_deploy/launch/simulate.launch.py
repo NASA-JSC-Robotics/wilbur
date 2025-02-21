@@ -71,6 +71,8 @@ def generate_launch_description():
     pkg_deploy = get_package_share_directory('wilbur_deploy')
     pkg_description = get_package_share_directory('wilbur_description')
 
+    nodes = []
+
     # Start gazebo with the selected World
     world_group = GroupAction([
         IncludeLaunchDescription(
@@ -78,6 +80,7 @@ def generate_launch_description():
                 os.path.join(pkg_deploy, 'launch', 'start_world.launch.py')
             )
         )])
+    nodes.append(world_group)
 
     # add the robot to the world
     robot_group = GroupAction([
@@ -132,7 +135,6 @@ def generate_launch_description():
                               }.items()
         ),
     ])
-
-    nodes = [world_group, robot_group]
+    nodes.append(robot_group)
 
     return LaunchDescription(declared_arguments + nodes)

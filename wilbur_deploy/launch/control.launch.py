@@ -10,7 +10,6 @@ from launch.substitutions import (
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
-    TextSubstitution,
 )
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterFile, ParameterValue
@@ -155,6 +154,19 @@ def generate_launch_description():
     )
     nodes.append(velocity_controller)
 
-
+    # When using Gazebo we do not rely on the UR launcher's controller spawners, so
+    # we must manually spawn the joint trajectory controller, etc.
+    joint_trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        name="joint_trajectory_controller",
+        arguments=["joint_trajectory_controller",
+                   "--controller-manager-timeout",
+                   "300",
+                   ],
+        output="screen",
+        condition=IfCondition(sim_ignition),
+    )
+    nodes.append(joint_trajectory_controller)
 
     return LaunchDescription([warthog_robot_state_publisher] + declared_arguments + nodes)
