@@ -144,18 +144,6 @@ def generate_launch_description():
     )
     launches.append(base_launch)
 
-    # Launch a separate robot state publisher alongside the UR that contains all necessary description
-    rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "robot_state_publisher.launch.py")
-        ),
-        launch_arguments={
-            "use_fake_hardware": use_fake_hardware,
-            "sim_ignition": sim_ignition,
-        }.items(),
-    )
-    launches.append(rsp)
-
     nodes = []
 
     # Add a topic republisher for the joint states topic, since there is no support for remapping spawned
