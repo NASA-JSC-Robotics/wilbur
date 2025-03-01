@@ -2,13 +2,14 @@
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:arg name="tf_prefix" default="" />
 
+    <!-- todo convert file to 2 spaces -->
     <xacro:arg name="ns" default="" />
     <xacro:arg name="sim_ignition" default="false" />
-    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
     <xacro:arg name="parent" default="world" />
-    <xacro:arg name="ur_type" default="ur10e" />
-    <xacro:arg name="generate_ros2_control_tag" default="false" />
-    <xacro:arg name="use_w200_controllers" default="false" />
+    <xacro:arg name="ur_type" default="ur10e" /> <!-- todo set to value-->
+    <xacro:arg name="generate_ros2_control_tag" default="false" /> <!-- would we ever have this false-->
+    <xacro:arg name="use_w200_controllers" default="false" /> <!-- appears unused-->
 
     <!-- Includes -->
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
@@ -21,10 +22,7 @@
 
     <!--xacro:include
         filename="$(find clearpath_manipulators_description)/urdf/arm/universal_robots.urdf.xacro" /-->
-    <xacro:include
-        filename="$(find ur_description)/urdf/ur_macro.xacro" />
-    <!--xacro:include
-        filename="$(find ur_description)/urdf/gripper/robotiq_2f_85.urdf.xacro" /-->
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
 
     <!-- Attachments -->
     <xacro:bulkhead
@@ -36,6 +34,7 @@
     </xacro:bulkhead>
 
     <!-- Links -->
+    <!-- todo - reduce dependency on clearpath palatform description buildin macros -->
     <xacro:mesh
         name="control_frame"
         parent_link="default_mount"
@@ -43,12 +42,14 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:mesh>
 
+    <!-- todo - reduce dependency on clearpath palatform description buildin macros -->
     <xacro:frame name="arm_0_end_effector" parent_link="arm_0_tool0">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:frame>
 
     <!-- Manipulators -->
     <xacro:property name="initial_positions_file" default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
+    <!-- todo expose out args for hardware-->
     <xacro:ur_robot
         name="arm_0_"
         tf_prefix="$(arg tf_prefix)arm_0_"
@@ -73,9 +74,22 @@
     </xacro:robotiq_2f_85-->
 
     <xacro:w200
+        wheel="default"
         tf_prefix="$(arg tf_prefix)"
         sim_ignition="$(arg sim_ignition)"
         use_fake_hardware="$(arg use_fake_hardware)"
         ns="$(arg ns)"
     />
+
+    <xacro:if value="$(arg sim_ignition)">
+      <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
+      <xacro:wilbur_gz_ros2_control
+        gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
+        ns="$(arg ns)"
+      />
+      <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
+      <xacro:wilbur_gz/>
+      
+    </xacro:if>
+
 </robot>

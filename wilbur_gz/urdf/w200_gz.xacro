@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  
+
+  <!-- macro for gazebo plugins specific for the w200-->
+  <xacro:macro name="w200_gz"
+    params="tf_prefix
+            wheel_radius
+            imu_link_name
+            gps_link_name
+            ns">
+
+    <!-- consider whether sensors and wheels should be split up further -->
+    <gazebo reference="${tf_prefix}${imu_link_name}">
+      <sensor type="imu" name="imu_0">
+        <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
+        </plugin>
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <ignition_frame_id>${tf_prefix}${imu_link_name}</ignition_frame_id>
+        <topic>$(arg ns)/sensors/imu_0/data_raw</topic>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="${tf_prefix}${gps_link_name}">
+      <sensor type="navsat" name="gps_0">
+        <plugin filename="libignition-gazebo-navsat-system.so" name="ignition::gazebo::systems::NavSat">
+        </plugin>
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <ignition_frame_id>${tf_prefix}${gps_link_name}</ignition_frame_id>
+        <topic>$(arg ns)/sensors/gps_0/data_raw</topic>
+      </sensor>
+    </gazebo>
+
+    <gazebo>
+      <plugin filename="libignition-gazebo-wheel-slip-system.so"
+        name="ignition::gazebo::systems::WheelSlip">
+        <wheel link_name="${tf_prefix}front_left_wheel_link">
+          <slip_compliance_lateral>1.0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
+          <wheel_normal_force>686</wheel_normal_force>
+          <wheel_radius>${wheel_radius}</wheel_radius>
+        </wheel>
+        <wheel link_name="${tf_prefix}front_right_wheel_link">
+          <slip_compliance_lateral>1.0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
+          <wheel_normal_force>686</wheel_normal_force>
+          <wheel_radius>${wheel_radius}</wheel_radius>
+        </wheel>
+        <wheel link_name="${tf_prefix}rear_left_wheel_link">
+          <slip_compliance_lateral>1.0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
+          <wheel_normal_force>686</wheel_normal_force>
+          <wheel_radius>${wheel_radius}</wheel_radius>
+        </wheel>
+        <wheel link_name="${tf_prefix}rear_right_wheel_link">
+          <slip_compliance_lateral>1.0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
+          <wheel_normal_force>686</wheel_normal_force>
+          <wheel_radius>${wheel_radius}</wheel_radius>
+        </wheel>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
