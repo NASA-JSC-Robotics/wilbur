@@ -63,6 +63,8 @@ def generate_launch_description():
     y = LaunchConfiguration('robot_y')
     z = LaunchConfiguration('robot_z')
 
+    # Todo: fix this - does not work as expected 
+    # https://robotics.stackexchange.com/questions/103310/can-i-programmatically-call-a-launch-file-with-arguments-that-can-be-used-as-a-v
     if not namespace:
         use_namespace = "False"
     else:
@@ -70,6 +72,7 @@ def generate_launch_description():
 
     pkg_deploy = get_package_share_directory('wilbur_deploy')
     pkg_description = get_package_share_directory('wilbur_description')
+    pkg_gazebo = get_package_share_directory('wilbur_gz')
 
     nodes = []
 
@@ -108,7 +111,7 @@ def generate_launch_description():
             executable='parameter_bridge',
             name='sim_bridge',
             parameters=[{
-                'config_file': os.path.join(pkg_description, 'config', 'bridge.yaml'),
+                'config_file': os.path.join(pkg_gazebo, 'config', 'bridge.yaml'),
                 'qos_overrides./tf_static.publisher.durability': 'transient_local',
             }],
             output='screen'

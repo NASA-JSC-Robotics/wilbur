@@ -2,14 +2,12 @@
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:arg name="tf_prefix" default="" />
 
-    <!-- todo convert file to 2 spaces -->
     <xacro:arg name="ns" default="" />
     <xacro:arg name="sim_ignition" default="false" />
     <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
     <xacro:arg name="parent" default="world" />
-    <xacro:arg name="ur_type" default="ur10e" /> <!-- todo set to value-->
-    <xacro:arg name="generate_ros2_control_tag" default="false" /> <!-- would we ever have this false-->
-    <xacro:arg name="use_w200_controllers" default="false" /> <!-- appears unused-->
+    <xacro:arg name="ur_type" value="ur10e" />
+
 
     <!-- Includes -->
     <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
@@ -34,7 +32,7 @@
     </xacro:bulkhead>
 
     <!-- Links -->
-    <!-- todo - reduce dependency on clearpath palatform description buildin macros -->
+    <!-- todo - reduce dependency on clearpath platform description buildin macros -->
     <xacro:mesh
         name="control_frame"
         parent_link="default_mount"
@@ -42,7 +40,7 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:mesh>
 
-    <!-- todo - reduce dependency on clearpath palatform description buildin macros -->
+    <!-- todo - reduce dependency on clearpath platform description buildin macros -->
     <xacro:frame name="arm_0_end_effector" parent_link="arm_0_tool0">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:frame>
@@ -61,7 +59,7 @@
         kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
         physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
         visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
-        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
+        generate_ros2_control_tag="true"
       >
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:ur_robot>
