@@ -51,7 +51,10 @@ def launch_setup(context):
     
     actions = []
     
-    actions.append(SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gz_model_path))
+    # TODO: option for gazebo headless
+    # actions.append(SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gz_model_path))
+    # wrong resource path - should be IGN_GAZEBO_RESOURCE_PATH for fortress and ignition
+    # https://gazebosim.org/docs/fortress/ros_gz_project_template_guide/
     actions.append(IncludeLaunchDescription(
             PythonLaunchDescriptionSource(gz_launch_path),
             launch_arguments={

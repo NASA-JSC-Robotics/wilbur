@@ -35,7 +35,7 @@
     <xacro:mesh
         name="control_frame"
         parent_link="default_mount"
-        visual="package://wilbur_description/meshes/control_frame.stl">
+        visual="file://$(find wilbur_description)/meshes/control_frame.stl">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:mesh>
 

@@ -6,7 +6,7 @@ find_package(ament_cmake REQUIRED)
 #find_package(rclpy REQUIRED)
 
 install(
-  DIRECTORY urdf config
+  DIRECTORY config launch urdf worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -80,7 +80,7 @@ def generate_launch_description():
     world_group = GroupAction([
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(pkg_deploy, 'launch', 'start_world.launch.py')
+                os.path.join(pkg_gazebo, 'launch', 'start_world.launch.py')
             )
         )])
     nodes.append(world_group)
