@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="gen_mesh" params="force_abs_path pkg_name file_path scale:='1 1 1'" >
+    <xacro:if value="${force_abs_path}">
+      <xacro:property name="mesh" value="file://$(find ${pkg_name})/${file_path}" scope="parent"/>
+    </xacro:if>
+    <xacro:unless value="${force_abs_path}">
+      <xacro:property name="mesh" value="package://$(find ${pkg_name})/${file_path}" scope="parent"/>
+    </xacro:unless>
+    <mesh filename="${mesh}" scale="${scale}"/>
+  </xacro:macro>
+
+</robot>
