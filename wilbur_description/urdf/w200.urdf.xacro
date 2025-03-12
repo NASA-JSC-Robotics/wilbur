@@ -16,7 +16,7 @@
     <!-- Include URDF/XACRO Files -->
     <xacro:include filename="$(find wilbur_description)/urdf/wheels/track.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/wheels/wheel.urdf.xacro" />
-    <xacro:property name="PI" value="3.1415926535897931" />
+    <xacro:property name="PI" value="3.1415926535897931" /> <!--pi is build in - replace with lowercase pi throughout and remove property -->
     <xacro:include filename="$(find wilbur_description)/urdf/diff_unit.urdf.xacro" />
 
     <!-- Colors: yellow, orange, olive, sand -->
@@ -215,6 +215,7 @@
         name="w200_ros2_control"
         use_fake_hardware="${use_fake_hardware}"
         sim_ignition="${sim_ignition}"
+        tf_prefix="${tf_prefix}"
       />
     </xacro:if>    
 
