@@ -6,6 +6,7 @@
     <xacro:arg name="sim_ignition" default="false" />
     <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
     <xacro:arg name="parent" default="world" />
+    <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
     
 
     <!-- Includes -->
@@ -78,7 +79,7 @@
         kinematics_parameters_file="$(find ur_description)/config/ur10e/default_kinematics.yaml"
         physical_parameters_file="$(find ur_description)/config/ur10e/physical_parameters.yaml"
         visual_parameters_file="$(find ur_description)/config/ur10e/visual_parameters.yaml"
-        generate_ros2_control_tag="true"
+        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
       >
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:ur_robot>
@@ -96,6 +97,7 @@
         sim_ignition="$(arg sim_ignition)"
         use_fake_hardware="$(arg use_fake_hardware)"
         ns="$(arg ns)"
+        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
     />
 
     <xacro:if value="$(arg sim_ignition)">

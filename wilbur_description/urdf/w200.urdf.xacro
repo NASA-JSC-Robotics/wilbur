@@ -10,7 +10,8 @@
                 sim_ignition:=false
                 use_fake_hardware:=true
                 color:='yellow'
-                ns">
+                ns
+                generate_ros2_control_tag:=true">
 
     <!-- Include URDF/XACRO Files -->
     <xacro:include filename="$(find wilbur_description)/urdf/wheels/track.urdf.xacro" />
@@ -209,11 +210,13 @@
     <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
     
     <!-- todo do we need a ns/name paradigm for ros2 control system plugins for multiple/namespacing-->
-    <xacro:w200_ros2_control
-      name="w200_ros2_control"
-      use_fake_hardware="${use_fake_hardware}"
-      sim_ignition="${sim_ignition}"
-    />
+    <xacro:if value="${generate_ros2_control_tag}">
+      <xacro:w200_ros2_control
+        name="w200_ros2_control"
+        use_fake_hardware="${use_fake_hardware}"
+        sim_ignition="${sim_ignition}"
+      />
+    </xacro:if>    
 
     <!-- w200_gz - plugins specific for the w200 for gazebo -->
     <xacro:if value="${sim_ignition}">
