@@ -47,6 +47,12 @@ def generate_launch_description():
             "use_fake_hardware:=",
             use_fake_hardware,
             " ",
+            "generate_ros2_control_tag:=",
+            "true",
+            " ",
+            "use_w200_controllers:=",
+            "true",
+            " ",
         ]
     )
     robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
