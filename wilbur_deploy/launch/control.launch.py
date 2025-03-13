@@ -21,39 +21,50 @@ def generate_launch_description():
 
     declared_arguments = []
 
-    declared_arguments.append(DeclareLaunchArgument(
-        "tf_prefix",
-        default_value="",
-        description="tf_prefix of the joint names, useful for \
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "tf_prefix",
+            default_value="",
+            description="tf_prefix of the joint names, useful for \
         multi-robot setup. If changed, also joint names in the controllers' configuration \
         have to be updated.",
-
-    ))
-    declared_arguments.append(DeclareLaunchArgument(
-        "sim_ignition",
-        default_value="false",
-        description="Start robot with simulated hardware mirroring command to its states.",
-    ))
-    declared_arguments.append(DeclareLaunchArgument(
-        "use_fake_hardware",
-        default_value="true",
-        description="Start robot with simulated hardware mirroring command to its states.",
-    ))
-    declared_arguments.append(DeclareLaunchArgument(
-        "parent",
-        default_value="world",
-        description="Namespace for the hardware robot",
-    ))
-    declared_arguments.append(DeclareLaunchArgument(
-        "ns",
-        default_value="",
-        description="Namespace for the hardware robot",
-    ))
-    declared_arguments.append(DeclareLaunchArgument(
-        "controller_file",
-        default_value="control.yaml",
-        description="Name of the defined controllers.yaml file defined in wilbur_deploy/config",
-    ))
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "sim_ignition",
+            default_value="false",
+            description="Start robot with simulated hardware mirroring command to its states.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_fake_hardware",
+            default_value="true",
+            description="Start robot with simulated hardware mirroring command to its states.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "parent",
+            default_value="world",
+            description="Namespace for the hardware robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "ns",
+            default_value="",
+            description="Namespace for the hardware robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "controller_file",
+            default_value="control.yaml",
+            description="Name of the defined controllers.yaml file defined in wilbur_deploy/config",
+        )
+    )
 
     # Initialize Arguments
     sim_ignition = LaunchConfiguration("sim_ignition")
@@ -65,8 +76,7 @@ def generate_launch_description():
     # along with whichever controller manager we think should com up first.
     warthog_robot_state_publisher = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("wilbur_deploy"),
-                         "launch", "robot_state_publisher.launch.py")
+            os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "robot_state_publisher.launch.py")
         ),
         launch_arguments={
             "sim_ignition": sim_ignition,
@@ -91,8 +101,7 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
             "sim_ignition:=",
             sim_ignition,
@@ -109,8 +118,7 @@ def generate_launch_description():
             " ",
         ]
     )
-    robot_description = {"robot_description": ParameterValue(
-        value=robot_description_content, value_type=str)}
+    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
 
     # Declare nodes
     nodes = []
@@ -145,10 +153,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         name="velocity_controller",
-        arguments=["velocity_controller",
-                   "--controller-manager-timeout",
-                   "300",
-                   ],
+        arguments=[
+            "velocity_controller",
+            "--controller-manager-timeout",
+            "300",
+        ],
         output="screen",
         additional_env={"ROS_SUPER_CLIENT": "True"},
     )
@@ -160,10 +169,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         name="joint_trajectory_controller",
-        arguments=["joint_trajectory_controller",
-                   "--controller-manager-timeout",
-                   "300",
-                   ],
+        arguments=[
+            "joint_trajectory_controller",
+            "--controller-manager-timeout",
+            "300",
+        ],
         output="screen",
         condition=IfCondition(sim_ignition),
     )

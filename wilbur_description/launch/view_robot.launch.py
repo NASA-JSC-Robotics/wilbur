@@ -1,4 +1,3 @@
-import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
@@ -63,7 +62,6 @@ def generate_launch_description():
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui",
     )
-
 
     robot_state_publisher = Node(
         package="robot_state_publisher",

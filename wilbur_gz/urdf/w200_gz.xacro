@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  
+
 
   <!-- macro for gazebo plugins specific for the w200-->
   <xacro:macro name="w200_gz"

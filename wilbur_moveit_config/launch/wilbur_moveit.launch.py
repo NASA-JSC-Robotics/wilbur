@@ -35,14 +35,12 @@ def generate_launch_description():
 
     description_package = "wilbur_description"
     description_file = "wilbur.urdf.xacro"
-    description_full_path = os.path.join(
-        get_package_share_directory(description_package), "urdf", description_file)
+    description_full_path = os.path.join(get_package_share_directory(description_package), "urdf", description_file)
     description_mappings = {}
 
     moveit_config = (
         MoveItConfigsBuilder("wilbur", package_name="wilbur_moveit_config")
-        .robot_description(file_path=description_full_path,
-                           mappings=description_mappings)
+        .robot_description(file_path=description_full_path, mappings=description_mappings)
         .robot_description_semantic(file_path="config/wilbur.srdf")
         .robot_description_kinematics(file_path="config/kinematics.yaml")
         .joint_limits(file_path="config/joint_limits.yaml")
@@ -64,8 +62,7 @@ def generate_launch_description():
         )
     )
 
-    rviz_config_file = os.path.join(
-        get_package_share_directory("wilbur_moveit_config"), "config", "moveit.rviz")
+    rviz_config_file = os.path.join(get_package_share_directory("wilbur_moveit_config"), "config", "moveit.rviz")
     nodes_to_start.append(
         Node(
             package="rviz2",

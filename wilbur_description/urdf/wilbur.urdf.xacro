@@ -8,7 +8,7 @@
     <xacro:arg name="parent" default="world" />
     <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
     <xacro:arg name="wilbur_ur10e_initial_positions" default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
-    
+
 
     <!-- Includes -->
     <!-- todo - reduce the dependency on clear_path_description-->
@@ -26,7 +26,7 @@
 
     <!-- if ignition or gazebo - need to use absolute paths instead of relative-->
     <xacro:property name="force_abs_paths" value="$(arg sim_ignition)" scope="global"/>
-    
+
     <!-- Attachments -->
     <xacro:bulkhead
         name="bulkhead"
@@ -57,11 +57,11 @@
       <child link="$(arg tf_prefix)control_frame_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
-    
 
-    
 
-    <!-- todo - reduce dependency on clearpath platform description buildin macros -->
+
+
+    <!-- todo - reduce dependency on clearpath platform description building macros -->
     <!-- todo - add tf prefix-->
     <xacro:frame name="arm_0_end_effector" parent_link="arm_0_tool0">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />

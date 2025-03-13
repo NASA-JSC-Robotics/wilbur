@@ -208,7 +208,7 @@
 
     <!-- ROS2 controls -->
     <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
-    
+
     <!-- todo do we need a ns/name paradigm for ros2 control system plugins for multiple/namespacing-->
     <xacro:if value="${generate_ros2_control_tag}">
       <xacro:w200_ros2_control
@@ -217,7 +217,7 @@
         sim_ignition="${sim_ignition}"
         tf_prefix="${tf_prefix}"
       />
-    </xacro:if>    
+    </xacro:if>
 
     <!-- w200_gz - plugins specific for the w200 for gazebo -->
     <xacro:if value="${sim_ignition}">
