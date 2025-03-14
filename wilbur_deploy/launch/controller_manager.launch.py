@@ -60,6 +60,7 @@ def generate_launch_description():
     # due to the fact that the controller managers's resource manager is not paramerizable in Humble,
     # so by default it will attempt to load all hardware interfaces defined in the ros2 control xacro.
     # In this case the full robot description is used
+
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -82,6 +83,7 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
 
+    # helper function to get controllers files that we might need
     def GetControllersFile(file_name):
         return PathJoinSubstitution(
             [
@@ -91,15 +93,19 @@ def generate_launch_description():
             ]
         )
 
+    # contains update rate
     controllers_common = GetControllersFile("controllers_common.yaml")
+    # controllers for the warthog
     controllers_w200 = GetControllersFile("controllers_w200.yaml")
+    # controllers for the ur
     controllers_ur = GetControllersFile("controllers_ur.yaml")
+    # controllers for the gripper
     controllers_hande = GetControllersFile("controllers_hande.yaml")
 
     # Declare nodes
     nodes = []
 
-    # Only launch the control node if using mock hardware, for now
+    # start the controller manager node with all of the controller config files
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",

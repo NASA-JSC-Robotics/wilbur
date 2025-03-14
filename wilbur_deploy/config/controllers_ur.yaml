@@ -1,6 +1,5 @@
-controller_manager:
+$(var ns)controller_manager:
   ros__parameters:
-    update_rate: 500
 
     ur_joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -17,7 +16,7 @@ controller_manager:
     joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-ur_joint_state_broadcaster:
+$(var ns)ur_joint_state_broadcaster:
   ros__parameters:
     joints:
       - arm_0_shoulder_pan_joint
@@ -31,11 +30,11 @@ ur_joint_state_broadcaster:
       - velocity
       - effort
 
-io_and_status_controller:
+$(var ns)io_and_status_controller:
   ros__parameters:
     tf_prefix: "arm_0_"
 
-force_torque_sensor_broadcaster:
+$(var ns)force_torque_sensor_broadcaster:
   ros__parameters:
     sensor_name: arm_0_tcp_fts_sensor
     state_interface_names:
@@ -48,7 +47,7 @@ force_torque_sensor_broadcaster:
     frame_id: arm_0_tool0
     topic_name: arm_0_ft_data
 
-forward_position_controller:
+$(var ns)forward_position_controller:
   ros__parameters:
     joints:
       - arm_0_shoulder_pan_joint
@@ -58,7 +57,7 @@ forward_position_controller:
       - arm_0_wrist_2_joint
       - arm_0_wrist_3_joint
 
-joint_trajectory_controller:
+$(var ns)joint_trajectory_controller:
   ros__parameters:
     joints:
       - arm_0_shoulder_pan_joint

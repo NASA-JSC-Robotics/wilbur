@@ -6,7 +6,7 @@
       <xacro:property name="mesh" value="file://$(find ${pkg_name})/${file_path}" scope="parent"/>
     </xacro:if>
     <xacro:unless value="${force_abs_path}">
-      <xacro:property name="mesh" value="package://$(find ${pkg_name})/${file_path}" scope="parent"/>
+      <xacro:property name="mesh" value="package://${pkg_name}/${file_path}" scope="parent"/>
     </xacro:unless>
     <mesh filename="${mesh}" scale="${scale}"/>
   </xacro:macro>

@@ -60,6 +60,13 @@ def generate_launch_description():
             description="Z position of the robot",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "ns",
+            default_value="6.0",
+            description="namespace of the robot",
+        )
+    )
 
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
@@ -132,10 +139,9 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(pkg_deploy, "launch", "control.launch.py")),
                 launch_arguments={
-                    "sim_ignition": sim_ignition,
-                    "use_fake_hardware": "false",
+                    "platform": "sim_ignition",
                     "tf_prefix": tf_prefix,
-                    "namespace": namespace,
+                    "ns": namespace,
                     "controller_file": "gazebo_controllers.yaml",
                 }.items(),
             ),

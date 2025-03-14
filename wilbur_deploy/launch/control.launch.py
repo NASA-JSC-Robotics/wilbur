@@ -18,19 +18,19 @@ def launch_setup(context, *args, **kwargs):
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
+    # convert platform type to string so that we can evaluate different options
     platform_string = platform.perform(context)
+    sim_ignition = "true" if platform_string == "sim_ignition" else "false"
+    use_fake_hardware = "true" if platform_string == "mock_hardware" else "false"
+
+    # convert separate controls pc option to bool to figure out what components to launch
     separate_controls_pcs_string = separate_controls_pcs.perform(context)
-
-    sim_ignition = platform_string == "sim_ignition"
-    sim_ignition_bool = "true" if sim_ignition else "false"
-    use_fake_hardware = platform_string == "mock_hardware"
-    use_fake_hardware_bool = "true" if use_fake_hardware else "false"
-
     separate_controls_pcs_bool = separate_controls_pcs_string == "true"
 
+    # common launch args shared across different nodes
     common_launch_args = {
-        "sim_ignition": sim_ignition_bool,
-        "use_fake_hardware": use_fake_hardware_bool,
+        "sim_ignition": sim_ignition,
+        "use_fake_hardware": use_fake_hardware,
         "tf_prefix": tf_prefix,
         "ns": ns,
     }.items()
@@ -50,27 +50,65 @@ def launch_setup(context, *args, **kwargs):
 
         return launch_files_list
 
+    # list to keep track of launch file names to start
+    launch_file_names = []
+
+    # extra launch files that will be run if we are separating out controls pcs
+    ur_specific_launch_files = []
+
     # This is the "definitive" robot state publisher.
     # This should be launched on whatever machine has the most resources, which
     # along with whichever controller manager we think should com up first.
-    launch_file_names = ["robot_state_publisher.launch.py"]
+    launch_file_names.append("robot_state_publisher.launch.py")
 
+    # if we are running on a single controls pc, we just run default controller manager
+    # and controller spawners.
     if not separate_controls_pcs_bool:
-        # ignition has its own controller manager plugin
-        if not sim_ignition:
+        # ignition has its own controller manager plugin, so we don't spawn it
+        if sim_ignition != "true":
             launch_file_names.append("controller_manager.launch.py")
         launch_file_names.append("spawn_controllers.launch.py")
+    # if we are running on different controls pcs, we just launch the w200 components,
+    # and the other pc will launch the ur and gripper controller manager and spawners
     else:
+        # controllers for warthog
         launch_file_names.append("controller_manager_w200.launch.py")
         launch_file_names.append("spawn_controllers_w200.launch.py")
-        # launch_file_names.append("spawn_controllers_ur.launch.py") (prefix ur)
-        # launch_file_names.append("spawn_controllers_hande.launch.py") (prefix ur)
-        # launch_file_names.append("controller_manager_ur_gripper.launch.py") (launched remotely)
 
+        ur_cm_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory("wilbur_deploy"), "launch", "controller_manager_ur_gripper.launch.py"
+                )
+            ),
+            launch_arguments={
+                "ns": "ur",
+            }.items(),
+        )
+
+        ur_spawn_controllers = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "spawn_controllers_ur.launch.py")
+            ),
+            launch_arguments={
+                "sim_ignition": sim_ignition,
+                "use_fake_hardware": use_fake_hardware,
+                "tf_prefix": tf_prefix,
+                "ns": "/ur/",
+            }.items(),
+        )
+
+        ur_specific_launch_files.append(ur_cm_launch)
+        ur_specific_launch_files.append(ur_spawn_controllers)
+
+    # generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
-        package_name="wilbur_deploy", launch_file_names=launch_file_names, launch_args=common_launch_args
+        package_name="wilbur_deploy",
+        launch_file_names=launch_file_names,
+        launch_args=common_launch_args,
     )
-    return launch_files
+
+    return launch_files + ur_specific_launch_files
 
 
 def generate_launch_description():

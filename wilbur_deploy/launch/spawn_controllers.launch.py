@@ -34,6 +34,7 @@ def generate_launch_description():
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
+    # common launch args passed to each of the different launch files
     common_launch_args = {
         "tf_prefix": tf_prefix,
         "ns": ns,
@@ -56,6 +57,8 @@ def generate_launch_description():
 
         return launch_files_list
 
+    # add controller spawner launch files for each individual subsystem
+    # note, gripper is not included now because it isn't included in description yet
     launch_file_names.append("spawn_controllers_w200.launch.py")
     launch_file_names.append("spawn_controllers_ur.launch.py")
 

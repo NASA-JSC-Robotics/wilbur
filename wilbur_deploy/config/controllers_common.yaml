@@ -1,4 +1,4 @@
 /**:
-  controller_manager:
+  $(var ns)controller_manager:
     ros__parameters:
       update_rate: 500

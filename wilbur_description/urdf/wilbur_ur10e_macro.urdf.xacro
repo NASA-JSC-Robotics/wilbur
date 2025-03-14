@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- W200 Platform Macro-->
+  <xacro:macro name="wilbur_ur10e"
+    params="name:='arm_0_'
+            tf_prefix:=''
+            *origin
+            parent:='world'
+            use_fake_hardware:=false
+            sim_ignition:=false
+            initial_positions='$(find wilbur_deploy)/config/ur_initial_positions.yaml'
+            generate_ros2_control_tag:=true">
+
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
+
+    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/frame.urdf.xacro" />
+
+    <!-- todo - add tf prefix-->
+    <xacro:frame name="arm_0_end_effector" parent_link="arm_0_tool0">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:frame>
+
+    <!-- Manipulators -->
+    <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
+    <!-- todo expose out args for hardware-->
+    <xacro:ur_robot
+        name="${name}"
+        tf_prefix="${tf_prefix}"
+        parent="${parent}"
+        use_fake_hardware="${use_fake_hardware}"
+        sim_ignition="${sim_ignition}"
+        initial_positions="${xacro.load_yaml(initial_positions_file)}"
+        joint_limits_parameters_file="$(find ur_description)/config/ur10e/joint_limits.yaml"
+        kinematics_parameters_file="$(find ur_description)/config/ur10e/default_kinematics.yaml"
+        physical_parameters_file="$(find ur_description)/config/ur10e/physical_parameters.yaml"
+        visual_parameters_file="$(find ur_description)/config/ur10e/visual_parameters.yaml"
+        generate_ros2_control_tag="${generate_ros2_control_tag}"
+      >
+      <xacro:insert_block name="origin" />
+    </xacro:ur_robot>
+  </xacro:macro>
+</robot>

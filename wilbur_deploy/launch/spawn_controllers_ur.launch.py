@@ -23,10 +23,12 @@ def generate_launch_description():
 
     ns = LaunchConfiguration("ns")
 
+    # namespace the controller manager based on ns argument
     controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
     nodes = []
 
+    # helper function to make controller nodes
     def MakeControllerNode(controller_name):
         return Node(
             package="controller_manager",
