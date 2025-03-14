@@ -28,7 +28,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_fake_hardware",
-            default_value="true",
+            default_value="false",
             description="Start robot with simulated hardware mirroring command to its states.",
         )
     )
@@ -44,13 +44,13 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "ns",
-            default_value="ur",
+            default_value="/ur",
             description="Namespace for the hardware robot",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "cm_prefix",
+            "controller_prefix",
             default_value="/ur/",
             description="Namespace for the hardware robot",
         )
@@ -61,6 +61,7 @@ def generate_launch_description():
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")  # this gets used in the
+    # controller_prefix = LaunchConfiguration("controller_prefix")  # this gets used in the
 
     # Each controller manager node will need a slightly different robot description to ensure that the
     # manager only loads hardware resources for _exactly_ what it needs at construction time. This is

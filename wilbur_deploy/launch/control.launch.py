@@ -82,7 +82,8 @@ def launch_setup(context, *args, **kwargs):
                 )
             ),
             launch_arguments={
-                "ns": "ur",
+                "ns": "/ur",
+                "controller_prefix": "/ur/",
             }.items(),
         )
 
@@ -94,7 +95,7 @@ def launch_setup(context, *args, **kwargs):
                 "sim_ignition": sim_ignition,
                 "use_fake_hardware": use_fake_hardware,
                 "tf_prefix": tf_prefix,
-                "ns": "/ur/",
+                "ns": "/ur",
             }.items(),
         )
 

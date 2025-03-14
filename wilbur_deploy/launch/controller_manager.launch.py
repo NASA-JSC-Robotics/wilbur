@@ -48,6 +48,13 @@ def generate_launch_description():
             description="Namespace for the hardware robot",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "controller_prefix",
+            default_value="",
+            description="prefix used in the yaml controllers files",
+        )
+    )
 
     # Initialize Arguments
     sim_ignition = LaunchConfiguration("sim_ignition")
