@@ -123,4 +123,18 @@ def generate_launch_description():
     )
     nodes.append(control_node)
 
+    # Add a topic republisher for the joint states topic, since there is no support for remapping spawned
+    # controller's topics in Humble. Note this only runs when we are running two control computers
+    republisher_node = Node(
+        package="topic_tools",
+        executable="relay",
+        name="ur_joint_states_relay",
+        output="both",
+        arguments=[
+            PathJoinSubstitution([ns, "joint_states"]),
+            "/joint_states",
+        ],
+    )
+    nodes.append(republisher_node)
+
     return LaunchDescription(declared_arguments + nodes)
