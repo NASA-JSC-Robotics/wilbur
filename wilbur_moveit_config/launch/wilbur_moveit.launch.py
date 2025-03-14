@@ -36,7 +36,7 @@ def generate_launch_description():
     description_package = "wilbur_description"
     description_file = "wilbur.urdf.xacro"
     description_full_path = os.path.join(get_package_share_directory(description_package), "urdf", description_file)
-    description_mappings = {}
+    description_mappings = {"sim_ignition": sim_ignition}
 
     moveit_config = (
         MoveItConfigsBuilder("wilbur", package_name="wilbur_moveit_config")
