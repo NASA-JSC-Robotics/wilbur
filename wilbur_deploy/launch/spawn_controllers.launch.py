@@ -59,8 +59,8 @@ def generate_launch_description():
 
     # add controller spawner launch files for each individual subsystem
     # note, gripper is not included now because it isn't included in description yet
-    launch_file_names.append("spawn_controllers_w200.launch.py")
-    launch_file_names.append("spawn_controllers_ur.launch.py")
+    launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
+    launch_file_names.append("spawn_controllers/spawn_controllers_ur.launch.py")
 
     launch_files = AddLaunchDescriptions(
         package_name="wilbur_deploy", launch_file_names=launch_file_names, launch_args=common_launch_args

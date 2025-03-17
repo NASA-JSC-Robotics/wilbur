@@ -72,13 +72,13 @@ def launch_setup(context, *args, **kwargs):
     # and the other pc will launch the ur and gripper controller manager and spawners
     else:
         # controllers for warthog
-        launch_file_names.append("controller_manager_w200.launch.py")
-        launch_file_names.append("spawn_controllers_w200.launch.py")
+        launch_file_names.append("controller_manager/controller_manager_w200.launch.py")
+        launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
 
         ur_cm_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(
-                    get_package_share_directory("wilbur_deploy"), "launch", "controller_manager_ur_gripper.launch.py"
+                    get_package_share_directory("wilbur_deploy"), "launch", "controller_manager", "controller_manager_ur_gripper.launch.py"
                 )
             ),
             launch_arguments={
@@ -89,7 +89,7 @@ def launch_setup(context, *args, **kwargs):
 
         ur_spawn_controllers = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "spawn_controllers_ur.launch.py")
+                os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "spawn_controllers", "spawn_controllers_ur.launch.py")
             ),
             launch_arguments={
                 "sim_ignition": sim_ignition,
