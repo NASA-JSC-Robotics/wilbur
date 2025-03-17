@@ -25,7 +25,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition",
-            default_value="true",
+            default_value="false",
             description="Robot is starting using ignition",
         )
     )
