@@ -20,8 +20,6 @@ def launch_setup(context, *args, **kwargs):
     y = LaunchConfiguration("robot_y")
     z = LaunchConfiguration("robot_z")
 
-    # Todo: fix this - does not work as expected
-    # https://robotics.stackexchange.com/questions/103310/can-i-programmatically-call-a-launch-file-with-arguments-that-can-be-used-as-a-v
     if namespace.perform(context) == "":
         use_namespace = "False"
     else:
