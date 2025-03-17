@@ -20,6 +20,7 @@
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>urdf</exec_depend>
+  <exec_depend>jsc_rockyard_world_gz</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
   <exec_depend>ros2_control</exec_depend>

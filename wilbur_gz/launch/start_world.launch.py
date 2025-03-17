@@ -25,7 +25,7 @@ arguments.append(
 arguments.append(
     DeclareLaunchArgument(
         "world_pkg",
-        default_value="rockyard_world",
+        default_value="jsc_rockyard_world_gz",
         description="name of the package that has the world file",
     )
 )
