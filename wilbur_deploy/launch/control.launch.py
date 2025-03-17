@@ -8,7 +8,7 @@ from launch.substitutions import (
     LaunchConfiguration,
 )
 from ament_index_python.packages import get_package_share_directory
-
+from wilbur_deploy.pig_warnings import *
 
 def launch_setup(context, *args, **kwargs):
 
@@ -26,6 +26,15 @@ def launch_setup(context, *args, **kwargs):
     # convert separate controls pc option to bool to figure out what components to launch
     separate_controls_pcs_string = separate_controls_pcs.perform(context)
     separate_controls_pcs_bool = separate_controls_pcs_string == "true"
+
+    # print warning about system type
+    if sim_ignition == "true":
+        pig_gazebo()
+    elif use_fake_hardware == "true":
+        pig_mockhardware(separate_controls_pcs_bool)        
+    else:
+        pig_hardware(separate_controls_pcs)
+
 
     # common launch args shared across different nodes
     common_launch_args = {
