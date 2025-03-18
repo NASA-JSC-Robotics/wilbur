@@ -1,6 +1,64 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <xacro:macro name="wheel_gz" params="prefix side tf_prefix">
+    <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
+      <selfCollide>false</selfCollide>
+      <!-- values from
+      https://github.com/unmannedlab/cartographer/blob/main/src/platform_description/urdf/warthog.urdf.xacro-->
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp value="10000000.0" />
+      <kd value="1.0" />
+      <fdir1 value="1 0 0" />
+      <material>Gazebo/DarkGrey</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="track_gz" params="prefix side tf_prefix">
+      <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
+      <selfCollide>false</selfCollide>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <fdir1 value="1 0 0" />
+      <material>Gazebo/DarkGrey</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="diff_unit_gz" params="side tf_prefix">
+    <gazebo reference="${tf_prefix}${side}_diff_unit_taillight_link">
+      <visual>
+        <material>
+          <ambient>0.9 0 0 1</ambient>
+          <diffuse>0.9 0 0 1</diffuse>
+          <specular>0.9 0 0 1</specular>
+          <emissive>0.9 0 0 1</emissive>
+        </material>
+      </visual>
+    </gazebo>
+
+    <gazebo reference="${tf_prefix}${side}_diff_unit_headlight_link">
+      <visual>
+        <material>
+          <ambient>0.9 0.9 0.9 1</ambient>
+          <diffuse>0.9 0.9 0.9 1</diffuse>
+          <specular>0.9 0.9 0.9 1</specular>
+          <emissive>0.9 0.9 0.9 1</emissive>
+        </material>
+      </visual>
+    </gazebo>    
+
+    <gazebo reference="${tf_prefix}${side}_diff_unit_link">
+      <selfCollide>false</selfCollide>
+      <visual>
+        <material>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 0</emissive>
+        </material>
+      </visual>
+    </gazebo>    
+  </xacro:macro>
+
 
   <!-- macro for gazebo plugins specific for the w200-->
   <xacro:macro name="w200_gz"
@@ -35,6 +93,11 @@
       </sensor>
     </gazebo>
 
+    <xacro:wheel_gz prefix="front" side="left" tf_prefix="${tf_prefix}"/>
+    <xacro:wheel_gz prefix="front" side="right" tf_prefix="${tf_prefix}"/>
+    <xacro:wheel_gz prefix="rear" side="left" tf_prefix="${tf_prefix}"/>
+    <xacro:wheel_gz prefix="rear" side="right" tf_prefix="${tf_prefix}"/>
+    
     <gazebo>
       <plugin filename="libignition-gazebo-wheel-slip-system.so"
         name="ignition::gazebo::systems::WheelSlip">
@@ -64,6 +127,10 @@
         </wheel>
       </plugin>
     </gazebo>
+
+    <xacro:diff_unit_gz side="right" tf_prefix="${tf_prefix}"/>
+    <xacro:diff_unit_gz side="left" tf_prefix="${tf_prefix}"/>
+
   </xacro:macro>
 
 </robot>
