@@ -1,9 +1,25 @@
 #!/usr/bin/env python
+RESET_COLOR = '\033[0m'
+BLACK = '\033[30m'
+RED = '\033[31m'
+GREEN = '\033[32m'
+YELLOW = '\033[33m' # orange on some systems
+BLUE = '\033[34m'
+MAGENTA = '\033[35m'
+CYAN = '\033[36m'
+LIGHT_GRAY = '\033[37m'
+DARK_GRAY = '\033[90m'
+BRIGHT_RED = '\033[91m'
+BRIGHT_GREEN = '\033[92m'
+BRIGHT_YELLOW = '\033[93m'
+BRIGHT_BLUE = '\033[94m'
+BRIGHT_MAGENTA = '\033[95m'
+BRIGHT_CYAN = '\033[96m'
+WHITE = '\033[97m'
 
 def pig_mockhardware(separate_controls_pcs_bool):
     if separate_controls_pcs_bool:
-        color = '\033[94m'
-        print(color + 
+        print(BLUE + 
         """
           .-.___.-.     _.---------._
          /         \ *`               `\    6.
@@ -13,11 +29,11 @@ def pig_mockhardware(separate_controls_pcs_bool):
                  |       control PCs     |
                  *             ___       *
                   \    / \    /   \ \   /
-                   *__*   *__*     *_*_*""")
+                   *__*   *__*     *_*_*""" + RESET_COLOR)
+
     else:
-        color = '\033[94m'
-        print(color + 
-        """ 
+        print(CYAN + 
+        """
           .-.___.-.     _.---------._
          /         \ *`               `\    6.
         |  0      0 |      Wilbur       \    9
@@ -26,12 +42,11 @@ def pig_mockhardware(separate_controls_pcs_bool):
                 |       control PC      |
                 *             ___       *
                  \    / \    /   \ \   /
-                  *__*   *__*     *_*_*""")
+                  *__*   *__*     *_*_*""" + RESET_COLOR)
 
 def pig_hardware(separate_controls_pcs_bool):
     if separate_controls_pcs_bool:
-        color = '\033[94m'
-        print(color + 
+        print(BRIGHT_MAGENTA + 
         """
           .-.___.-.     _.---------._
          /         \ *`               `\    6.
@@ -41,10 +56,9 @@ def pig_hardware(separate_controls_pcs_bool):
                  |       control PCs     |
                  *             ___       *
                   \    / \    /   \ \   /
-                   *__*   *__*     *_*_*""")
+                   *__*   *__*     *_*_*""" + RESET_COLOR)
     else:
-        color = '\033[94m'
-        print(color + 
+        print(BRIGHT_GREEN + 
         """ 
           .-.___.-.     _.---------._
          /         \ *`               `\    6.
@@ -54,11 +68,10 @@ def pig_hardware(separate_controls_pcs_bool):
                 |       control PC      |
                 *             ___       *
                  \    / \    /   \ \   /
-                  *__*   *__*     *_*_*""")
-        
+                  *__*   *__*     *_*_*""" + RESET_COLOR)
+
 def pig_gazebo():
-        color = '\033[94m'
-        print(color + 
+        print(YELLOW + 
         """
           .-.___.-.     _.---------._
          /         \ *`               `\    6.
@@ -68,4 +81,4 @@ def pig_gazebo():
                  |                       |
                  *             ___       *
                   \    / \    /   \ \   /
-                   *__*   *__*     *_*_*""")
+                   *__*   *__*     *_*_*""" + RESET_COLOR)
