@@ -17,7 +17,7 @@
         <xacro:unless value="${sim_ignition or use_fake_hardware}">
           <!-- HARDWARE -->
           <plugin>clearpath_hardware_interfaces/W200Hardware</plugin>
-          <!-- should compute diameter from wheel radius property-->
+          <!-- todo - should compute diameter from wheel radius property-->
           <param name="wheel_diameter">0.6</param>
         </xacro:unless>
       </hardware>
