@@ -49,6 +49,7 @@
       name="dextivr_hande"
       tf_prefix="${tf_prefix}"
       parent="${tf_prefix}end_effector_link"
+      sim_ignition="${sim_ignition}"
       use_fake_hardware="${use_fake_hardware}"
       marker_opacity="0.5"
       finger_xacro="fngr_v6">
