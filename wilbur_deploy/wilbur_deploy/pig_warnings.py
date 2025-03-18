@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 RESET_COLOR = '\033[0m'
 BLACK = '\033[30m'
 RED = '\033[31m'
