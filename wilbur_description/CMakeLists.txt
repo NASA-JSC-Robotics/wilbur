@@ -2,11 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 project(wilbur_description)
 
 find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
-find_package(rclpy REQUIRED)
 
 install(
-  DIRECTORY launch meshes rviz urdf config
+  DIRECTORY launch meshes rviz urdf
   DESTINATION share/${PROJECT_NAME}
 )
 

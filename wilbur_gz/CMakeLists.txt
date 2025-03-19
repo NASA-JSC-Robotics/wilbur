@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
-project(wilbur_deploy)
+project(wilbur_gz)
 
 find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
-
-ament_python_install_package(${PROJECT_NAME})
+#find_package(ament_cmake_python REQUIRED)
+#find_package(rclpy REQUIRED)
 
 install(
-  DIRECTORY config launch rviz
+  DIRECTORY config launch urdf worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -1,4 +1,3 @@
-import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
@@ -20,7 +19,7 @@ def generate_launch_description():
     )
     arguments.append(
         DeclareLaunchArgument(
-            "is_sim",
+            "sim_ignition",
             default_value="false",
             description="Start robot with simulated hardware mirroring command to its states.",
         )
@@ -35,9 +34,9 @@ def generate_launch_description():
 
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
-    is_sim = LaunchConfiguration("is_sim")
+    sim_ignition = LaunchConfiguration("sim_ignition")
     headless_mode = LaunchConfiguration("headless_mode")
-    
+
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -47,8 +46,8 @@ def generate_launch_description():
             "tf_prefix:=",
             tf_prefix,
             " ",
-            "is_sim:=",
-            is_sim,
+            "sim_ignition:=",
+            sim_ignition,
             " ",
             "headless_mode:=",
             headless_mode,
@@ -63,7 +62,6 @@ def generate_launch_description():
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui",
     )
-    
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
