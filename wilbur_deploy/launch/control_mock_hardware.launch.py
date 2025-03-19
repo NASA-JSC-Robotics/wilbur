@@ -15,23 +15,6 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
-            "separate_controls_pcs",
-            default_value="false",
-            description="Whether you want to run the controller managers on two separate pcs.",
-            choices=["true", "false"],
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "tf_prefix",
-            default_value="",
-            description="tf_prefix of the joint names, useful for \
-        multi-robot setup. If changed, also joint names in the controllers' configuration \
-        have to be updated.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
             "ns",
             default_value="",
             description="Namespace for the hardware robot",
@@ -39,8 +22,6 @@ def generate_launch_description():
     )
 
     # Initialize Arguments
-    separate_controls_pcs = LaunchConfiguration("separate_controls_pcs")
-    tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
     control_launch = IncludeLaunchDescription(
@@ -49,8 +30,6 @@ def generate_launch_description():
         ),
         launch_arguments={
             "platform": "mock_hardware",
-            "separate_controls_pcs": separate_controls_pcs,
-            "tf_prefix": tf_prefix,
             "ns": ns,
         }.items(),
     )

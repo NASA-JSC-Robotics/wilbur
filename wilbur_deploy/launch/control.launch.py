@@ -20,6 +20,7 @@ def launch_setup(context, *args, **kwargs):
     # Initialize Arguments
     platform = LaunchConfiguration("platform")
     separate_controls_pcs = LaunchConfiguration("separate_controls_pcs")
+    launch_ur = LaunchConfiguration("launch_ur")
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
@@ -31,6 +32,8 @@ def launch_setup(context, *args, **kwargs):
     # convert separate controls pc option to bool to figure out what components to launch
     separate_controls_pcs_string = separate_controls_pcs.perform(context)
     separate_controls_pcs_bool = separate_controls_pcs_string == "true"
+    launch_ur_string = launch_ur.perform(context)
+    launch_ur_bool = launch_ur_string == "true"
 
     # print warning about system type
     if sim_ignition == "true":
@@ -81,47 +84,49 @@ def launch_setup(context, *args, **kwargs):
         if sim_ignition != "true":
             launch_file_names.append("controller_manager.launch.py")
         launch_file_names.append("spawn_controllers.launch.py")
-    # if we are running on different controls pcs, we just launch the w200 components,
-    # and the other pc will launch the ur and gripper controller manager and spawners
+    # if we are running on different controls pcs, we just launch the w200 components by default,
+    # and can conditionally launch namespaced ur components separately
     else:
-        # controllers for warthog
-        launch_file_names.append("controller_manager/controller_manager_w200.launch.py")
-        launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
+        if not launch_ur_bool:
+            # controllers for warthog
+            launch_file_names.append("controller_manager/controller_manager_w200.launch.py")
+            launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
 
-        ur_cm_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(
-                    get_package_share_directory("wilbur_deploy"),
-                    "launch",
-                    "controller_manager",
-                    "controller_manager_ur_gripper.launch.py",
-                )
-            ),
-            launch_arguments={
-                "ns": "/ur",
-                "controller_prefix": "/ur/",
-            }.items(),
-        )
+        else:
+            ur_cm_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("wilbur_deploy"),
+                        "launch",
+                        "controller_manager",
+                        "controller_manager_ur_gripper.launch.py",
+                    )
+                ),
+                launch_arguments={
+                    "ns": "/ur",
+                    "controller_prefix": "/ur/",
+                }.items(),
+            )
 
-        ur_spawn_controllers = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(
-                    get_package_share_directory("wilbur_deploy"),
-                    "launch",
-                    "spawn_controllers",
-                    "spawn_controllers_ur.launch.py",
-                )
-            ),
-            launch_arguments={
-                "sim_ignition": sim_ignition,
-                "use_fake_hardware": use_fake_hardware,
-                "tf_prefix": tf_prefix,
-                "ns": "/ur",
-            }.items(),
-        )
+            ur_spawn_controllers = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("wilbur_deploy"),
+                        "launch",
+                        "spawn_controllers",
+                        "spawn_controllers_ur.launch.py",
+                    )
+                ),
+                launch_arguments={
+                    "sim_ignition": sim_ignition,
+                    "use_fake_hardware": use_fake_hardware,
+                    "tf_prefix": tf_prefix,
+                    "ns": "/ur",
+                }.items(),
+            )
 
-        ur_specific_launch_files.append(ur_cm_launch)
-        ur_specific_launch_files.append(ur_spawn_controllers)
+            ur_specific_launch_files.append(ur_cm_launch)
+            ur_specific_launch_files.append(ur_spawn_controllers)
 
     # generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
@@ -150,6 +155,14 @@ def generate_launch_description():
             "separate_controls_pcs",
             default_value="false",
             description="Whether you want to run the controller managers on two separate pcs.",
+            choices=["true", "false"],
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "launch_ur",
+            default_value="false",
+            description="If running with separate_controls_pcs, set to true to launch the UR in a standalone config.",
             choices=["true", "false"],
         )
     )
