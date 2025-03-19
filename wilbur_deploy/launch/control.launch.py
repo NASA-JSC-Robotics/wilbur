@@ -8,7 +8,12 @@ from launch.substitutions import (
     LaunchConfiguration,
 )
 from ament_index_python.packages import get_package_share_directory
-from wilbur_deploy.pig_warnings import *
+from wilbur_deploy.pig_warnings import (
+    pig_hardware,
+    pig_mockhardware,
+    pig_gazebo,
+)
+
 
 def launch_setup(context, *args, **kwargs):
 
@@ -31,10 +36,9 @@ def launch_setup(context, *args, **kwargs):
     if sim_ignition == "true":
         pig_gazebo()
     elif use_fake_hardware == "true":
-        pig_mockhardware(separate_controls_pcs_bool)        
+        pig_mockhardware(separate_controls_pcs_bool)
     else:
         pig_hardware(separate_controls_pcs)
-
 
     # common launch args shared across different nodes
     common_launch_args = {
@@ -87,7 +91,10 @@ def launch_setup(context, *args, **kwargs):
         ur_cm_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(
-                    get_package_share_directory("wilbur_deploy"), "launch", "controller_manager", "controller_manager_ur_gripper.launch.py"
+                    get_package_share_directory("wilbur_deploy"),
+                    "launch",
+                    "controller_manager",
+                    "controller_manager_ur_gripper.launch.py",
                 )
             ),
             launch_arguments={
@@ -98,7 +105,12 @@ def launch_setup(context, *args, **kwargs):
 
         ur_spawn_controllers = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "spawn_controllers", "spawn_controllers_ur.launch.py")
+                os.path.join(
+                    get_package_share_directory("wilbur_deploy"),
+                    "launch",
+                    "spawn_controllers",
+                    "spawn_controllers_ur.launch.py",
+                )
             ),
             launch_arguments={
                 "sim_ignition": sim_ignition,

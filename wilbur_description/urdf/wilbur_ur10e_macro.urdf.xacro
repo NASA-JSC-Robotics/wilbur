@@ -43,7 +43,7 @@
     </xacro:ur_robot>
 
     <!-- todo - add gripper-->
-    <!-- todo add grasp link in the moveit pro orientation 
+    <!-- todo add grasp link in the moveit pro orientation
     https://docs.picknik.ai/how_to/configuration_tutorials/configure_custom_robot/#configuring-grasp-preview -->
   </xacro:macro>
 </robot>

@@ -46,7 +46,7 @@
           <emissive>0.9 0.9 0.9 1</emissive>
         </material>
       </visual>
-    </gazebo>    
+    </gazebo>
 
     <gazebo reference="${tf_prefix}${side}_diff_unit_link">
       <selfCollide>false</selfCollide>
@@ -56,7 +56,7 @@
           <emissive>0 0 0 0</emissive>
         </material>
       </visual>
-    </gazebo>    
+    </gazebo>
   </xacro:macro>
 
 
@@ -97,7 +97,7 @@
     <xacro:wheel_gz prefix="front" side="right" tf_prefix="${tf_prefix}"/>
     <xacro:wheel_gz prefix="rear" side="left" tf_prefix="${tf_prefix}"/>
     <xacro:wheel_gz prefix="rear" side="right" tf_prefix="${tf_prefix}"/>
-    
+
     <gazebo>
       <plugin filename="libignition-gazebo-wheel-slip-system.so"
         name="ignition::gazebo::systems::WheelSlip">
