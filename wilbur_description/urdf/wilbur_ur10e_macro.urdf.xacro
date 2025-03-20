@@ -45,6 +45,8 @@
 
     <!-- Hand-e -->
     <!-- TODO: Actually attach it using mounting hardware -->
+    <!--       There is not place or actual end effector stack, this is just here as a -->
+    <!--       placeholder for the control stack. -->
     <xacro:dextivr_hande
       name="dextivr_hande"
       tf_prefix="${tf_prefix}"
