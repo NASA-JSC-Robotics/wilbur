@@ -46,5 +46,7 @@ def generate_launch_description():
 
     nodes.append(MakeControllerNode("joint_trajectory_controller"))
     nodes.append(MakeControllerNode("ur_joint_state_broadcaster"))
+    nodes.append(MakeControllerNode("robotiq_gripper_hande_controller"))
+    nodes.append(MakeControllerNode("hande_joint_state_broadcaster"))
 
     return LaunchDescription(declared_arguments + nodes)
