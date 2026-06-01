@@ -31,11 +31,19 @@ def generate_launch_description():
             description="Enable headless mode for robot control",
         )
     )
+    arguments.append(
+        DeclareLaunchArgument(
+            "include_ur",
+            default_value="true",
+            description="Flag to include UR on Warthog base.",
+        )
+    )
 
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
     sim_ignition = LaunchConfiguration("sim_ignition")
     headless_mode = LaunchConfiguration("headless_mode")
+    include_ur = LaunchConfiguration("include_ur")
 
     robot_description_content = Command(
         [
@@ -51,6 +59,9 @@ def generate_launch_description():
             " ",
             "headless_mode:=",
             headless_mode,
+            " ",
+            "include_ur:=",
+            include_ur,
             " ",
         ]
     )

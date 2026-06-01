@@ -6,6 +6,7 @@
     <xacro:arg name="sim_ignition" default="false" />
     <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
     <xacro:arg name="parent" default="world" />
+    <xacro:arg name="include_ur" default="true"/>
     <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
     <xacro:arg name="wilbur_ur10e_initial_positions" default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
@@ -59,19 +60,21 @@
     </joint>
 
         <!-- Manipulators -->
-    <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
-    <!-- todo expose out args for hardware-->
-    <xacro:wilbur_ur10e
-        name="arm_0_"
-        tf_prefix="$(arg tf_prefix)arm_0_"
-        parent="$(arg tf_prefix)arm_plate_mount"
-        use_fake_hardware="$(arg use_fake_hardware)"
-        sim_ignition="$(arg sim_ignition)"
-        initial_positions="${xacro.load_yaml(initial_positions_file)}"
-        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
-      >
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-    </xacro:wilbur_ur10e>
+    <xacro:if value="$(arg include_ur)">
+      <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
+      <!-- todo expose out args for hardware-->
+      <xacro:wilbur_ur10e
+          name="arm_0_"
+          tf_prefix="$(arg tf_prefix)arm_0_"
+          parent="$(arg tf_prefix)arm_plate_mount"
+          use_fake_hardware="$(arg use_fake_hardware)"
+          sim_ignition="$(arg sim_ignition)"
+          initial_positions="${xacro.load_yaml(initial_positions_file)}"
+          generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
+        >
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      </xacro:wilbur_ur10e>
+    </xacro:if>
 
     <xacro:w200
         wheel="default"
