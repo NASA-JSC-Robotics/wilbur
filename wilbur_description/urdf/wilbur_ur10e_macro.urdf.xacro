@@ -26,6 +26,8 @@
     </xacro:frame>
 
     <!-- Manipulators -->
+    <!-- TODO ur_robot macro changed and we lost a bunch of important args (use_fake_hardware, initial_positions, generate_ros2_control_tag, etc.)
+         this seems super important and we need to figure out what the implications are and/or how to get those back -->
     <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
     <!-- todo expose out args for hardware-->
     <xacro:ur_robot
