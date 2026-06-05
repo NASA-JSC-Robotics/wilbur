@@ -13,13 +13,13 @@
 
     <!-- Includes -->
     <!-- todo - reduce the dependency on clear_path_description-->
-    <xacro:include filename="$(find clearpath_platform_description)/urdf/common.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/common.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
     <xacro:include
         filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
-    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/frame.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/links/frame.urdf.xacro" />
 
-    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/mesh.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/links/mesh.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/gen_mesh.xacro"/>
 
 

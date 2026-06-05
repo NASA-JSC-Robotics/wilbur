@@ -16,7 +16,7 @@
 
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
 
-    <xacro:include filename="$(find clearpath_platform_description)/urdf/links/frame.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/links/frame.urdf.xacro" />
 
     <xacro:include filename="$(find dextivr_hande_description)/urdf/dextivr_hande.xacro" />
 
