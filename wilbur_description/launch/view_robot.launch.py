@@ -1,6 +1,11 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -24,13 +29,7 @@ def generate_launch_description():
             description="Start robot with simulated hardware mirroring command to its states.",
         )
     )
-    arguments.append(
-        DeclareLaunchArgument(
-            "headless_mode",
-            default_value="false",
-            description="Enable headless mode for robot control",
-        )
-    )
+
     arguments.append(
         DeclareLaunchArgument(
             "include_ur",
@@ -42,7 +41,6 @@ def generate_launch_description():
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
     sim_ignition = LaunchConfiguration("sim_ignition")
-    headless_mode = LaunchConfiguration("headless_mode")
     include_ur = LaunchConfiguration("include_ur")
 
     robot_description_content = Command(
@@ -56,9 +54,6 @@ def generate_launch_description():
             " ",
             "sim_ignition:=",
             sim_ignition,
-            " ",
-            "headless_mode:=",
-            headless_mode,
             " ",
             "include_ur:=",
             include_ur,
