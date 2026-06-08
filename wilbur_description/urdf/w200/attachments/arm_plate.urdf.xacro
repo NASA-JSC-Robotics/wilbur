@@ -11,14 +11,14 @@
       <visual>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/w200/arm-mount-plate.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/arm-mount-plate.stl" />
         </geometry>
         <material name="clearpath_light_grey"/>
       </visual>
       <collision>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/w200/arm-mount-plate.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/arm-mount-plate.stl" />
         </geometry>
       </collision>
       <inertial>

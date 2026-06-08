@@ -9,7 +9,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://wilbur_description/meshes/tracks.dae" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/tracks.dae" />
         </geometry>
         <material name="clearpath_dark_grey" />
       </visual>

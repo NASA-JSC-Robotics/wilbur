@@ -12,11 +12,9 @@
 
 
     <!-- Includes -->
-    <!-- todo - reduce the dependency on clear_path_description-->
     <xacro:include filename="$(find wilbur_description)/urdf/common.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
-    <xacro:include
-        filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/links/frame.urdf.xacro" />
 
     <xacro:include filename="$(find wilbur_description)/urdf/links/mesh.urdf.xacro" />
@@ -59,7 +57,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-        <!-- Manipulators -->
+    <!-- Manipulators -->
     <xacro:if value="$(arg include_ur)">
       <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
       <!-- todo expose out args for hardware-->
