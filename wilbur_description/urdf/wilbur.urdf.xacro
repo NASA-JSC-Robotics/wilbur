@@ -3,6 +3,7 @@
     <xacro:arg name="tf_prefix" default="" />
 
     <xacro:arg name="ns" default="" />
+    <xacro:arg name="abs_mesh_paths" default="false" />
     <xacro:arg name="sim_ignition" default="false" />
     <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
     <xacro:arg name="parent" default="world" />
@@ -23,8 +24,8 @@
 
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur_ur10e_macro.urdf.xacro" />
 
-    <!-- if ignition or gazebo - need to use absolute paths instead of relative-->
-    <xacro:property name="force_abs_paths" value="$(arg sim_ignition)" scope="global"/>
+    <!-- Force absolute mesh paths, necessary for Gazebo. -->
+    <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global"/>
 
     <!-- Attachments -->
     <xacro:bulkhead

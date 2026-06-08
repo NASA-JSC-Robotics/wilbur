@@ -24,7 +24,7 @@ def generate_launch_description():
     )
     arguments.append(
         DeclareLaunchArgument(
-            "sim_ignition",
+            "abs_mesh_paths",
             default_value="false",
             description="Start robot with simulated hardware mirroring command to its states.",
         )
@@ -40,20 +40,22 @@ def generate_launch_description():
 
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
-    sim_ignition = LaunchConfiguration("sim_ignition")
+    abs_mesh_paths = LaunchConfiguration("abs_mesh_paths")
     include_ur = LaunchConfiguration("include_ur")
 
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution(
+                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
+            ),
             " ",
             "tf_prefix:=",
             tf_prefix,
             " ",
-            "sim_ignition:=",
-            sim_ignition,
+            "abs_mesh_paths:=",
+            abs_mesh_paths,
             " ",
             "include_ur:=",
             include_ur,
@@ -62,7 +64,9 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"])
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"]
+    )
 
     joint_state_broadcaster = Node(
         package="joint_state_publisher_gui",
