@@ -28,24 +28,30 @@ def launch_setup(context, *args, **kwargs):
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
-    # convert platform type to string so that we can evaluate different options
-    platform_string = platform.perform(context)
-    sim_ignition = "true" if platform_string == "sim_ignition" else "false"
-    use_fake_hardware = "true" if platform_string == "mock_hardware" else "false"
-
+    sim_ignition = "false"
+    mock_hardware = "false"
+    use_fake_hardware = "false"
     # convert separate controls pc option to bool to figure out what components to launch
-    separate_controls_pcs_string = separate_controls_pcs.perform(context)
-    separate_controls_pcs_bool = separate_controls_pcs_string == "true"
-    launch_ur_string = launch_ur.perform(context)
-    launch_ur_bool = launch_ur_string == "true"
+    # separate_controls_pcs_bool = separate_controls_pcs_string == "true"
+    # include_ur_string = include_ur.perform(context)
+    # include_ur_bool = include_ur_string == "true"
 
-    # print warning about system type
-    if sim_ignition == "true":
-        pig_gazebo()
-    elif use_fake_hardware == "true":
-        pig_mockhardware(separate_controls_pcs_bool)
-    else:
-        pig_hardware(separate_controls_pcs)
+    # Decide which platfrom we are using
+    match platform:
+        case "sim_ignition":
+            print("Ignition sim")
+            sim_ignition = "true"
+            pig_gazebo()
+        case "mock_hardware":
+            print("Mock hardware")
+            mock_hardware = "true"
+            use_fake_hardware = "true"
+            pig_mockhardware(separate_controls_pcs)
+        case "hardware":
+            print("Launching hardware")
+            pig_hardware(separate_controls_pcs)
+        case _:
+            raise AttributeError
 
     # common launch args shared across different nodes
     common_launch_args = {
