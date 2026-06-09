@@ -14,6 +14,8 @@ from wilbur_deploy.pig_warnings import (
     pig_gazebo,
 )
 
+from wilbur_deploy.launch_utils import AddLaunchDescriptions
+
 
 def launch_setup(context, *args, **kwargs):
 
@@ -50,21 +52,6 @@ def launch_setup(context, *args, **kwargs):
         "tf_prefix": tf_prefix,
         "ns": ns,
     }.items()
-
-    # helper function to organize launch description objects with the same launch args and package names
-    def AddLaunchDescriptions(package_name, launch_file_names, launch_args):
-        launch_files_list = []
-        for launch_file_name in launch_file_names:
-            launch_files_list.append(
-                IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(
-                        os.path.join(get_package_share_directory(package_name), "launch", launch_file_name)
-                    ),
-                    launch_arguments=launch_args,
-                )
-            )
-
-        return launch_files_list
 
     # list to keep track of launch file names to start
     launch_file_names = []

@@ -13,6 +13,8 @@ from launch_ros.parameter_descriptions import ParameterFile, ParameterValue
 from ament_index_python.packages import get_package_share_directory
 from launch_ros.substitutions import FindPackageShare
 
+from wilbur_deploy.launch_utils import GetControllersFile
+
 
 def generate_launch_description():
 
@@ -88,22 +90,12 @@ def generate_launch_description():
             " ",
         ]
     )
-    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
-
-    # helper function to get controllers files that we might need
-    def GetControllersFile(file_name):
-        return PathJoinSubstitution(
-            [
-                get_package_share_directory("wilbur_deploy"),
-                "config",
-                file_name,
-            ]
-        )
+    # Controller files
 
     # contains update rate
-    controllers_common = GetControllersFile("controllers_common.yaml")
+    controllers_common = GetControllersFile("wilbur_deploy", "controllers_common.yaml")
     # controllers for the warthog
-    controllers_w200 = GetControllersFile("controllers_w200.yaml")
+    controllers_w200 = GetControllersFile("wilbur_deploy", "controllers_w200.yaml")
 
     # Declare nodes
     nodes = []
