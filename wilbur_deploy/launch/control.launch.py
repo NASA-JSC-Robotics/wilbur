@@ -20,9 +20,11 @@ from wilbur_deploy.launch_utils import AddLaunchDescriptions
 def launch_setup(context, *args, **kwargs):
 
     # Initialize Arguments
-    platform = LaunchConfiguration("platform")
-    separate_controls_pcs = LaunchConfiguration("separate_controls_pcs")
-    launch_ur = LaunchConfiguration("launch_ur")
+    platform = LaunchConfiguration("platform").perform(context)
+    separate_controls_pcs = (
+        LaunchConfiguration("separate_controls_pcs").perform(context).lower() == "true"
+    )
+    include_ur = LaunchConfiguration("include_ur").perform(context)
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
 
@@ -151,8 +153,8 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "launch_ur",
-            default_value="false",
+            "include_ur",
+            default_value="true",
             description="If running with separate_controls_pcs, set to true to launch the UR in a standalone config.",
             choices=["true", "false"],
         )
@@ -174,4 +176,6 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )
