@@ -2,7 +2,11 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    OpaqueFunction,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     LaunchConfiguration,
@@ -31,10 +35,6 @@ def launch_setup(context, *args, **kwargs):
     sim_ignition = "false"
     mock_hardware = "false"
     use_fake_hardware = "false"
-    # convert separate controls pc option to bool to figure out what components to launch
-    # separate_controls_pcs_bool = separate_controls_pcs_string == "true"
-    # include_ur_string = include_ur.perform(context)
-    # include_ur_bool = include_ur_string == "true"
 
     # Decide which platfrom we are using
     match platform:
@@ -57,6 +57,7 @@ def launch_setup(context, *args, **kwargs):
     common_launch_args = {
         "sim_ignition": sim_ignition,
         "use_fake_hardware": use_fake_hardware,
+        "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,
     }.items()
