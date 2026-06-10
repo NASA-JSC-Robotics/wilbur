@@ -96,7 +96,6 @@ def launch_setup(context, *args, **kwargs):
                 ),
                 launch_arguments={
                     "platform": "sim_ignition",
-                    "separate_controls_pcs": "false",
                     "tf_prefix": tf_prefix,
                     "ns": namespace,
                     "include_ur": include_ur,
