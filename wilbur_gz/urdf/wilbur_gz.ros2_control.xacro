@@ -6,8 +6,8 @@
   ">
     <gazebo>
       <!-- gazebo plugin to enable ros2 control for the system -->
-      <plugin filename="libign_ros2_control-system.so"
-        name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <plugin filename="libgz_ros2_control-system.so"
+        name="gz_ros2_control::GazeboSimROS2ControlPlugin">
         <parameters>${gazebo_controllers_config_file}</parameters>
         <controller_manager_name>controller_manager</controller_manager_name>
         <ros>
