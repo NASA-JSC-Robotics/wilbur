@@ -70,13 +70,10 @@ def generate_launch_description():
             " ",
             "include_ur:=",
             include_ur,
+            " ",
         ]
     )
-    robot_description = {
-        "robot_description": ParameterValue(
-            value=robot_description_content, value_type=str
-        )
-    }
+    robot_description = {"robot_description": robot_description_content}
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
