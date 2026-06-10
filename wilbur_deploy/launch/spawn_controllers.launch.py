@@ -6,10 +6,13 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     LaunchConfiguration,
+    PathJoinSubstitution,
 )
 from ament_index_python.packages import get_package_share_directory
+from launch.conditions import IfCondition, UnlessCondition
 
 from wilbur_deploy.launch_utils import AddLaunchDescriptions
+from wilbur_deploy.launch_utils import SpawnController
 
 
 def generate_launch_description():
@@ -32,24 +35,41 @@ def generate_launch_description():
             description="Namespace for the hardware robot",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "include_ur",
+            default_value="true",
+            description="Start robot with simulated hardware mirroring command to its states.",
+        )
+    )
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
+    include_ur = LaunchConfiguration("include_ur")
 
-    # common launch args passed to each of the different launch files
-    common_launch_args = {
-        "tf_prefix": tf_prefix,
-        "ns": ns,
-    }.items()
+    controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
-    launch_file_names = []
-
-    # add controller spawner launch files for each individual subsystem
-    launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
-    launch_file_names.append("spawn_controllers/spawn_controllers_ur_gripper.launch.py")
-
-    launch_files = AddLaunchDescriptions(
-        package_name="wilbur_deploy", launch_file_names=launch_file_names, launch_args=common_launch_args
+    controllers_to_spawn = []
+    controllers_to_spawn.append(
+        SpawnController(controller_manager_name, "velocity_controller")
+    )
+    controllers_to_spawn.append(
+        SpawnController(controller_manager_name, "joint_state_broadcaster")
     )
 
-    return LaunchDescription(declared_arguments + launch_files)
+    controllers_to_spawn.append(
+        SpawnController(
+            controller_manager_name,
+            "joint_trajectory_controller",
+            condition=IfCondition(include_ur),
+        )
+    )
+    controllers_to_spawn.append(
+        SpawnController(
+            controller_manager_name,
+            "robotiq_gripper_hande_controller",
+            condition=IfCondition(include_ur),
+        )
+    )
+
+    return LaunchDescription(declared_arguments + controllers_to_spawn)
