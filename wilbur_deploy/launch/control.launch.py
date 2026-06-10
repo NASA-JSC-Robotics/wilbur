@@ -56,16 +56,17 @@ def launch_setup(context, *args, **kwargs):
     # common launch args shared across different nodes
     common_launch_args = {
         "sim_ignition": sim_ignition,
+        "abs_mesh_paths": sim_ignition,
         "use_fake_hardware": use_fake_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,
     }.items()
 
-    # list to keep track of launch file names to start
+    # List to keep track of launch file names to start
     launch_file_names = []
 
-    # extra launch files that will be run if we are separating out controls pcs
+    # Extra launch files that will be run if we are separating out controls pcs
     ur_specific_launch_files = []
 
     # This is the "definitive" robot state publisher.
@@ -99,7 +100,6 @@ def launch_setup(context, *args, **kwargs):
     #                 "controller_prefix": "/ur/",
     #             }.items(),
     #         )
-
     #         ur_spawn_controllers = IncludeLaunchDescription(
     #             PythonLaunchDescriptionSource(
     #                 os.path.join(
@@ -116,7 +116,6 @@ def launch_setup(context, *args, **kwargs):
     #                 "ns": "/ur",
     #             }.items(),
     #         )
-
     #         ur_specific_launch_files.append(ur_cm_launch)
     #         ur_specific_launch_files.append(ur_spawn_controllers)
     #     else:
@@ -128,7 +127,7 @@ def launch_setup(context, *args, **kwargs):
     #             "spawn_controllers/spawn_controllers_w200.launch.py"
     #         )
 
-    # generate the launch files based on launch_file_names which has been configured
+    # Generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
         package_name="wilbur_deploy",
         launch_file_names=launch_file_names,
