@@ -20,10 +20,10 @@ To launch the gazebo simulation:
 
 ```bash
 # Launch the Warthog only
-ros2 launch wilbur_gz sim_gz.launch.py
+ros2 launch wilbur_gz sim_gz.launch.py include_ur:=false
 
 # Launch the Warthog and attached UR10e + Gripper
-ros2 launch wilbur_gz sim_gz.launch.py include_ur:=true
+ros2 launch wilbur_gz sim_gz.launch.py
 ```
 
 ## Citation
