@@ -15,7 +15,6 @@
   <exec_depend>clearpath_simulator</exec_depend>
   <exec_depend>clearpath_desktop</exec_depend>
   <exec_depend>controller_manager</exec_depend>
-  <exec_depend>drt_ros2_ur_tools</exec_depend>
   <exec_depend>joint_trajectory_controller</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
