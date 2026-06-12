@@ -1,97 +1,33 @@
 <?xml version="1.0"?>
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:arg name="tf_prefix" default="" />
+  <xacro:arg name="tf_prefix" default="" />
 
-    <xacro:arg name="ns" default="" />
-    <xacro:arg name="abs_mesh_paths" default="false" />
-    <xacro:arg name="sim_ignition" default="false" />
-    <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
-    <xacro:arg name="parent" default="world" />
-    <xacro:arg name="include_ur" default="true"/>
-    <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
-    <xacro:arg name="wilbur_ur10e_initial_positions" default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
-
-
-    <!-- Includes -->
-    <xacro:include filename="$(find wilbur_description)/urdf/common.urdf.xacro" />
-    <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
-    <xacro:include filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
-    <xacro:include filename="$(find wilbur_description)/urdf/links/frame.urdf.xacro" />
-
-    <xacro:include filename="$(find wilbur_description)/urdf/links/mesh.urdf.xacro" />
-    <xacro:include filename="$(find wilbur_description)/urdf/gen_mesh.xacro"/>
+  <xacro:arg name="ns" default="" />
+  <xacro:arg name="abs_mesh_paths" default="false" />
+  <xacro:arg name="sim_ignition" default="false" />
+  <xacro:arg name="use_mock_hardware" default="true" />
+  <xacro:arg name="parent" default="world" />
+  <xacro:arg name="include_ur" default="true" />
+  <xacro:arg name="gripper_com_port" default="/dev/ttyUSB0" />
+  <xacro:arg name="wilbur_ur10e_initial_positions"
+    default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
 
-    <xacro:include filename="$(find wilbur_description)/urdf/wilbur_ur10e_macro.urdf.xacro" />
+  <!-- Force absolute mesh paths, necessary for Gazebo. -->
+  <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
 
-    <!-- Force absolute mesh paths, necessary for Gazebo. -->
-    <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global"/>
+  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
 
-    <!-- Attachments -->
-    <xacro:bulkhead
-        name="bulkhead"
-        model="$(arg tf_prefix)arm_plate"
-        parent_link="$(arg tf_prefix)default_mount"
-        tf_prefix="$(arg tf_prefix)">
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-    </xacro:bulkhead>
+  <xacro:wilbur
+    tf_prefix="$(arg tf_prefix)"
+    ns="$(arg ns)"
+    parent="$(arg parent)"
+    sim_ignition="$(arg sim_ignition)"
+    use_mock_hardware="$(arg use_mock_hardware)"
+    include_ur="$(arg include_ur)"
+    gripper_com_port="$(arg gripper_com_port)"
+    wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+  />
 
-    <!-- Links -->
-    <link name="$(arg tf_prefix)control_frame_link">
-      <visual>
-        <geometry>
-          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/control_frame.stl"/>
-        </geometry>
-        <material name="clearpath_dark_grey"/>
-      </visual>
-      <collision>
-        <geometry>
-          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/control_frame.stl"/>
-        </geometry>
-        <material name="clearpath_dark_grey"/>
-      </collision>
-    </link>
-
-    <joint name="$(arg tf_prefix)control_frame_joint" type="fixed">
-      <parent link="$(arg tf_prefix)default_mount" />
-      <child link="$(arg tf_prefix)control_frame_link" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint>
-
-    <!-- Manipulators -->
-    <xacro:if value="$(arg include_ur)">
-      <xacro:property name="initial_positions_file"  value="$(arg wilbur_ur10e_initial_positions)"  />
-      <!-- todo expose out args for hardware-->
-      <xacro:wilbur_ur10e
-          name="arm_0_"
-          tf_prefix="$(arg tf_prefix)arm_0_"
-          parent="$(arg tf_prefix)arm_plate_mount"
-          use_fake_hardware="$(arg use_fake_hardware)"
-          sim_ignition="$(arg sim_ignition)"
-          initial_positions="${xacro.load_yaml(initial_positions_file)}"
-          generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
-        >
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-      </xacro:wilbur_ur10e>
-    </xacro:if>
-
-    <xacro:w200
-        wheel="default"
-        tf_prefix="$(arg tf_prefix)"
-        sim_ignition="$(arg sim_ignition)"
-        use_fake_hardware="$(arg use_fake_hardware)"
-        ns="$(arg ns)"
-        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
-    />
-
-    <xacro:if value="$(arg sim_ignition)">
-      <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
-      <xacro:wilbur_gz_ros2_control
-        gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
-        ns="$(arg ns)"
-      />
-      <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
-      <xacro:wilbur_gz/>
-    </xacro:if>
 
 </robot>
