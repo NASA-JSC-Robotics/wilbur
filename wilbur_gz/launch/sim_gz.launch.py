@@ -95,10 +95,13 @@ def launch_setup(context, *args, **kwargs):
                     os.path.join(pkg_deploy, "launch", "control.launch.py")
                 ),
                 launch_arguments={
+                    "robot_description_package": "wilbur_gz",
+                    "robot_description_file": "wilbur_gz.urdf.xacro",
                     "platform": "sim_ignition",
                     "tf_prefix": tf_prefix,
                     "ns": namespace,
                     "include_ur": include_ur,
+                    "extra_xacro_args": "abs_mesh_paths:=true"
                 }.items(),
             ),
         ]

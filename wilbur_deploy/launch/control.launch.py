@@ -6,24 +6,32 @@ from launch.actions import (
     OpaqueFunction,
 )
 from launch.substitutions import (
+    Command,
+    FindExecutable,
     LaunchConfiguration,
+    PathJoinSubstitution,
 )
 from wilbur_deploy.pig_warnings import (
     pig_hardware,
     pig_mockhardware,
     pig_gazebo,
 )
+from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterValue
+from launch_ros.actions import Node
 
 from wilbur_deploy.launch_utils import AddLaunchDescriptions
 
 
 def launch_setup(context, *args, **kwargs):
-
     # Initialize Arguments
+    robot_description_package = LaunchConfiguration("robot_description_package")
+    robot_description_file = LaunchConfiguration("robot_description_file")
     platform = LaunchConfiguration("platform").perform(context)
     include_ur = LaunchConfiguration("include_ur").perform(context)
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
+    extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
 
     sim_ignition = "false"
     mock_hardware = "false"
@@ -46,6 +54,33 @@ def launch_setup(context, *args, **kwargs):
         case _:
             raise AttributeError
 
+    # This is the main robot description for Wilbur.
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution([FindPackageShare(robot_description_package), "urdf", robot_description_file]),
+            " ",
+            "tf_prefix:=",
+            tf_prefix,
+            " ",
+            "ns:=",
+            ns,
+            " ",
+            "include_ur:=",
+            include_ur, 
+            " ",
+            extra_xacro_args
+        ]
+    )
+    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description],
+    )
     # common launch args shared across different nodes
     common_launch_args = {
         "sim_ignition": sim_ignition,
@@ -58,11 +93,6 @@ def launch_setup(context, *args, **kwargs):
 
     # List to keep track of launch file names to start
     launch_file_names = []
-
-    # This is the "definitive" robot state publisher.
-    # This should be launched on whatever machine has the most resources, which
-    # along with whichever controller manager we think should come up first.
-    launch_file_names.append("robot_state_publisher.launch.py")
     launch_file_names.append("spawn_controllers.launch.py")
 
     # Generate the launch files based on launch_file_names which has been configured
@@ -71,13 +101,29 @@ def launch_setup(context, *args, **kwargs):
         launch_file_names=launch_file_names,
         launch_args=common_launch_args,
     )
-
+    launch_files.append(robot_state_publisher_node)
     return launch_files
 
 
 def generate_launch_description():
 
     declared_arguments = []
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_description_package",
+            default_value="wilbur_description",
+            description="The package to find the robot description.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_description_file",
+            default_value="wilbur.urdf.xacro",
+            description="The name of the robot description file. "
+            "Must be in the 'urdf' folder of the description package.",
+        )
+    )
 
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -109,6 +155,14 @@ def generate_launch_description():
             "ns",
             default_value="",
             description="Namespace for the hardware robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "extra_xacro_args",
+            default_value="",
+            description="Extra args to add for making a robot description. "
+            "Should be in the format of 'arg1:=value1 arg2:=value2'",
         )
     )
 
