@@ -148,4 +148,4 @@ joint_trajectory_controller:
 robotiq_gripper_hande_controller:
   ros__parameters:
     default: true
-    joint: arm_0_finger_1_joint
+    joint: finger_1_joint
