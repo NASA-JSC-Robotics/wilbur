@@ -26,7 +26,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "abs_mesh_paths",
             default_value="false",
-            description="Start robot with simulated hardware mirroring command to its states.",
+            description="Use absolute file paths for meshes.",
         )
     )
 

@@ -142,7 +142,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_z",
-            default_value="6.0",
+            default_value="0.2",
             description="Z position of the robot",
         )
     )
