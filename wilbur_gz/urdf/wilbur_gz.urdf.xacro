@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Even though we do not need this argument, and shouldn't be using it is required by
+     dextivr_hande.xacro in dextivr_hande -->
+    <xacro:arg name="sim_ignition" default="true" />
+
     <xacro:arg name="tf_prefix" default="" />
     <xacro:arg name="ns" default="" />
     <xacro:arg name="abs_mesh_paths" default="true" />

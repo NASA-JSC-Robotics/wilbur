@@ -76,7 +76,7 @@
 
       <xacro:dextivr_hande
         name="dextivr_hande"
-        tf_prefix="${tf_prefix}"
+        tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
         sim_ignition="${sim_ignition}"
         use_fake_hardware="${use_mock_hardware}"
