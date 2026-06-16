@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="wilbur"
+    params="tf_prefix:=''
+            ns:=''
+            parent:=wolrd
+            sim_ignition:=false
+            use_mock_hardware:=false
+            include_ur:=true
+            gripper_com_port:=/dev/ttyUSB0
+            wilbur_ur10e_initial_positions:='$(find wilbur_deploy)/config/ur_initial_positions.yaml'
+            ">
+
+    <!-- Includes -->
+    <xacro:include filename="$(find wilbur_description)/urdf/common.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/attachments/bulkhead.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/links/frame.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/links/mesh.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/gen_mesh.xacro" />
+    <!-- Sub-robots -->
+    <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/wilbur_ur10e_macro.urdf.xacro" />
+    <xacro:include filename="$(find dextivr_hande_description)/urdf/dextivr_hande.xacro" />
+
+
+    <!-- Attachments -->
+    <xacro:bulkhead
+      name="bulkhead"
+      model="${tf_prefix}arm_plate"
+      parent_link="${tf_prefix}default_mount"
+      tf_prefix="${tf_prefix}">
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:bulkhead>
+
+    <!-- Links -->
+    <link name="${tf_prefix}control_frame_link">
+      <visual>
+        <geometry>
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/control_frame.stl" />
+        </geometry>
+        <material name="clearpath_dark_grey" />
+      </visual>
+      <collision>
+        <geometry>
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/control_frame.stl" />
+        </geometry>
+        <material name="clearpath_dark_grey" />
+      </collision>
+    </link>
+
+    <joint name="${tf_prefix}control_frame_joint" type="fixed">
+      <parent link="${tf_prefix}default_mount" />
+      <child link="${tf_prefix}control_frame_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- Manipulators -->
+    <xacro:if value="${include_ur}">
+      <xacro:property name="initial_positions_file" value="${wilbur_ur10e_initial_positions}" />
+      <!-- todo expose out args for hardware-->
+      <xacro:wilbur_ur10e
+        name="arm_0_"
+        tf_prefix="${tf_prefix}arm_0_"
+        parent="${tf_prefix}arm_plate_mount"
+        initial_positions="${xacro.load_yaml(initial_positions_file)}"
+      >
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      </xacro:wilbur_ur10e>
+
+      <xacro:frame name="${tf_prefix}arm_0_end_effector" parent_link="arm_0_tool0">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      </xacro:frame>
+
+      <xacro:dextivr_hande
+        name="dextivr_hande"
+        tf_prefix="${tf_prefix}arm_0_"
+        parent="${tf_prefix}arm_0_end_effector_link"
+        sim_ignition="${sim_ignition}"
+        use_fake_hardware="${use_mock_hardware}"
+        fake_sensor_commands="false"
+        com_port="${gripper_com_port}"
+        marker_opacity="0.5"
+        finger_xacro="fngr_v6">
+        <origin xyz="0 0 0" rpy="0 0 ${radians(-90)}" />
+      </xacro:dextivr_hande>
+
+    </xacro:if>
+
+    <xacro:w200
+      wheel="default"
+      tf_prefix="${tf_prefix}"
+      ns="${ns}"
+    />
+
+
+  </xacro:macro>
+
+
+</robot>

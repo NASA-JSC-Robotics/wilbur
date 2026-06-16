@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+#
+# Copyright (c) 2026, United States Government, as represented by the
+# Administrator of the National Aeronautics and Space Administration.
+#
+# All rights reserved.
+#
+# This software is licensed under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with the
+# License. You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
 
 import os
 from launch import LaunchDescription
@@ -6,8 +24,13 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     LaunchConfiguration,
+    PathJoinSubstitution,
 )
 from ament_index_python.packages import get_package_share_directory
+from launch.conditions import IfCondition, UnlessCondition
+
+from wilbur_deploy.launch_utils import AddLaunchDescriptions
+from wilbur_deploy.launch_utils import SpawnController
 
 
 def generate_launch_description():
@@ -30,39 +53,41 @@ def generate_launch_description():
             description="Namespace for the hardware robot",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "include_ur",
+            default_value="true",
+            description="Start robot with simulated hardware mirroring command to its states.",
+        )
+    )
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
+    include_ur = LaunchConfiguration("include_ur")
 
-    # common launch args passed to each of the different launch files
-    common_launch_args = {
-        "tf_prefix": tf_prefix,
-        "ns": ns,
-    }.items()
+    controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
-    launch_file_names = []
-
-    # helper function to organize launch description objects with the same launch args and package names
-    def AddLaunchDescriptions(package_name, launch_file_names, launch_args):
-        launch_files_list = []
-        for launch_file_name in launch_file_names:
-            launch_files_list.append(
-                IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(
-                        os.path.join(get_package_share_directory(package_name), "launch", launch_file_name)
-                    ),
-                    launch_arguments=launch_args,
-                )
-            )
-
-        return launch_files_list
-
-    # add controller spawner launch files for each individual subsystem
-    launch_file_names.append("spawn_controllers/spawn_controllers_w200.launch.py")
-    launch_file_names.append("spawn_controllers/spawn_controllers_ur_gripper.launch.py")
-
-    launch_files = AddLaunchDescriptions(
-        package_name="wilbur_deploy", launch_file_names=launch_file_names, launch_args=common_launch_args
+    controllers_to_spawn = []
+    controllers_to_spawn.append(
+        SpawnController(controller_manager_name, "velocity_controller")
+    )
+    controllers_to_spawn.append(
+        SpawnController(controller_manager_name, "joint_state_broadcaster")
     )
 
-    return LaunchDescription(declared_arguments + launch_files)
+    controllers_to_spawn.append(
+        SpawnController(
+            controller_manager_name,
+            "joint_trajectory_controller",
+            condition=IfCondition(include_ur),
+        )
+    )
+    controllers_to_spawn.append(
+        SpawnController(
+            controller_manager_name,
+            "robotiq_gripper_hande_controller",
+            condition=IfCondition(include_ur),
+        )
+    )
+
+    return LaunchDescription(declared_arguments + controllers_to_spawn)

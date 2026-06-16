@@ -1,6 +1,31 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) 2026, United States Government, as represented by the
+# Administrator of the National Aeronautics and Space Administration.
+#
+# All rights reserved.
+#
+# This software is licensed under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with the
+# License. You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -19,44 +44,49 @@ def generate_launch_description():
     )
     arguments.append(
         DeclareLaunchArgument(
-            "sim_ignition",
+            "abs_mesh_paths",
             default_value="false",
-            description="Start robot with simulated hardware mirroring command to its states.",
+            description="Use absolute file paths for meshes.",
         )
     )
+
     arguments.append(
         DeclareLaunchArgument(
-            "headless_mode",
-            default_value="false",
-            description="Enable headless mode for robot control",
+            "include_ur",
+            default_value="true",
+            description="Flag to include UR on Warthog base.",
         )
     )
 
     # Initialize Arguments
     tf_prefix = LaunchConfiguration("tf_prefix")
-    sim_ignition = LaunchConfiguration("sim_ignition")
-    headless_mode = LaunchConfiguration("headless_mode")
+    abs_mesh_paths = LaunchConfiguration("abs_mesh_paths")
+    include_ur = LaunchConfiguration("include_ur")
 
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution(
+                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
+            ),
             " ",
             "tf_prefix:=",
             tf_prefix,
             " ",
-            "sim_ignition:=",
-            sim_ignition,
+            "abs_mesh_paths:=",
+            abs_mesh_paths,
             " ",
-            "headless_mode:=",
-            headless_mode,
+            "include_ur:=",
+            include_ur,
             " ",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"])
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"]
+    )
 
     joint_state_broadcaster = Node(
         package="joint_state_publisher_gui",

@@ -7,16 +7,15 @@
   <xacro:macro name="w200"
     params="wheel:='default'
                 tf_prefix
-                sim_ignition:=false
-                use_fake_hardware:=true
                 color:='yellow'
                 ns
-                generate_ros2_control_tag:=true">
+                ">
 
     <!-- Include URDF/XACRO Files -->
     <xacro:include filename="$(find wilbur_description)/urdf/wheels/track.urdf.xacro" />
     <xacro:include filename="$(find wilbur_description)/urdf/wheels/wheel.urdf.xacro" />
-    <xacro:property name="PI" value="3.1415926535897931" /> <!--pi is build in - replace with lowercase pi throughout and remove property -->
+    <xacro:property name="PI" value="3.1415926535897931" /> <!--pi
+    is build in - replace with lowercase pi throughout and remove property -->
     <xacro:include filename="$(find wilbur_description)/urdf/diff_unit.urdf.xacro" />
 
     <!-- Colors: yellow, orange, olive, sand -->
@@ -80,7 +79,8 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://clearpath_platform_description/meshes/w200/chassis.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/chassis.stl" />
         </geometry>
         <material name="clearpath_black">
           <color rgba="0.15 0.15 0.15 1.0" />
@@ -89,7 +89,8 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://clearpath_platform_description/meshes/w200/e-stop.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/e-stop.stl" />
         </geometry>
         <material name="clearpath_red">
           <color rgba="0.9 0.0 0.0 1.0" />
@@ -98,8 +99,8 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh
-            filename="package://clearpath_platform_description/meshes/w200/chassis-collision.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/chassis-collision.stl" />
         </geometry>
       </collision>
     </link>
@@ -112,21 +113,24 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://clearpath_platform_description/meshes/w200/diff-link.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/diff-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://clearpath_platform_description/meshes/w200/susp-link.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://clearpath_platform_description/meshes/w200/susp-link.stl" />
+          <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
+            file_path="meshes/w200/susp-link.stl" />
         </geometry>
         <material name="clearpath_light_grey" />
       </visual>
@@ -206,30 +210,6 @@
       <child link="${tf_prefix}gps_0_link" />
     </joint>
 
-    <!-- ROS2 controls -->
-    <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
-
-    <!-- todo do we need a ns/name paradigm for ros2 control system plugins for multiple/namespacing-->
-    <xacro:if value="${generate_ros2_control_tag}">
-      <xacro:w200_ros2_control
-        name="w200_ros2_control"
-        use_fake_hardware="${use_fake_hardware}"
-        sim_ignition="${sim_ignition}"
-        tf_prefix="${tf_prefix}"
-      />
-    </xacro:if>
-
-    <!-- w200_gz - plugins specific for the w200 for gazebo -->
-    <xacro:if value="${sim_ignition}">
-      <xacro:include filename="$(find wilbur_gz)/urdf/w200_gz.xacro" />
-      <xacro:w200_gz
-        tf_prefix="${tf_prefix}"
-        wheel_radius="${wheel_radius}"
-        imu_link_name="imu_0_link"
-        gps_link_name="gps_0_link"
-        ns="${ns}">
-      </xacro:w200_gz>
-    </xacro:if>
 
   </xacro:macro>
 </robot>

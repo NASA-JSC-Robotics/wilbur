@@ -11,17 +11,18 @@
       <kp value="10000000.0" />
       <kd value="1.0" />
       <fdir1 value="1 0 0" />
-      <material>Gazebo/DarkGrey</material>
+      <!-- Gazebo was complaining about this material -->
+      <!-- <material>Gazebo/DarkGrey</material> -->
     </gazebo>
   </xacro:macro>
 
   <xacro:macro name="track_gz" params="prefix side tf_prefix">
-      <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
+    <gazebo reference="${tf_prefix}${prefix}_${side}_wheel_link">
       <selfCollide>false</selfCollide>
       <mu1>0.5</mu1>
       <mu2>0.5</mu2>
       <fdir1 value="1 0 0" />
-      <material>Gazebo/DarkGrey</material>
+      <!-- <material>Gazebo/DarkGrey</material> -->
     </gazebo>
   </xacro:macro>
 
@@ -71,7 +72,7 @@
     <!-- consider whether sensors and wheels should be split up further -->
     <gazebo reference="${tf_prefix}${imu_link_name}">
       <sensor type="imu" name="imu_0">
-        <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
+        <plugin filename="libgz-sim-imu-system.so" name="gz::sim::systems::Imu">
         </plugin>
         <always_on>true</always_on>
         <update_rate>50</update_rate>
@@ -83,7 +84,7 @@
 
     <gazebo reference="${tf_prefix}${gps_link_name}">
       <sensor type="navsat" name="gps_0">
-        <plugin filename="libignition-gazebo-navsat-system.so" name="ignition::gazebo::systems::NavSat">
+        <plugin filename="libgz-sim-navsat-system.so" name="gz::sim::systems::NavSat">
         </plugin>
         <always_on>true</always_on>
         <update_rate>50</update_rate>
@@ -93,14 +94,14 @@
       </sensor>
     </gazebo>
 
-    <xacro:wheel_gz prefix="front" side="left" tf_prefix="${tf_prefix}"/>
-    <xacro:wheel_gz prefix="front" side="right" tf_prefix="${tf_prefix}"/>
-    <xacro:wheel_gz prefix="rear" side="left" tf_prefix="${tf_prefix}"/>
-    <xacro:wheel_gz prefix="rear" side="right" tf_prefix="${tf_prefix}"/>
+    <xacro:wheel_gz prefix="front" side="left" tf_prefix="${tf_prefix}" />
+    <xacro:wheel_gz prefix="front" side="right" tf_prefix="${tf_prefix}" />
+    <xacro:wheel_gz prefix="rear" side="left" tf_prefix="${tf_prefix}" />
+    <xacro:wheel_gz prefix="rear" side="right" tf_prefix="${tf_prefix}" />
 
     <gazebo>
-      <plugin filename="libignition-gazebo-wheel-slip-system.so"
-        name="ignition::gazebo::systems::WheelSlip">
+      <plugin filename="libgz-sim-wheel-slip-system.so"
+        name="gz::sim::systems::WheelSlip">
         <wheel link_name="${tf_prefix}front_left_wheel_link">
           <slip_compliance_lateral>1.0</slip_compliance_lateral>
           <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
@@ -128,8 +129,8 @@
       </plugin>
     </gazebo>
 
-    <xacro:diff_unit_gz side="right" tf_prefix="${tf_prefix}"/>
-    <xacro:diff_unit_gz side="left" tf_prefix="${tf_prefix}"/>
+    <xacro:diff_unit_gz side="right" tf_prefix="${tf_prefix}" />
+    <xacro:diff_unit_gz side="left" tf_prefix="${tf_prefix}" />
 
   </xacro:macro>
 
