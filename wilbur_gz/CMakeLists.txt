@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(wilbur_gz)
 
 find_package(ament_cmake REQUIRED)
-#find_package(ament_cmake_python REQUIRED)
-#find_package(rclpy REQUIRED)
 
 install(
   DIRECTORY config launch urdf worlds

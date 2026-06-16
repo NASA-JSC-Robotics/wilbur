@@ -1,43 +1,29 @@
-# Wilbur
+# WilbUR
 
-Descriptions, deployments, tooling, and MoveIt configuration for the Wilbur robot system,
-part of the [iMETRO Facility](https://ntrs.nasa.gov/citations/20240013956) at NASA's Johnson Space Center.
-This project is intended for use in one of ER4's managed workspaces (such as the in the [wilbur_ws](https://js-er-code.jsc.nasa.gov/imetro/robots/wilbur/wilbur_ws)).
+Description, deployments, tooling, and configuration files for the WilbUR robot mobile manipulation platform.
+WilbUR is part of Johnson Space Center's [iMETRO](https://github.com/NASA-JSC-Robotics/iMETRO) facility.
+The robot consists of,
 
-```
-    .-.___.-.     _.---------._
-    /         \ *`               `\    6.
-   |  0      0 |      Wilbur       \    9
-   |  ( ○  ○ ) |                    |  /
-    '-_______.-                      |/
-            |                       |
-            *             ___       *
-            \    / \    /   \ \   /
-             *__*   *__*     *_*_*
-```
+* A UR10e serial manipulator with Robotiq Hand-E Gripper
+* A Clearpath Warthog mobile base
+
+Additional sensors (such as cameras, lidar, etc) are a work in progress.
+
+![alt text](./docs/wilbur_rviz.png "WilbUR in RViz")
 
 ## Usage
 
-The project includes a kinematic simulation for the robot.
-Launching the controllers and hardware interface is done using the provided launch files.
+This project is under active development.
+For now, description files and a basic Gazebo simulation are included.
 
-To launch the kinematic simulation:
-
-```bash
-ros2 launch wilbur_description view_robot.launch.py
-
-# Or without the UR arm
-ros2 launch wilbur_description view_robot.launch.py include_ur:=false 
-```
-
-A Gazebo simulation including the environment is available in wilbur_gz.
+To launch the gazebo simulation:
 
 ```bash
-# Start the Gazebo ros2 control-based simulation
-ros2 launch wilbur_gz sim_gz.launch.py
-
-# Or launch without the UR arm.
+# Launch the Warthog only
 ros2 launch wilbur_gz sim_gz.launch.py include_ur:=false
+
+# Launch the Warthog and attached UR10e + Gripper
+ros2 launch wilbur_gz sim_gz.launch.py
 ```
 
 ## Citation
