@@ -16,7 +16,7 @@ arguments = []
 arguments.append(
     DeclareLaunchArgument(
         "world",
-        default_value="rockyard.sdf",
+        default_value="empty_world.sdf",
         description="name of the world file",
     )
 )
@@ -25,7 +25,7 @@ arguments.append(
 arguments.append(
     DeclareLaunchArgument(
         "world_pkg",
-        default_value="jsc_rockyard_world_gz",
+        default_value="wilbur_gz",
         description="name of the package that has the world file",
     )
 )
