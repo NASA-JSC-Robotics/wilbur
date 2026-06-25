@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Even though we do not need this argument, and shouldn't be using it is required by
+     dextivr_hande.xacro in dextivr_hande -->
+    <xacro:arg name="tf_prefix" default="" />
+    <xacro:arg name="ns" default="" />
+    <xacro:arg name="abs_mesh_paths" default="true" />
+    <xacro:arg name="parent" default="world" />
+    <xacro:arg name="include_ur" default="true" />
+    <xacro:arg name="gripper_com_port" default="/dev/ttyUSB0" />
+    <xacro:arg name="wilbur_ur10e_initial_positions"
+        default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
+
+    <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+
+    <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
+
+    <xacro:wilbur
+        tf_prefix="$(arg tf_prefix)"
+        ns="$(arg ns)"
+        parent="$(arg parent)"
+        sim_ignition="false"
+        use_mock_hardware="true"
+        include_ur="$(arg include_ur)"
+        gripper_com_port="$(arg gripper_com_port)"
+        wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+    />
+
+    <xacro:include filename="$(find wilbur_description)/urdf/wilbur_mock.ros2_control.xacro" />
+    <xacro:w200_ros2_control
+        name="wilbur"
+        tf_prefix="$(arg tf_prefix)"
+        include_ur="$(arg include_ur)" />
+
+</robot>
