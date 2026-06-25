@@ -29,28 +29,54 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
+    tf_prefix = LaunchConfiguration("tf_prefix")
+    ns = LaunchConfiguration("ns")
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    include_ur = LaunchConfiguration("include_ur")
 
     declared_arguments = []
-
+    
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "tf_prefix",
+            default_value='""',
+            description="tf_prefix of the joint names, useful for \
+        multi-robot setup. If changed, also joint names in the controllers' configuration \
+        have to be updated.",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "ns",
             default_value="",
-            description="Namespace for the hardware robot",
+            description="namespace of the robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "include_ur",
+            default_value="true",
+            description="Adds/removes the UR10e arm from the configuration.",
+            choices=["true", "false"],
         )
     )
 
-    # Initialize Arguments
-    ns = LaunchConfiguration("ns")
-
-    control_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "control.launch.py")
-        ),
-        launch_arguments={
-            "platform": "mock_hardware",
-            "ns": ns,
-        }.items(),
+    return LaunchDescription(
+        declared_arguments + 
+        [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "control.launch.py")
+                ),
+                launch_arguments={
+                    "robot_description_package": "wilbur_description",
+                    "robot_description_file": "wilbur_mock.urdf.xacro",
+                    "platform": "mock_hardware",
+                    "tf_prefix": tf_prefix,
+                    "ns": ns,
+                    "include_ur": include_ur,
+                    "extra_xacro_args": "abs_mesh_paths:=false"
+                }.items(),
+            )
+        ]
     )
-
-    return LaunchDescription(declared_arguments + [control_launch])
