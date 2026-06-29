@@ -4,7 +4,7 @@
   <xacro:macro name="wilbur"
     params="tf_prefix:=''
             ns:=''
-            parent:=wolrd
+            parent:=world
             sim_ignition:=false
             use_mock_hardware:=false
             include_ur:=true

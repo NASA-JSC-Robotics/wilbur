@@ -52,10 +52,9 @@ def launch_setup(context, *args, **kwargs):
     extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
 
     sim_ignition = "false"
-    mock_hardware = "false"
-    use_fake_hardware = "false"
+    use_mock_hardware = "false"
 
-    # Decide which platfrom we are using
+    # Decide which platform we are using
     match platform:
         case "sim_ignition":
             print("Ignition sim")
@@ -63,8 +62,7 @@ def launch_setup(context, *args, **kwargs):
             pig_gazebo()
         case "mock_hardware":
             print("Mock hardware")
-            mock_hardware = "true"
-            use_fake_hardware = "true"
+            use_mock_hardware = "true"
             pig_mockhardware()
         case "hardware":
             print("Launching hardware")
@@ -86,9 +84,9 @@ def launch_setup(context, *args, **kwargs):
             ns,
             " ",
             "include_ur:=",
-            include_ur, 
+            include_ur,
             " ",
-            extra_xacro_args
+            extra_xacro_args,
         ]
     )
     robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
@@ -103,7 +101,7 @@ def launch_setup(context, *args, **kwargs):
     common_launch_args = {
         "sim_ignition": sim_ignition,
         "abs_mesh_paths": sim_ignition,
-        "use_fake_hardware": use_fake_hardware,
+        "use_fake_hardware": use_mock_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,
@@ -188,6 +186,4 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

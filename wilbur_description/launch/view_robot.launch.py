@@ -67,9 +67,7 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
-            ),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
             "tf_prefix:=",
             tf_prefix,
@@ -84,9 +82,7 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"]
-    )
+    rviz_config_file = PathJoinSubstitution([FindPackageShare("wilbur_description"), "rviz", "view_robot.rviz"])
 
     joint_state_broadcaster = Node(
         package="joint_state_publisher_gui",

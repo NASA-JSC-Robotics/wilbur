@@ -27,7 +27,6 @@ from launch.substitutions import (
     PathJoinSubstitution,
 )
 from launch_ros.actions import Node
-from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -75,9 +74,7 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
-            ),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
             "sim_ignition:=",
             sim_ignition,

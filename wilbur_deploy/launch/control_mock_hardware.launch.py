@@ -31,11 +31,10 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
-    use_sim_time = LaunchConfiguration("use_sim_time")
     include_ur = LaunchConfiguration("include_ur")
 
     declared_arguments = []
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "tf_prefix",
@@ -62,8 +61,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription(
-        declared_arguments + 
-        [
+        declared_arguments
+        + [
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(get_package_share_directory("wilbur_deploy"), "launch", "control.launch.py")
@@ -75,7 +74,7 @@ def generate_launch_description():
                     "tf_prefix": tf_prefix,
                     "ns": ns,
                     "include_ur": include_ur,
-                    "extra_xacro_args": "abs_mesh_paths:=false"
+                    "extra_xacro_args": "abs_mesh_paths:=false",
                 }.items(),
             )
         ]

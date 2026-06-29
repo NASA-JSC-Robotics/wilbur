@@ -73,9 +73,7 @@ def launch_setup(context, *args, **kwargs):
     # Pull robot description from the topic
     moveit_config = (
         MoveItConfigsBuilder("wilbur", package_name="wilbur_moveit_config")
-        .robot_description_semantic(
-            file_path="config/wilbur.srdf", mappings=description_mappings
-        )
+        .robot_description_semantic(file_path="config/wilbur.srdf", mappings=description_mappings)
         .robot_description_kinematics(file_path="config/kinematics.yaml")
         .joint_limits(file_path="config/joint_limits.yaml")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
@@ -100,12 +98,8 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # rviz with moveit configuration
-    rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config", "moveit.rviz"]
-    )
-    rviz_qss_file = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config", "dark.qss"]
-    )
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(moveit_config_package), "config", "moveit.rviz"])
+    rviz_qss_file = PathJoinSubstitution([FindPackageShare(moveit_config_package), "config", "dark.qss"])
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -167,6 +161,4 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
