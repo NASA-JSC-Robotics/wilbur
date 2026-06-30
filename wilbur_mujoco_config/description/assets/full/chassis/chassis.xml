@@ -1,0 +1,20 @@
+<mujoco model="chassis">
+  <default>
+    <default class="visual">
+      <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+    </default>
+    <default class="collision">
+      <geom group="3" type="mesh"/>
+    </default>
+  </default>
+  <asset>
+    <material name="new_mat_color.004" specular="0.5" shininess="0.36" rgba="0.150000 0.150000 0.150000 1.000000"/>
+    <mesh file="chassis.obj"/>
+  </asset>
+  <worldbody>
+    <body name="chassis">
+      <geom material="new_mat_color.004" mesh="chassis" class="visual"/>
+      <geom mesh="chassis" class="collision"/>
+    </body>
+  </worldbody>
+</mujoco>
