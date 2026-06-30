@@ -38,9 +38,9 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
-            "sim_ignition",
+            "sim_gazebo",
             default_value="false",
-            description="Start robot in ignition simulator.",
+            description="Start robot in Gazebo simulator.",
         )
     )
     declared_arguments.append(
@@ -75,7 +75,7 @@ def generate_launch_description():
     )
 
     # Initialize Arguments
-    sim_ignition = LaunchConfiguration("sim_ignition")
+    sim_gazebo = LaunchConfiguration("sim_gazebo")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
@@ -92,8 +92,8 @@ def generate_launch_description():
             " ",
             PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
-            "sim_ignition:=",
-            sim_ignition,
+            "sim_gazebo:=",
+            sim_gazebo,
             " ",
             "use_fake_hardware:=",
             use_fake_hardware,

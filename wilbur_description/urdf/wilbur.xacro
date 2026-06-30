@@ -5,7 +5,7 @@
     params="tf_prefix:=''
             ns:=''
             parent:=world
-            sim_ignition:=false
+            sim_gazebo:=false
             use_mock_hardware:=false
             include_ur:=true
             gripper_com_port:=/dev/ttyUSB0
@@ -78,7 +78,7 @@
         name="dextivr_hande"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
-        sim_ignition="${sim_ignition}"
+        sim_ignition="${sim_gazebo}"
         use_fake_hardware="${use_mock_hardware}"
         fake_sensor_commands="false"
         com_port="${gripper_com_port}"

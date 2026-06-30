@@ -108,7 +108,7 @@ def launch_setup(context, *args, **kwargs):
                 launch_arguments={
                     "robot_description_package": "wilbur_gz",
                     "robot_description_file": "wilbur_gz.urdf.xacro",
-                    "platform": "sim_ignition",
+                    "platform": "sim_gazebo",
                     "tf_prefix": tf_prefix,
                     "ns": namespace,
                     "include_ur": include_ur,

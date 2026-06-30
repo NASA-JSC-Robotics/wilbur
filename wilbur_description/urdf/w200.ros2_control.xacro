@@ -4,18 +4,18 @@
     params="
     name
     use_fake_hardware:=false
-    sim_ignition:=false
+    sim_gazebo:=false
     tf_prefix
   ">
     <ros2_control name="${name}" type="system">
       <hardware>
-        <xacro:if value="${sim_ignition}">
+        <xacro:if value="${sim_gazebo}">
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </xacro:if>
         <xacro:if value="${use_fake_hardware}">
           <plugin>mock_components/GenericSystem</plugin>
         </xacro:if>
-        <xacro:unless value="${sim_ignition or use_fake_hardware}">
+        <xacro:unless value="${sim_gazebo or use_fake_hardware}">
           <!-- HARDWARE -->
           <plugin>clearpath_hardware_interfaces/W200Hardware</plugin>
           <!-- todo - should compute diameter from wheel radius property-->

@@ -51,14 +51,14 @@ def launch_setup(context, *args, **kwargs):
     ns = LaunchConfiguration("ns")
     extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
 
-    sim_ignition = "false"
+    sim_gazebo = "false"
     use_mock_hardware = "false"
 
     # Decide which platform we are using
     match platform:
-        case "sim_ignition":
-            print("Ignition sim")
-            sim_ignition = "true"
+        case "sim_gazebo":
+            print("Gazebo sim")
+            sim_gazebo = "true"
             pig_gazebo()
         case "mock_hardware":
             print("Mock hardware")
@@ -99,8 +99,9 @@ def launch_setup(context, *args, **kwargs):
     )
     # common launch args shared across different nodes
     common_launch_args = {
-        "sim_ignition": sim_ignition,
-        "abs_mesh_paths": sim_ignition,
+        "sim_ignition": sim_gazebo,
+        "sim_gazebo": sim_gazebo,
+        "abs_mesh_paths": sim_gazebo,
         "use_fake_hardware": use_mock_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
@@ -149,8 +150,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "platform",
             default_value="hardware",
-            description="Whether to run the robot on hardware, mock_hardware, or sim_ignition.",
-            choices=["hardware", "mock_hardware", "sim_ignition"],
+            description="Whether to run the robot on hardware, mock_hardware, or sim_gazebo.",
+            choices=["hardware", "mock_hardware", "sim_gazebo"],
         )
     )
     declared_arguments.append(
