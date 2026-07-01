@@ -4,8 +4,8 @@
   <xacro:macro name="wilbur"
     params="tf_prefix:=''
             ns:=''
-            parent:=wolrd
-            sim_ignition:=false
+            parent:=world
+            sim_gazebo:=false
             use_mock_hardware:=false
             include_ur:=true
             gripper_com_port:=/dev/ttyUSB0
@@ -62,7 +62,7 @@
       <xacro:property name="initial_positions_file" value="${wilbur_ur10e_initial_positions}" />
       <!-- todo expose out args for hardware-->
       <xacro:wilbur_ur10e
-        name="arm_0_"
+        name="arm_0"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_plate_mount"
         initial_positions="${xacro.load_yaml(initial_positions_file)}"
@@ -78,7 +78,7 @@
         name="dextivr_hande"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
-        sim_ignition="${sim_ignition}"
+        sim_ignition="${sim_gazebo}"
         use_fake_hardware="${use_mock_hardware}"
         fake_sensor_commands="false"
         com_port="${gripper_com_port}"

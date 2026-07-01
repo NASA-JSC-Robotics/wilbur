@@ -1,33 +1,19 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-
-  <!-- whole system plugins -->
-  <xacro:macro name="wilbur_gz">
-    <gazebo>
-      <!-- publishes the position of the robot and all its links-->
-      <plugin filename="libgz-sim-pose-publisher-system.so"
-        name="gz::sim::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <publish_nested_model_pose>true</publish_nested_model_pose>
-        <use_pose_vector_msg>true</use_pose_vector_msg>
-        <update_frequency>50</update_frequency>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
-
   <xacro:include filename="$(find ur_description)/urdf/inc/ur_joint_control.xacro" />
   <xacro:include filename="$(find ur_description)/urdf/inc/ur_sensors.xacro" />
 
   <xacro:macro name="w200_ros2_control"
     params="
-    name
-    tf_prefix
-    include_ur:=false
-    wilbur_ur10e_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
-  ">
+        name
+        tf_prefix
+        include_ur:=false
+        wilbur_ur10e_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
+    ">
     <ros2_control name="${name}" type="system">
       <hardware>
-        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        <plugin>mock_components/GenericSystem</plugin>
+        <param name="calculate_dynamics">true</param>
       </hardware>
 
       <xacro:if value="$(arg include_ur)">
@@ -37,6 +23,7 @@
         />
 
         <xacro:ur_sensors tf_prefix="${tf_prefix}" />
+
       </xacro:if>
 
       <joint name="${tf_prefix}front_left_wheel_joint">

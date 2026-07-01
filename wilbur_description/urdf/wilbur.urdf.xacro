@@ -4,7 +4,7 @@
 
   <xacro:arg name="ns" default="" />
   <xacro:arg name="abs_mesh_paths" default="false" />
-  <xacro:arg name="sim_ignition" default="false" />
+  <xacro:arg name="sim_gazebo" default="false" />
   <xacro:arg name="use_mock_hardware" default="true" />
   <xacro:arg name="parent" default="world" />
   <xacro:arg name="include_ur" default="true" />
@@ -22,7 +22,7 @@
     tf_prefix="$(arg tf_prefix)"
     ns="$(arg ns)"
     parent="$(arg parent)"
-    sim_ignition="$(arg sim_ignition)"
+    sim_gazebo="$(arg sim_gazebo)"
     use_mock_hardware="$(arg use_mock_hardware)"
     include_ur="$(arg include_ur)"
     gripper_com_port="$(arg gripper_com_port)"

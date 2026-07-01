@@ -27,7 +27,6 @@ from launch.substitutions import (
     PathJoinSubstitution,
 )
 from launch_ros.actions import Node
-from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -37,7 +36,7 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
-            "sim_ignition",
+            "sim_gazebo",
             default_value="false",
             description="Start robot with simulated hardware mirroring command to its states.",
         )
@@ -64,7 +63,7 @@ def generate_launch_description():
         )
     )
 
-    sim_ignition = LaunchConfiguration("sim_ignition")
+    sim_gazebo = LaunchConfiguration("sim_gazebo")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     abs_mesh_paths = LaunchConfiguration("abs_mesh_paths")
     include_ur = LaunchConfiguration("include_ur")
@@ -75,12 +74,10 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
-            ),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
             " ",
-            "sim_ignition:=",
-            sim_ignition,
+            "sim_gazebo:=",
+            sim_gazebo,
             " ",
             "use_fake_hardware:=",
             use_fake_hardware,

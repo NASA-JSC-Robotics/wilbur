@@ -6,7 +6,6 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
-from launch.conditions import IfCondition, UnlessCondition
 
 
 # helper function to organize launch description objects with the same launch args and package names
@@ -42,10 +41,7 @@ def GetControllersFile(package_name, file_name):
 
 # Helper function to make controller nodes
 def SpawnController(
-    controller_manager_name: str,
-    controller_name: str,
-    controller_manager_timeout: str = "300",
-    **kwargs
+    controller_manager_name: str, controller_name: str, controller_manager_timeout: str = "300", **kwargs
 ) -> Node:
     return Node(
         package="controller_manager",

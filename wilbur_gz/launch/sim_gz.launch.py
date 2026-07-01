@@ -60,9 +60,7 @@ def launch_setup(context, *args, **kwargs):
     world_group = GroupAction(
         [
             IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(pkg_gazebo, "launch", "start_world.launch.py")
-                )
+                PythonLaunchDescriptionSource(os.path.join(pkg_gazebo, "launch", "start_world.launch.py"))
             )
         ]
     )
@@ -71,9 +69,7 @@ def launch_setup(context, *args, **kwargs):
     # add the robot to the world
     robot_group = GroupAction(
         [
-            PushRosNamespace(
-                condition=IfCondition([use_namespace]), namespace=namespace
-            ),
+            PushRosNamespace(condition=IfCondition([use_namespace]), namespace=namespace),
             Node(
                 package="ros_gz_sim",
                 executable="create",
@@ -101,26 +97,22 @@ def launch_setup(context, *args, **kwargs):
                 name="sim_bridge",
                 parameters=[
                     {
-                        "config_file": os.path.join(
-                            pkg_gazebo, "config", "bridge.yaml"
-                        ),
+                        "config_file": os.path.join(pkg_gazebo, "config", "bridge.yaml"),
                         "qos_overrides./tf_static.publisher.durability": "transient_local",
                     }
                 ],
                 output="screen",
             ),
             IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(pkg_deploy, "launch", "control.launch.py")
-                ),
+                PythonLaunchDescriptionSource(os.path.join(pkg_deploy, "launch", "control.launch.py")),
                 launch_arguments={
                     "robot_description_package": "wilbur_gz",
                     "robot_description_file": "wilbur_gz.urdf.xacro",
-                    "platform": "sim_ignition",
+                    "platform": "sim_gazebo",
                     "tf_prefix": tf_prefix,
                     "ns": namespace,
                     "include_ur": include_ur,
-                    "extra_xacro_args": "abs_mesh_paths:=true"
+                    "extra_xacro_args": "abs_mesh_paths:=true",
                 }.items(),
             ),
         ]
@@ -181,6 +173,4 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

@@ -3,8 +3,6 @@
 
     <!-- Even though we do not need this argument, and shouldn't be using it is required by
      dextivr_hande.xacro in dextivr_hande -->
-    <xacro:arg name="sim_gazebo" default="true" />
-
     <xacro:arg name="tf_prefix" default="" />
     <xacro:arg name="ns" default="" />
     <xacro:arg name="abs_mesh_paths" default="true" />
@@ -14,37 +12,30 @@
     <xacro:arg name="wilbur_ur10e_initial_positions"
         default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
-    <xacro:property name="initial_positions_file" value="$(arg wilbur_ur10e_initial_positions)" />
-
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
 
     <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
+
+    <!-- convert to property to use substitution in function -->
+    <xacro:property name="initial_positions_file" default="$(arg wilbur_ur10e_initial_positions)"/>
 
     <xacro:wilbur
         tf_prefix="$(arg tf_prefix)"
         ns="$(arg ns)"
         parent="$(arg parent)"
-        sim_gazebo="true"
-        use_mock_hardware="false"
+        sim_gazebo="false"
+        use_mock_hardware="true"
         include_ur="$(arg include_ur)"
         gripper_com_port="$(arg gripper_com_port)"
         wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
     />
 
-    <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
-    <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
-
-    <xacro:wilbur_gz_ros2_control
-        gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
-        ns="$(arg ns)"
-    />
-    <xacro:wilbur_gz />
-
+    <xacro:include filename="$(find wilbur_description)/urdf/wilbur_mock.ros2_control.xacro" />
     <xacro:w200_ros2_control
         name="wilbur"
         tf_prefix="$(arg tf_prefix)"
         include_ur="$(arg include_ur)"
         wilbur_ur10e_initial_positions="${xacro.load_yaml(initial_positions_file)}"
-    />
+        />
 
 </robot>

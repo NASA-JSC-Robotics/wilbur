@@ -51,20 +51,18 @@ def launch_setup(context, *args, **kwargs):
     ns = LaunchConfiguration("ns")
     extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
 
-    sim_ignition = "false"
-    mock_hardware = "false"
-    use_fake_hardware = "false"
+    sim_gazebo = "false"
+    use_mock_hardware = "false"
 
-    # Decide which platfrom we are using
+    # Decide which platform we are using
     match platform:
-        case "sim_ignition":
-            print("Ignition sim")
-            sim_ignition = "true"
+        case "sim_gazebo":
+            print("Gazebo sim")
+            sim_gazebo = "true"
             pig_gazebo()
         case "mock_hardware":
             print("Mock hardware")
-            mock_hardware = "true"
-            use_fake_hardware = "true"
+            use_mock_hardware = "true"
             pig_mockhardware()
         case "hardware":
             print("Launching hardware")
@@ -86,9 +84,9 @@ def launch_setup(context, *args, **kwargs):
             ns,
             " ",
             "include_ur:=",
-            include_ur, 
+            include_ur,
             " ",
-            extra_xacro_args
+            extra_xacro_args,
         ]
     )
     robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
@@ -101,9 +99,10 @@ def launch_setup(context, *args, **kwargs):
     )
     # common launch args shared across different nodes
     common_launch_args = {
-        "sim_ignition": sim_ignition,
-        "abs_mesh_paths": sim_ignition,
-        "use_fake_hardware": use_fake_hardware,
+        "sim_ignition": sim_gazebo,
+        "sim_gazebo": sim_gazebo,
+        "abs_mesh_paths": sim_gazebo,
+        "use_fake_hardware": use_mock_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,
@@ -111,6 +110,10 @@ def launch_setup(context, *args, **kwargs):
 
     # List to keep track of launch file names to start
     launch_file_names = []
+    # Gazebo handles it's own controller_manager
+    if platform != "sim_gazebo":
+        launch_file_names.append("controller_manager.launch.py")
+
     launch_file_names.append("spawn_controllers.launch.py")
 
     # Generate the launch files based on launch_file_names which has been configured
@@ -147,8 +150,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "platform",
             default_value="hardware",
-            description="Whether to run the robot on hardware, mock_hardware, or sim_ignition.",
-            choices=["hardware", "mock_hardware", "sim_ignition"],
+            description="Whether to run the robot on hardware, mock_hardware, or sim_gazebo.",
+            choices=["hardware", "mock_hardware", "sim_gazebo"],
         )
     )
     declared_arguments.append(
@@ -184,6 +187,4 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
