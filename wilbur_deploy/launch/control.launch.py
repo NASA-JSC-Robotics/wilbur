@@ -111,10 +111,10 @@ def launch_setup(context, *args, **kwargs):
     # List to keep track of launch file names to start
     launch_file_names = []
     # Gazebo handles it's own controller_manager
-    # if platform != "sim_gazebo":
-    #     launch_file_names.append("controller_manager.launch.py")
+    if platform != "sim_gazebo":
+        launch_file_names.append("controller_manager.launch.py")
 
-    # launch_file_names.append("spawn_controllers.launch.py")
+    launch_file_names.append("spawn_controllers.launch.py")
 
     # Generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
