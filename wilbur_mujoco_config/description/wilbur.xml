@@ -1,0 +1,341 @@
+<?xml version="1.0" ?>
+<mujoco model="wilbur">
+  <compiler angle="radian" assetdir="assets/"/>
+  <asset>
+    <mesh file="full/bulkhead/bulkhead.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color" specular="0.5" shininess="0.36" rgba="0.150000 0.150000 0.150000 1.000000"/>
+    <mesh file="full/arm-mount-plate/arm-mount-plate.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.001" specular="0.5" shininess="0.36" rgba="0.800000 0.800000 0.800000 1.000000"/>
+    <mesh file="full/control_frame/control_frame.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.002" specular="0.5" shininess="0.36" rgba="0.200000 0.200000 0.200000 1.000000"/>
+    <mesh file="full/base/base_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/base/base_1.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <mesh file="full/shoulder/shoulder_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/shoulder/shoulder_1.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/shoulder/shoulder_2.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black.001" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey.001" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <material name="URBlue" specular="0.5" shininess="0.25" rgba="0.490196 0.678431 0.800000 1.000000"/>
+    <mesh file="full/upperarm/upperarm_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/upperarm/upperarm_1.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/upperarm/upperarm_2.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/upperarm/upperarm_3.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black.002" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey.002" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <material name="LinkGrey" specular="0.5" shininess="0.25" rgba="0.820392 0.820392 0.820392 1.000000"/>
+    <material name="URBlue.001" specular="0.5" shininess="0.25" rgba="0.490196 0.678431 0.800000 1.000000"/>
+    <mesh file="full/forearm/forearm_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/forearm/forearm_1.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/forearm/forearm_2.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/forearm/forearm_3.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black.003" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey.003" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <material name="LinkGrey.001" specular="0.5" shininess="0.25" rgba="0.820392 0.820392 0.820392 1.000000"/>
+    <material name="URBlue.002" specular="0.5" shininess="0.25" rgba="0.490196 0.678431 0.800000 1.000000"/>
+    <mesh file="full/wrist1/wrist1_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/wrist1/wrist1_1.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/wrist1/wrist1_2.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black.004" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey.004" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <material name="URBlue.003" specular="0.5" shininess="0.25" rgba="0.490196 0.678431 0.800000 1.000000"/>
+    <mesh file="full/wrist2/wrist2_0.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/wrist2/wrist2_1.obj" scale="1.0 1.0 1.0"/>
+    <mesh file="full/wrist2/wrist2_2.obj" scale="1.0 1.0 1.0"/>
+    <material name="Black.005" specular="0.5" shininess="0.25" rgba="0.033102 0.033102 0.033102 1.000000"/>
+    <material name="JointGrey.005" specular="0.5" shininess="0.25" rgba="0.278431 0.278431 0.278431 1.000000"/>
+    <material name="URBlue.004" specular="0.5" shininess="0.25" rgba="0.490196 0.678431 0.800000 1.000000"/>
+    <mesh file="full/wrist3/wrist3.obj" scale="1.0 1.0 1.0"/>
+    <material name="LinkGrey.002" specular="0.5" shininess="0.25" rgba="0.820392 0.820392 0.820392 1.000000"/>
+    <mesh file="full/robotiq_hande_cb_adapter/robotiq_hande_cb_adapter.obj" scale="1.0 1.0 1.0"/>
+    <material name="DEFAULT_MTL.001" specular="0.0" shininess="0.25" rgba="0.800000 0.800000 0.800000 1.000000"/>
+    <mesh file="full/hande/hande.obj" scale="0.001 0.001 0.001"/>
+    <mesh file="full/finger_v6/finger_v6.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.003" specular="0.5" shininess="0.36" rgba="0.200000 0.200000 0.200000 1.000000"/>
+    <mesh file="full/chassis/chassis.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.004" specular="0.5" shininess="0.36" rgba="0.150000 0.150000 0.150000 1.000000"/>
+    <mesh file="full/e-stop/e-stop.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.005" specular="0.5" shininess="0.36" rgba="0.900000 0.000000 0.000000 1.000000"/>
+    <mesh file="full/fenders/fenders.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.006" specular="0.5" shininess="0.36" rgba="0.950000 0.816000 0.082000 1.000000"/>
+    <mesh file="full/rocker/rocker.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.007" specular="0.5" shininess="0.36" rgba="0.150000 0.150000 0.150000 1.000000"/>
+    <mesh file="full/light/light.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.008" specular="0.5" shininess="0.36" rgba="1.000000 1.000000 1.000000 1.000000"/>
+    <mesh file="full/diff-link/diff-link.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.009" specular="0.5" shininess="0.36" rgba="0.800000 0.800000 0.800000 1.000000"/>
+    <mesh file="full/susp-link/susp-link.obj" scale="1.0 1.0 1.0"/>
+    <material name="new_mat_color.010" specular="0.5" shininess="0.36" rgba="0.800000 0.800000 0.800000 1.000000"/>
+  </asset>
+  <worldbody>
+    <body name="base_link">
+      <freejoint name="floating_base_joint"/>
+      <body name="front_left_wheel_link" pos="0.457367 0.56821 0.012023">
+        <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="15" diaginertia="0.675 0.415625 0.415625"/>
+        <joint name="front_left_wheel_joint" pos="0 0 0" axis="0 1 0"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" class="collision" name="front_left_wheel_link"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.2 0.2 0.2 1" class="visual"/>
+        <site name="front_left_wheel_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="rear_left_wheel_link" pos="-0.457367 0.56821 0.012023">
+        <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="15" diaginertia="0.675 0.415625 0.415625"/>
+        <joint name="rear_left_wheel_joint" pos="0 0 0" axis="0 1 0"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" class="collision" name="rear_left_wheel_link"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.2 0.2 0.2 1" class="visual"/>
+        <site name="rear_left_wheel_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="front_right_wheel_link" pos="0.457367 -0.56821 0.012023">
+        <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="15" diaginertia="0.675 0.415625 0.415625"/>
+        <joint name="front_right_wheel_joint" pos="0 0 0" axis="0 1 0"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" class="collision" name="front_right_wheel_link"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.2 0.2 0.2 1" class="visual"/>
+        <site name="front_right_wheel_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="rear_right_wheel_link" pos="-0.457367 -0.56821 0.012023">
+        <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="15" diaginertia="0.675 0.415625 0.415625"/>
+        <joint name="rear_right_wheel_joint" pos="0 0 0" axis="0 1 0"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" class="collision" name="rear_right_wheel_link"/>
+        <geom size="0.3 0.125" quat="0.707107 0.707107 0 0" type="cylinder" rgba="0.2 0.2 0.2 1" class="visual"/>
+        <site name="rear_right_wheel_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="arm_0_shoulder_link" pos="0.34692 0 0.73972" quat="0 0 0 1" gravcomp="1.0">
+        <inertial pos="0.021 -0.027 0" quat="0.988634 -0.000680926 0.148578 -0.0229591" mass="7.369" diaginertia="0.0353866 0.0352903 0.0202532"/>
+        <joint name="arm_0_shoulder_pan_joint" pos="0 0 0" axis="0 0 1" range="-6.28319 6.28319" actuatorfrcrange="-330 330"/>
+        <body name="arm_0_upper_arm_link" quat="0.707107 0.707107 0 0" gravcomp="1.0">
+          <inertial pos="-0.2327 0 0.158" quat="0.500033 0.499784 0.489585 0.510381" mass="13.051" diaginertia="0.77068 0.769758 0.0278114"/>
+          <joint name="arm_0_shoulder_lift_joint" pos="0 0 0" axis="0 0 1" range="-6.28319 6.28319" actuatorfrcrange="-330 330"/>
+          <body name="arm_0_forearm_link" pos="-0.6127 0 0" gravcomp="1.0">
+            <inertial pos="-0.33155 0 0.068" quat="0.492051 0.507971 0.507346 0.492394" mass="3.989" diaginertia="0.30928 0.306743 0.00985709"/>
+            <joint name="arm_0_elbow_joint" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-150 150"/>
+            <body name="arm_0_wrist_1_link" pos="-0.57155 0 0.17415" gravcomp="1.0">
+              <inertial pos="0 -0.018 0.007" quat="0.525776 0.850564 -0.0100431 9.45801e-05" mass="2.1" diaginertia="0.00296017 0.00269992 0.00209991"/>
+              <joint name="arm_0_wrist_1_joint" pos="0 0 0" axis="0 0 1" range="-6.28319 6.28319" actuatorfrcrange="-54 54"/>
+              <body name="arm_0_wrist_2_link" pos="0 -0.11985 -2.45816e-11" quat="0.707107 0.707107 0 0" gravcomp="1.0">
+                <inertial pos="0 0.018 -0.007" quat="0.525776 0.850564 -0.0100431 9.45801e-05" mass="1.98" diaginertia="0.00296017 0.00269992 0.00209991"/>
+                <joint name="arm_0_wrist_2_joint" pos="0 0 0" axis="0 0 1" range="-6.28319 6.28319" actuatorfrcrange="-54 54"/>
+                <body name="arm_0_wrist_3_link" pos="0 0.11655 -2.39048e-11" quat="0.707107 -0.707107 0 0" gravcomp="1.0">
+                  <inertial pos="-2.72113e-05 0 0.0225246" quat="0.707107 -0.000417927 -0.000417927 0.707107" mass="1.47887" diaginertia="0.00391707 0.00389659 0.000829806"/>
+                  <joint name="arm_0_wrist_3_joint" pos="0 0 0" axis="0 0 1" range="-6.28319 6.28319" actuatorfrcrange="-54 54"/>
+                  <body name="arm_0_finger_1_link" pos="-0.00325 -0.00201401 0.1115" quat="0.707107 0 0 -0.707107">
+                    <inertial pos="0 0 0" quat="0.501643 0.0653163 0.068404 0.859889" mass="0.0500198" diaginertia="6.28755e-05 6.17965e-05 5.99521e-06"/>
+                    <joint name="arm_0_finger_1_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.025" actuatorfrcrange="-130 130"/>
+                    <geom material="new_mat_color.003" mesh="finger_v6" class="visual" pos="" quat=""/>
+                    <geom mesh="finger_v6" class="collision" pos="" quat=""/>
+                    <geom size="0.0025 0.0025 0.00125" pos="0.0041 0.00325 0.074275" type="box" class="collision"/>
+                    <geom size="0.0025 0.0025 0.00125" pos="0.0041 0.00325 0.074275" type="box" rgba="1 0 0 0.5" class="visual"/>
+                    <site name="arm_0_finger_1_link" pos="0 0 0" quat="1.0 0 0 0"/>
+                    <site name="arm_0_push_frame_1" pos="0.0041 0.00325 0.073025" quat="1.0 0 0 0"/>
+                  </body>
+                  <body name="arm_0_finger_2_link" pos="0.00325 0.00201401 0.1115" quat="0.707107 0 0 0.707107">
+                    <inertial pos="0 0 0" quat="0.501643 0.0653163 0.068404 0.859889" mass="0.0500198" diaginertia="6.28755e-05 6.17965e-05 5.99521e-06"/>
+                    <joint name="arm_0_finger_2_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.025" actuatorfrcrange="-130 130"/>
+                    <geom material="new_mat_color.003" mesh="finger_v6" class="visual" pos="" quat=""/>
+                    <geom mesh="finger_v6" class="collision" pos="" quat=""/>
+                    <geom size="0.0025 0.0025 0.00125" pos="0.0041 0.00325 0.074275" quat="0 0 0 1" type="box" class="collision"/>
+                    <geom size="0.0025 0.0025 0.00125" pos="0.0041 0.00325 0.074275" quat="0 0 0 1" type="box" rgba="1 0 0 0.5" class="visual"/>
+                    <site name="arm_0_finger_2_link" pos="0 0 0" quat="1.0 0 0 0"/>
+                    <site name="arm_0_push_frame_2" pos="0.0041 0.00325 0.073025" quat="0 0 0 1.0"/>
+                  </body>
+                  <geom material="LinkGrey.002" mesh="wrist3" class="visual" pos="0 0 -0.1168" quat="0.707107 0.707107 0 0"/>
+                  <geom mesh="wrist3" class="collision" pos="0 0 -0.1168" quat="0.707107 0.707107 0 0"/>
+                  <geom material="DEFAULT_MTL.001" mesh="robotiq_hande_cb_adapter" class="visual" pos="" quat="0.707107 0 0 -0.707107"/>
+                  <geom mesh="robotiq_hande_cb_adapter" class="collision" pos="" quat="0.707107 0 0 -0.707107"/>
+                  <geom mesh="hande" class="visual" pos="0 0 0.011" quat="0.707107 0 0 -0.707107"/>
+                  <geom mesh="hande" class="collision" pos="0 0 0.011" quat="0.707107 0 0 -0.707107"/>
+                  <geom size="0.007" pos="0 0 0.1098" quat="0.707107 0 0 -0.707107" type="sphere" class="collision"/>
+                  <geom size="0.007" pos="0 0 0.1098" quat="0.707107 0 0 -0.707107" rgba="0 1 0 0.5" type="sphere" class="visual"/>
+                  <geom size="0.0025 0.0025 0.00125" pos="0 0 0.185775" quat="0.707107 0 0 -0.707107" type="box" class="collision"/>
+                  <geom size="0.0025 0.0025 0.00125" pos="0 0 0.185775" quat="0.707107 0 0 -0.707107" type="box" rgba="1 0 0 0.5" class="visual"/>
+                  <geom size="0.007" pos="0 0 0.17335" quat="0.707107 0 0 -0.707107" type="sphere" class="collision"/>
+                  <geom size="0.007" pos="0 0 0.17335" quat="0.707107 0 0 -0.707107" rgba="0 1 0 0.5" type="sphere" class="visual"/>
+                  <site name="arm_0_end_effector_link" pos="0 0 0" quat="1.0 0 0 0"/>
+                  <site name="arm_0_wrist_3_link" pos="0 0 0" quat="1.0 0 0 0"/>
+                  <site name="arm_0_ft_frame" pos="0 0 0" quat="0 1.0 0 0"/>
+                  <site name="arm_0_flange" pos="0 0 0" quat="-0.5000000000000001 0.5 0.5000000000000001 0.49999999999999994"/>
+                  <site name="arm_0_tool0" pos="0 0 0" quat="1.0 0 0 0"/>
+                  <site name="arm_0_robotiq_hande_cb_adapter" pos="0 0 0" quat="0.7071067811865476 0 0 -0.7071067811865475"/>
+                  <site name="arm_0_gripper_base_link" pos="0 0 0.011" quat="0.7071067811865476 0 0 -0.7071067811865475"/>
+                  <site name="arm_0_gripper_palm_link" pos="0 0 0.1098" quat="0.7071067811865476 0 0 -0.7071067811865475"/>
+                  <site name="arm_0_grasp_frame" pos="0 0 0.17335" quat="0.7071067811865476 0 0 -0.7071067811865475"/>
+                  <site name="arm_0_center_push_frame" pos="0 0 0.184525" quat="0.7071067811865476 0 0 -0.7071067811865475"/>
+                </body>
+                <geom mesh="wrist2_0" material="Black.005" class="visual" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <geom mesh="wrist2_1" material="URBlue.004" class="visual" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <geom mesh="wrist2_2" material="JointGrey.005" class="visual" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <geom mesh="wrist2_0" class="collision" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <geom mesh="wrist2_1" class="collision" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <geom mesh="wrist2_2" class="collision" pos="0 0 -0.12" quat="1 0 0 0"/>
+                <site name="arm_0_wrist_2_link" pos="0 0 0" quat="1.0 0 0 0"/>
+              </body>
+              <geom mesh="wrist1_0" material="Black.004" class="visual" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <geom mesh="wrist1_1" material="URBlue.003" class="visual" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <geom mesh="wrist1_2" material="JointGrey.004" class="visual" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <geom mesh="wrist1_0" class="collision" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <geom mesh="wrist1_1" class="collision" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <geom mesh="wrist1_2" class="collision" pos="0 0 -0.135" quat="0.707107 0.707107 0 0"/>
+              <site name="arm_0_wrist_1_link" pos="0 0 0" quat="1.0 0 0 0"/>
+            </body>
+            <geom mesh="forearm_0" material="URBlue.002" class="visual" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_1" material="Black.003" class="visual" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_2" material="JointGrey.003" class="visual" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_3" material="LinkGrey.001" class="visual" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_0" class="collision" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_1" class="collision" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_2" class="collision" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <geom mesh="forearm_3" class="collision" pos="0 0 0.0393" quat="0.5 0.5 -0.5 -0.5"/>
+            <site name="arm_0_forearm_link" pos="0 0 0" quat="1.0 0 0 0"/>
+          </body>
+          <geom mesh="upperarm_0" material="Black.002" class="visual" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_1" material="JointGrey.002" class="visual" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_2" material="URBlue.001" class="visual" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_3" material="LinkGrey" class="visual" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_0" class="collision" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_1" class="collision" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_2" class="collision" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <geom mesh="upperarm_3" class="collision" pos="0 0 0.1762" quat="0.5 0.5 -0.5 -0.5"/>
+          <site name="arm_0_upper_arm_link" pos="0 0 0" quat="1.0 0 0 0"/>
+        </body>
+        <geom mesh="shoulder_0" material="URBlue" class="visual" pos="" quat="0 0 0 1"/>
+        <geom mesh="shoulder_1" material="Black.001" class="visual" pos="" quat="0 0 0 1"/>
+        <geom mesh="shoulder_2" material="JointGrey.001" class="visual" pos="" quat="0 0 0 1"/>
+        <geom mesh="shoulder_0" class="collision" pos="" quat="0 0 0 1"/>
+        <geom mesh="shoulder_1" class="collision" pos="" quat="0 0 0 1"/>
+        <geom mesh="shoulder_2" class="collision" pos="" quat="0 0 0 1"/>
+        <site name="arm_0_shoulder_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <geom material="new_mat_color" mesh="bulkhead" class="visual" pos="0.00705 0 0.53902" quat="1 0 0 0"/>
+      <geom mesh="bulkhead" class="collision" pos="0.00705 0 0.53902" quat="1 0 0 0"/>
+      <geom material="new_mat_color.001" mesh="arm-mount-plate" class="visual" pos="0.34692 0 0.55902" quat="1 0 0 0"/>
+      <geom mesh="arm-mount-plate" class="collision" pos="0.34692 0 0.55902" quat="1 0 0 0"/>
+      <geom material="new_mat_color.002" mesh="control_frame" class="visual" pos="0 0 0.29718" quat="1 0 0 0"/>
+      <geom mesh="control_frame" class="collision" pos="0 0 0.29718" quat="1 0 0 0"/>
+      <geom mesh="base_0" material="Black" class="visual" pos="0.34692 0 0.55902" quat="-1 0 0 0"/>
+      <geom mesh="base_1" material="JointGrey" class="visual" pos="0.34692 0 0.55902" quat="-1 0 0 0"/>
+      <geom mesh="base_0" class="collision" pos="0.34692 0 0.55902" quat="-1 0 0 0"/>
+      <geom mesh="base_1" class="collision" pos="0.34692 0 0.55902" quat="-1 0 0 0"/>
+      <geom material="new_mat_color.004" mesh="chassis" class="visual" pos="0 0 0.025" quat="1 0 0 0"/>
+      <geom mesh="chassis" class="collision" pos="0 0 0.025" quat="1 0 0 0"/>
+      <geom material="new_mat_color.005" mesh="e-stop" class="visual" pos="0 0 0.025" quat=""/>
+      <geom mesh="e-stop" class="collision" pos="0 0 0.025" quat=""/>
+      <geom material="new_mat_color.006" mesh="fenders" class="visual" pos="0 0.56821 0.025" quat="0.707107 0 0 0.707107"/>
+      <geom mesh="fenders" class="collision" pos="0 0.56821 0.025" quat="0.707107 0 0 0.707107"/>
+      <geom material="new_mat_color.006" mesh="fenders" class="visual" pos="0 -0.56821 0.025" quat="0.707107 0 0 -0.707107"/>
+      <geom mesh="fenders" class="collision" pos="0 -0.56821 0.025" quat="0.707107 0 0 -0.707107"/>
+      <geom material="new_mat_color.007" mesh="rocker" class="visual" pos="0 0.56821 0.025" quat="0.707107 0 0 0.707107"/>
+      <geom mesh="rocker" class="collision" pos="0 0.56821 0.025" quat="0.707107 0 0 0.707107"/>
+      <geom material="new_mat_color.007" mesh="rocker" class="visual" pos="0 -0.56821 0.025" quat="0.707107 0 0 -0.707107"/>
+      <geom mesh="rocker" class="collision" pos="0 -0.56821 0.025" quat="0.707107 0 0 -0.707107"/>
+      <geom material="new_mat_color.008" mesh="light" class="visual" pos="0 0.54381 0.025" quat="1 0 0 0"/>
+      <geom mesh="light" class="collision" pos="0 0.54381 0.025" quat="1 0 0 0"/>
+      <geom material="new_mat_color.008" mesh="light" class="visual" pos="0 0.54381 0.025" quat="0 0 0 1"/>
+      <geom mesh="light" class="collision" pos="0 0.54381 0.025" quat="0 0 0 1"/>
+      <geom material="new_mat_color.008" mesh="light" class="visual" pos="0 -0.54381 0.025" quat="1 0 0 0"/>
+      <geom mesh="light" class="collision" pos="0 -0.54381 0.025" quat="1 0 0 0"/>
+      <geom material="new_mat_color.008" mesh="light" class="visual" pos="0 -0.54381 0.025" quat="0 0 0 -1"/>
+      <geom mesh="light" class="collision" pos="0 -0.54381 0.025" quat="0 0 0 -1"/>
+      <geom material="new_mat_color.009" mesh="diff-link" class="visual" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <geom mesh="diff-link" class="collision" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <geom material="new_mat_color.010" mesh="susp-link" class="visual" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <geom mesh="susp-link" class="collision" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <geom material="new_mat_color.010" mesh="susp-link" class="visual" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <geom mesh="susp-link" class="collision" pos="-0.5826 0 0.27479" quat="1 0 0 0"/>
+      <site name="bulkhead_link" pos="0 0 0.29718" quat="1.0 0 0 0"/>
+      <site name="bulkhead_mount" pos="0.34692 0 0.5390199999999999" quat="1.0 0 0 0"/>
+      <site name="arm_plate_link" pos="0.34692 0 0.5390199999999999" quat="1.0 0 0 0"/>
+      <site name="arm_plate_mount" pos="0.34692 0 0.55902" quat="1.0 0 0 0"/>
+      <site name="control_frame_link" pos="0 0 0.29718" quat="1.0 0 0 0"/>
+      <site name="arm_0_base_link" pos="0.34692 0 0.55902" quat="1.0 0 0 0"/>
+      <site name="arm_0_base_link_inertia" pos="0.34692 0 0.55902" quat="0 0 0 1.0"/>
+      <site name="arm_0_base" pos="0.34692 0 0.55902" quat="0 0 0 1.0"/>
+      <site name="base_link" pos="0 0 0" quat="1.0 0 0 0"/>
+      <site name="chassis_link" pos="0 0 0.025" quat="1.0 0 0 0"/>
+      <site name="left_diff_unit_link" pos="0 0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="left_diff_unit_headlight_link" pos="0 0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="left_diff_unit_taillight_link" pos="0 0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="right_diff_unit_link" pos="0 -0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="right_diff_unit_headlight_link" pos="0 -0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="right_diff_unit_taillight_link" pos="0 -0.56821 0.025" quat="1.0 0 0 0"/>
+      <site name="diff_link" pos="-0.5826 0 0.27479000000000003" quat="1.0 0 0 0"/>
+      <site name="default_mount" pos="0 0 0.29718" quat="1.0 0 0 0"/>
+      <site name="imu_0_link" pos="0 0 0.025" quat="1.0 0 0 0"/>
+      <site name="gps_0_link" pos="0 0 0.025" quat="1.0 0 0 0"/>
+    </body>
+  </worldbody>
+  <option integrator="implicitfast"/>
+  <default>
+    <default class="wilbur">
+      <material specular="0.5" shininess="0.25"/>
+      <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+      <position ctrlrange="-6.2831 6.2831"/>
+      <general biastype="affine" ctrlrange="-6.2831 6.2831"/>
+      <default class="size4">
+        <joint damping="10"/>
+        <general forcerange="-330 330" gainprm="100000" biasprm="0 -100000 -10000"/>
+      </default>
+      <default class="size3">
+        <joint damping="5"/>
+        <general forcerange="-150 150" gainprm="40000" biasprm="0 -40000 -4000"/>
+        <default class="size3_limited">
+          <joint range="-3.1415 3.1415"/>
+          <general ctrlrange="-3.1415 3.1415"/>
+        </default>
+      </default>
+      <default class="size2">
+        <joint damping="2"/>
+        <general forcerange="-56 56" gainprm="10000" biasprm="0 -10000 -1000"/>
+      </default>
+      <default class="hande">
+        <joint damping="2"/>
+        <general forcerange="-50 50" ctrlrange="0.0 0.025" gainprm="1000" biasprm="0 -1000 -100"/>
+      </default>
+      <default class="visual">
+        <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+      </default>
+      <default class="collision">
+        <geom group="3" type="mesh"/>
+      </default>
+    </default>
+  </default>
+  <actuator>
+    <position joint="arm_0_finger_1_joint" name="arm_0_finger_1_joint" kp="10000" dampratio="100.0" ctrlrange="0.0 0.025" forcerange="-50 50"/>
+    <general class="size4" name="arm_0_shoulder_pan_joint" joint="arm_0_shoulder_pan_joint"/>
+    <general class="size4" name="arm_0_shoulder_lift_joint" joint="arm_0_shoulder_lift_joint"/>
+    <general class="size3_limited" name="arm_0_elbow_joint" joint="arm_0_elbow_joint"/>
+    <general class="size2" name="arm_0_wrist_1_joint" joint="arm_0_wrist_1_joint"/>
+    <general class="size2" name="arm_0_wrist_2_joint" joint="arm_0_wrist_2_joint"/>
+    <general class="size2" name="arm_0_wrist_3_joint" joint="arm_0_wrist_3_joint"/>
+    <velocity name="front_right_wheel_joint" joint="front_right_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+    <velocity name="front_left_wheel_joint" joint="front_left_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+    <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+    <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+  </actuator>
+  <contact>
+    <exclude body1="base_link" body2="rear_left_wheel_link"/>
+    <exclude body1="base_link" body2="rear_right_wheel_link"/>
+    <exclude body1="base_link" body2="front_left_wheel_link"/>
+    <exclude body1="base_link" body2="front_right_wheel_link"/>
+    <pair geom1="rear_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+    <pair geom1="rear_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+    <pair geom1="front_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+    <pair geom1="front_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+  </contact>
+  <tendon>
+    <fixed name="left_split">
+      <joint joint="arm_0_finger_1_joint" coef="0.5"/>
+      <joint joint="arm_0_finger_2_joint" coef="0.5"/>
+    </fixed>
+  </tendon>
+  <equality>
+    <joint joint1="arm_0_finger_1_joint" joint2="arm_0_finger_2_joint" polycoef="0 1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+  <sensor>
+    <force name="arm_0_tcp_fts_sensor_force" site="arm_0_ft_frame"/>
+    <torque name="arm_0_tcp_fts_sensor_torque" site="arm_0_ft_frame"/>
+  </sensor>
+  <sensor>
+    <framequat name="imu_sensor_quat" objtype="site" objname="imu_0_link"/>
+    <gyro name="imu_sensor_gyro" site="imu_0_link"/>
+    <accelerometer name="imu_sensor_accel" site="imu_0_link"/>
+  </sensor>
+</mujoco>
