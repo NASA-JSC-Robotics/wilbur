@@ -20,7 +20,7 @@
         tf_prefix="$(arg tf_prefix)"
         ns="$(arg ns)"
         parent="$(arg parent)"
-        sim_ignition="false"
+        sim_gazebo="false"
         use_mock_hardware="true"
         include_ur="$(arg include_ur)"
         gripper_com_port="$(arg gripper_com_port)"
