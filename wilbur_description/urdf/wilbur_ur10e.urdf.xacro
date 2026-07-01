@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot name="w200" xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <!-- URDF Xacro file to start the ur10e by itself WITHOUT the mobile base -->
   <xacro:arg name="tf_prefix" default="" />
   <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this
   use_mock_hardware to be forward leaning-->
@@ -16,12 +17,10 @@
   <link name="world" />
   <!-- todo expose out args for hardware-->
   <xacro:wilbur_ur10e
-    name="arm_0_"
+    name="arm_0"
     tf_prefix="$(arg tf_prefix)"
     parent="world"
-    use_fake_hardware="$(arg use_fake_hardware)"
     initial_positions="${xacro.load_yaml(initial_positions_file)}"
-    generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
   >
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </xacro:wilbur_ur10e>
