@@ -15,11 +15,15 @@
     </gazebo>
   </xacro:macro>
 
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur_joint_control.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur_sensors.xacro" />
+
   <xacro:macro name="w200_ros2_control"
     params="
     name
     tf_prefix
     include_ur:=false
+    wilbur_ur10e_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
   ">
     <ros2_control name="${name}" type="system">
       <hardware>
@@ -27,64 +31,12 @@
       </hardware>
 
       <xacro:if value="$(arg include_ur)">
-        <joint name="${tf_prefix}arm_0_shoulder_pan_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
+        <xacro:ur_joint_control_description
+          tf_prefix="${tf_prefix}arm_0_"
+          initial_positions="${wilbur_ur10e_initial_positions}"
+        />
 
-        <joint name="${tf_prefix}arm_0_shoulder_lift_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
-
-
-        <joint name="${tf_prefix}arm_0_elbow_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
-
-
-        <joint name="${tf_prefix}arm_0_wrist_1_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
-
-
-        <joint name="${tf_prefix}arm_0_wrist_2_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
-
-
-        <joint name="${tf_prefix}arm_0_wrist_3_joint">
-          <command_interface name="position" />
-          <command_interface name="velocity" />
-          <command_interface name="effort" />
-          <state_interface name="position" />
-          <state_interface name="velocity" />
-          <state_interface name="effort" />
-        </joint>
-
+        <xacro:ur_sensors tf_prefix="${tf_prefix}" />
       </xacro:if>
 
       <joint name="${tf_prefix}front_left_wheel_joint">

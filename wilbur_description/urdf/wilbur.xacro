@@ -62,7 +62,7 @@
       <xacro:property name="initial_positions_file" value="${wilbur_ur10e_initial_positions}" />
       <!-- todo expose out args for hardware-->
       <xacro:wilbur_ur10e
-        name="arm_0_"
+        name="arm_0"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_plate_mount"
         initial_positions="${xacro.load_yaml(initial_positions_file)}"

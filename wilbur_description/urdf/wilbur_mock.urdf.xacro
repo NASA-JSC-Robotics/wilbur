@@ -16,6 +16,9 @@
 
     <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
 
+    <!-- convert to property to use substitution in function -->
+    <xacro:property name="initial_positions_file" default="$(arg wilbur_ur10e_initial_positions)"/>
+
     <xacro:wilbur
         tf_prefix="$(arg tf_prefix)"
         ns="$(arg ns)"
@@ -31,6 +34,8 @@
     <xacro:w200_ros2_control
         name="wilbur"
         tf_prefix="$(arg tf_prefix)"
-        include_ur="$(arg include_ur)" />
+        include_ur="$(arg include_ur)"
+        wilbur_ur10e_initial_positions="${xacro.load_yaml(initial_positions_file)}"
+        />
 
 </robot>
