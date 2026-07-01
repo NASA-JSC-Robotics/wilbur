@@ -53,7 +53,7 @@ velocity_controller:
       - 0.001
       - 0.01
     open_loop: False
-    enable_odom_tf: False
+    enable_odom_tf: True
     tf_frame_prefix_enable: False
     cmd_vel_timeout: 0.25
     use_stamped_vel: False
