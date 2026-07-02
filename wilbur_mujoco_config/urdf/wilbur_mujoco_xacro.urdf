@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Includes -->
-  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.urdf.xacro" />
+  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+
+  <xacro:property name="force_abs_paths" value="False" scope="global" />
 
   <xacro:wilbur />
-  <!--xacro:wilbur
-    generate_ros2_control_tag="false"
-  /-->
 
   <ros2_control name="MujocoSystem" type="system">
     <hardware>
-      <plugin>mujoco_ros2_simulation/MujocoSystemInterface</plugin>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
       <param name="mujoco_model">$(find wilbur_mujoco_config)/description/scene.xml</param>
       <param name="sim_speed_factor">1.0</param>
     </hardware>

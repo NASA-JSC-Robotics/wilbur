@@ -40,9 +40,6 @@ def main(filepath):
     # Get all elements with the tag name you're interested in
     body_elements = dom.getElementsByTagName("body")
 
-    include_element = dom.createElement("include")
-    include_element.setAttribute("file", "wheels.xml")
-
     # Filter by attribute value containing a substring
     for elem in body_elements:
         if "wheel_link" in elem.getAttribute("name"):

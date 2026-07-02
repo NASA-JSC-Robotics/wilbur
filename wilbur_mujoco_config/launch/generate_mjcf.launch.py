@@ -46,7 +46,7 @@ def generate_launch_description():
     )
 
     wilbur_mujoco_package_name = "wilbur_mujoco_config"
-    wilbur_mujoco_description_file = "wilbur_xacro.urdf"
+    wilbur_mujoco_description_file = "wilbur_mujoco_xacro.urdf"
 
     use_pregenerated_assets_dir = LaunchConfiguration("use_pregenerated_assets_dir")
 
