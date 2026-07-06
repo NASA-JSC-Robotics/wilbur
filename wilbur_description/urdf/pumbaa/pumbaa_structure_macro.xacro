@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <!-- Defined by Nathan Van Heyst from Clearpath Robotics in an email -->
+  <xacro:property name="side_rail_apart" value="0.3395" />
+  <xacro:property name="side_rail_height_top" value="0.0733" />
+  <xacro:property name="side_rail_width" value="0.025" />
+  <xacro:property name="side_rail_tall" value="0.05" />
+
+  <!-- Material used by a few xacros -->
+  <material name="sensor_mast_material">
+    <color rgba="0.3 0.8 0.2 0.5" />
+  </material>
+
+
+  <!-- Sensor_mast_visual_lidar_box -->
+  <xacro:property name="lidar_box_length" value="0.08" />
+  <xacro:property name="lidar_box_width" value="0.08" />
+  <xacro:property name="lidar_box_height" value="0.05" />
+
+
+  <!-- Electronics Box -->
+  <xacro:property name="electronics_box_length" value="1.0" />
+  <xacro:property name="electronics_box_width" value="0.62" />
+  <xacro:property name="electronics_box_height" value="0.2" />
+
+
+  <!-- Mast Structure -->
+  <xacro:property name="cross_bar_height_top" value="0.3" />
+  <xacro:property name="cross_bar_x_location" value="0.3" />
+  <xacro:property name="mast_post_width" value="0.05" />
+  <xacro:property name="cross_bar_tall" value="0.025" />
+
+  <!-- Derived values -->
+  <xacro:property name="side_rail_height_center" value="${side_rail_height_top-side_rail_tall/2}" />
+  <xacro:property name="mast_post_tall"
+    value="${cross_bar_height_top - cross_bar_tall - side_rail_height_top}" />
+  <xacro:property name="mast_post_z" value="${mast_post_tall/2 + side_rail_height_top}" />
+
+
+  <xacro:macro name="extrusion_rails"
+    params="tf_prefix:=''
+            parent:='default_mount'
+            ">
+
+    <!-- Extrusion Rails -->
+    <link name="left_extrusion_rail">
+      <visual>
+        <origin xyz="0.0 ${side_rail_apart} ${side_rail_height_center}" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="1.0 ${side_rail_width} ${side_rail_tall}" />
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="left_extrusion_rail_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="left_extrusion_rail" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+    <link name="right_extrusion_rail">
+      <visual>
+        <origin xyz="0.0 -${side_rail_apart} ${side_rail_height_center}" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="1.0 ${side_rail_width} ${side_rail_tall}" />
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="right_extrusion_rail_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="right_extrusion_rail" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+  </xacro:macro>
+
+
+  <xacro:macro name="electronics_box"
+    params="tf_prefix:=''
+            parent:='default_mount'
+            ">
+
+    <link name="electronics_keep_out">
+      <visual>
+        <geometry>
+          <box size="${electronics_box_length} ${electronics_box_width} ${electronics_box_height}" />
+        </geometry>
+        <material name="electronics_keep_out_material">
+          <color rgba="0.0 0.0 1.0 0.5" />
+        </material>
+      </visual>
+    </link>
+
+    <joint name="electronics_keep_out_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="electronics_keep_out" />
+      <origin xyz="0. 0.0 ${electronics_box_height/2 + side_rail_height_top}" rpy="0.0 0.0 0.0" />
+    </joint>
+
+
+    <!-- Fenders were commented out originally -->
+    <!-- 
+    <link name="fender_keep_out">
+      <visual>
+        <geometry>
+          <box size="1.4 0.3 0.14" />
+        </geometry>
+        <material name="fender_keep_out_material">
+          <color rgba="0.5 .0 0.5 0.5" />
+        </material>
+      </visual>
+    </link>
+
+    <joint
+      name="fender_keep_out_joint" type="fixed">
+      <parent link="default_mount" />
+      <child link="fender_keep_out" />
+      <origin xyz="0. 0.55 0.305" rpy="0.0 0.0 0.0" />
+    </joint>
+    
+    <link name="fender_keep_out_2">
+      <visual>
+        <geometry>
+          <box size="1.4 0.3 0.14" />
+        </geometry>
+        <material name="fender_keep_out_2_material">
+          <color rgba="0.5 .0 0.5 0.5" />
+        </material>
+      </visual>
+    </link>
+    
+    <joint
+      name="fender_keep_out_2_joint" type="fixed">
+      <parent link="default_mount" />
+      <child link="fender_keep_out_2" />
+      <origin xyz="0. -0.55 0.305" rpy="0.0 0.0 0.0" />
+    </joint> 
+    -->
+
+  </xacro:macro>
+
+
+  <xacro:macro name="mast_structure"
+    params="tf_prefix:=''
+            parent:='default_mount'
+            ">
+
+    <link name="sensor_mast_structure">
+
+      <visual name="sensor_mast_visual_post_1">
+        <material name="sensor_mast_material" />
+        <origin xyz="${cross_bar_x_location} -${side_rail_apart} ${mast_post_z}" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="${mast_post_width} ${side_rail_width} ${mast_post_tall}" />
+        </geometry>
+      </visual>
+
+      <visual name="sensor_mast_visual_post_2">
+        <material name="sensor_mast_material" />
+        <origin xyz="${cross_bar_x_location} ${side_rail_apart} ${mast_post_z}" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="${mast_post_width} ${side_rail_width} ${mast_post_tall}" />
+        </geometry>
+      </visual>
+
+      <visual name="sensor_mast_visual_crossbar">
+        <material name="sensor_mast_material" />
+        <origin xyz="${cross_bar_x_location} 0.0 ${cross_bar_height_top - cross_bar_tall/2}"
+          rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="${mast_post_width} ${side_rail_apart*2 + side_rail_width} ${side_rail_width}" />
+        </geometry>
+      </visual>
+
+      <visual name="sensor_mast_visual_lidar_box">
+        <material name="sensor_mast_material" />
+        <origin xyz="${cross_bar_x_location} 0.0 ${cross_bar_height_top + lidar_box_height/2}"
+          rpy="0.0 0.0 0.0" />
+        <geometry>
+          <box size="${lidar_box_length} ${lidar_box_width} ${lidar_box_height}" />
+        </geometry>
+      </visual>
+
+    </link>
+
+    <joint name="sensor_mast_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="sensor_mast_structure" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+  </xacro:macro>
+
+
+</robot>
