@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="tf_prefix" default="" />
+
+  <xacro:arg name="ns" default="" />
+  <xacro:arg name="abs_mesh_paths" default="false" />
+  <xacro:arg name="sim_gazebo" default="false" />
+  <xacro:arg name="use_mock_hardware" default="true" />
+  <xacro:arg name="parent" default="world" />
+  <xacro:arg name="include_ur" default="false" />
+  <xacro:arg name="gripper_com_port" default="/dev/ttyUSB0" />
+  <xacro:arg name="wilbur_ur10e_initial_positions"
+    default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
+
+  <!-- Force absolute mesh paths, necessary for Gazebo. -->
+  <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
+
+  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+
+  <xacro:wilbur
+    tf_prefix="$(arg tf_prefix)"
+    ns="$(arg ns)"
+    parent="$(arg parent)"
+    sim_gazebo="$(arg sim_gazebo)"
+    use_mock_hardware="$(arg use_mock_hardware)"
+    include_ur="false"
+    gripper_com_port="$(arg gripper_com_port)"
+    wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+  />
+
+  <!-- Pumbaa's structural components -->
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/pumbaa_structure_macro.xacro" />
+  <xacro:extrusion_rails />
+  <xacro:electronics_box />
+  <xacro:mast_structure />
+
+  <!-- Pumbaa sensors -->
+  <!-- Lidar3d -->
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/ouster_os1.xacro" />
+  <xacro:ouster_os1 name="lidar3d_0" parent="default_mount">
+    <origin xyz="0.3 0.0 0.35" rpy="0.0 0.0 0.0" />
+  </xacro:ouster_os1>
+
+  <!-- IMU -->
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/microstrain_imu.xacro" />
+  <xacro:microstrain_imu name="imu_1" parent="default_mount">
+    <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0" />
+  </xacro:microstrain_imu>
+
+  <!-- GPS -->
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/swiftnav_duro.xacro" />
+  <xacro:swiftnav_duro name="gps_1" parent="default_mount">
+    <origin xyz="0.3 -0.32 0.0" rpy="0.0 0.0 0.0" />
+  </xacro:swiftnav_duro>
+
+
+  <xacro:property name="realsense_materials_defined" value="true" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+  <!-- right camera -->
+  <xacro:sensor_d435
+    parent="default_mount"
+    use_nominal_extrinsics="true"
+    use_mesh="true"
+    name="camera_0">
+    <origin xyz="0.3 0.08 0.3" rpy="0.0 0.0 0.0" />
+  </xacro:sensor_d435>
+
+
+</robot>
