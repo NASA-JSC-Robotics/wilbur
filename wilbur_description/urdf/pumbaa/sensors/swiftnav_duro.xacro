@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <!--
+  https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/swiftnav_duro.urdf.xacro
+  https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/gnss_antenna.urdf.xacro 
+  -->
+
+  <xacro:macro name="swiftnav_duro" params="name parent *origin type:='spherical'">
+    <!--
+        Macro for adding GNSS (aka: GPS) antennas to robots
+
+        3 types are supported:
+            - "spherical" - dome-shaped antennas commonly used with SwiftNav Duro receivers
+            - "helical" - cylindrical antennas included by default with Fixposition systems
+            - "patch" - small, square antennas used with low-cost units like Ublox
+
+        The antenna has 1 link (the physical mounting point) called ${name}_link and 1
+        fixed joint called ${name}_joint connecting parent_link to ${name}_link.
+    -->
+    <xacro:if value="${type == 'spherical'}">
+      <link name="${name}_link">
+        <visual>
+          <material name="clearpath_white" />
+          <geometry>
+            <mesh filename="package://clearpath_sensors_description/meshes/gnss_spherical.stl" />
+          </geometry>
+        </visual>
+        <collision>
+          <material name="clearpath_white" />
+          <origin xyz="0.0000 -0.0000 0.0324" />
+          <geometry>
+            <sphere radius="0.1122" />
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="${name}_joint" type="fixed">
+        <parent link="${parent}" />
+        <child link="${name}_link" />
+        <xacro:insert_block name="origin" />
+      </joint>
+    </xacro:if>
+
+    <xacro:if value="${type == 'helical'}">
+      <link name="${name}_link">
+        <visual>
+          <material name="clearpath_white" />
+          <geometry>
+            <mesh filename="package://clearpath_sensors_description/meshes/gnss_helical.stl" />
+          </geometry>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </visual>
+        <collision>
+          <geometry>
+            <cylinder radius="0.015" length="0.055" />
+          </geometry>
+          <origin xyz="0 0 0.0275" rpy="0 0 0" />
+        </collision>
+      </link>
+
+      <joint name="${name}_joint" type="fixed">
+        <parent link="${parent}" />
+        <child link="${name}_link" />
+        <xacro:insert_block name="origin" />
+      </joint>
+    </xacro:if>
+
+    <xacro:if value="${type == 'patch'}">
+      <link name="${name}_link">
+        <visual>
+          <material name="clearpath_black" />
+          <geometry>
+            <mesh filename="package://clearpath_sensors_description/meshes/gnss_patch.stl" />
+          </geometry>
+        </visual>
+        <collision>
+          <geometry>
+            <box size="0.06 0.06 0.02" />
+          </geometry>
+          <origin xyz="0 0 0.01" rpy="0 0 0" />
+        </collision>
+      </link>
+
+      <joint name="${name}_joint" type="fixed">
+        <parent link="${parent}" />
+        <child link="${name}_link" />
+        <xacro:insert_block name="origin" />
+      </joint>
+    </xacro:if>
+
+
+  </xacro:macro>
+
+
+  <xacro:macro name="swiftnav_duro_gz" params="
+    name
+    tf_prefix
+  "
+  >
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="navsat">
+        <always_on>1</always_on>
+        <update_rate>1</update_rate>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <topic>${tf_prefix}/sensors/${name}/navsat</topic>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>
