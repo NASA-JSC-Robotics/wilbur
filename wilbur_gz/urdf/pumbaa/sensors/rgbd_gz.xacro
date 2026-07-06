@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Adapting pumbaa_description/models/pumbaa_robot/robot.yaml -->
+
+
+  <xacro:macro name="rgbd_camera"
+    params="
+    name
+    tf_prefix:=''
+    horizontal_fov:=1.25
+    vertical_foc:=1.0
+    image_width:=640
+    image_height:=480
+    update_rate:=30.0
+    ">
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="rgbd_camera">
+        <camera>
+          <horizontal_fov>1.25</horizontal_fov>
+          <image>
+            <width>${image_width}</width>
+            <height>${image_height}</height>
+          </image>
+          <clip>
+            <near>0.3</near>
+            <far>100</far>
+          </clip>
+          <gz_frame_id>${name}_link</gz_frame_id>
+          <optical_frame_id>${name}_color_optical_frame</optical_frame_id>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>${update_rate}</update_rate>
+        <visualize>true</visualize>
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <topic>${tf_prefix}/sensors/${name}</topic>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+  https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/ouster_os1.urdf.xacro -->
+
+  <xacro:macro name="ouster_os1_gz"
+    params="
+    name
+    tf_prefix:=''
+    samples_h:=1024 
+    min_ang_h:=${-pi} 
+    max_ang_h:=${pi}
+    samples_v:=64
+    min_ang_v:=${-21.2 * pi/180} 
+    max_ang_v:=${21.2 * pi/180}
+    update_rate:=10 
+    min_range:=0.5 
+    max_range:=170.0
+    ">
+
+    <gazebo reference="${name}_sensor_link">
+      <sensor name="${name}" type="gpu_lidar">
+        <update_rate>${update_rate}</update_rate>
+        <visualize>true</visualize>
+        <always_on>true</always_on>
+        <gz_frame_id>${name}_sensor_link</gz_frame_id>
+        <topic>${tf_prefix}/sensors/${name}/scan</topic>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>${samples_h}</samples>
+              <resolution>1</resolution>
+              <min_angle>${min_ang_h}</min_angle>
+              <max_angle>${max_ang_h}</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>${samples_v}</samples>
+              <resolution>1</resolution>
+              <min_angle>${min_ang_v}</min_angle>
+              <max_angle>${max_ang_v}</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>${min_range}</min>
+            <max>${max_range}</max>
+            <resolution>0.01</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+</robot>
