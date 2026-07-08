@@ -40,8 +40,6 @@
 
 # RGBD Camera
 
-# RGB
-
 - ros_topic_name: camera_0/color/camera_info
   gz_topic_name: /sensors/camera_0/camera_info
   ros_type_name: sensor_msgs/msg/CameraInfo
