@@ -6,7 +6,7 @@
 
   <xacro:macro name="microstrain_imu_gz"
     params="
-      name 
+      name
       tf_prefix:=''
       update_rate:=100
     ">
