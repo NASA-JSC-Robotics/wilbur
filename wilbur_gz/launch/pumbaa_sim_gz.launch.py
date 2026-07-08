@@ -102,6 +102,17 @@ def launch_setup(context, *args, **kwargs):
                 output="screen",
             ),
             IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_gazebo, "launch", "camera_bridge.launch.py")
+                ),
+                launch_arguments={
+                    "tf_prefix": tf_prefix,
+                    "ns": namespace,
+                    "gazebo_camera_name": "/sensors/camera_0",
+                    "ros_camera_name": "/camera_0",
+                }.items(),
+            ),
+            IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(pkg_deploy, "launch", "control.launch.py")),
                 launch_arguments={
                     "robot_description_package": "wilbur_gz",
