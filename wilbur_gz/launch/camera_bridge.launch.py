@@ -60,6 +60,10 @@ def launch_setup(context, *args, **kwargs):
                 gazebo_camera_name + "/image/theora",
                 ros_camera_name + "/color/theora",
             ),
+            (
+                gazebo_camera_name + "/image/zstd",
+                ros_camera_name + "/color/zstd",
+            ),
         ],
         parameters=[{"use_sim_time": True}],
     )
@@ -87,6 +91,10 @@ def launch_setup(context, *args, **kwargs):
             (
                 gazebo_camera_name + "/depth_image/theora",
                 ros_camera_name + "/depth/theora",
+            ),
+            (
+                gazebo_camera_name + "/depth_image/zstd",
+                ros_camera_name + "/depth/zstd",
             ),
         ],
         parameters=[{"use_sim_time": True}],
