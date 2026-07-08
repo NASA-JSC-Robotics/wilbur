@@ -4,7 +4,7 @@ project(wilbur_gz)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY config launch urdf worlds
+  DIRECTORY config launch urdf worlds rviz
   DESTINATION share/${PROJECT_NAME}
 )
 

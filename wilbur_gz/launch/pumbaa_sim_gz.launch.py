@@ -30,9 +30,13 @@ from launch.actions import (
     OpaqueFunction,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch.conditions import IfCondition
+from launch.substitutions import (
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
+from launch_ros.substitutions import FindPackageShare
 
 
 def launch_setup(context, *args, **kwargs):
@@ -65,6 +69,10 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
     nodes.append(world_group)
+
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("wilbur_gz"), "rviz", "sensor_checkout.rviz"]
+    )
 
     # add the robot to the world
     robot_group = GroupAction(
@@ -142,6 +150,13 @@ def launch_setup(context, *args, **kwargs):
                     "include_ur": "false",
                     "extra_xacro_args": "abs_mesh_paths:=true",
                 }.items(),
+            ),
+            Node(
+                package="rviz2",
+                executable="rviz2",
+                name="rviz2",
+                output="log",
+                arguments=["-d", rviz_config_file],
             ),
         ]
     )
