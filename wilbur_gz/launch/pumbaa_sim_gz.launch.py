@@ -58,7 +58,9 @@ def launch_setup(context, *args, **kwargs):
     world_group = GroupAction(
         [
             IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(os.path.join(pkg_gazebo, "launch", "start_world.launch.py"))
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_gazebo, "launch", "start_world.launch.py")
+                )
             )
         ]
     )
@@ -67,7 +69,9 @@ def launch_setup(context, *args, **kwargs):
     # add the robot to the world
     robot_group = GroupAction(
         [
-            PushRosNamespace(condition=IfCondition([use_namespace]), namespace=namespace),
+            PushRosNamespace(
+                condition=IfCondition([use_namespace]), namespace=namespace
+            ),
             Node(
                 package="ros_gz_sim",
                 executable="create",
@@ -87,6 +91,7 @@ def launch_setup(context, *args, **kwargs):
                     "-controller_manager",
                     "controller_manager",
                 ],
+                parameters=[{"use_sim_time": True}],
                 output="screen",
             ),
             Node(
@@ -95,11 +100,23 @@ def launch_setup(context, *args, **kwargs):
                 name="sim_bridge",
                 parameters=[
                     {
-                        "config_file": os.path.join(pkg_gazebo, "config", "pumbaa_bridge.yaml"),
+                        "config_file": os.path.join(
+                            pkg_gazebo, "config", "pumbaa_bridge.yaml"
+                        ),
                         "qos_overrides./tf_static.publisher.durability": "transient_local",
+                        "use_sim_time": True,
                     }
                 ],
                 output="screen",
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_gazebo, "launch", "localization.launch.py")
+                ),
+                launch_arguments={
+                    "tf_prefix": tf_prefix,
+                    "ns": namespace,
+                }.items(),
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
@@ -113,7 +130,9 @@ def launch_setup(context, *args, **kwargs):
                 }.items(),
             ),
             IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(os.path.join(pkg_deploy, "launch", "control.launch.py")),
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_deploy, "launch", "control.launch.py")
+                ),
                 launch_arguments={
                     "robot_description_package": "wilbur_gz",
                     "robot_description_file": "pumbaa/pumbaa_gz.urdf.xacro",
@@ -174,4 +193,6 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )
