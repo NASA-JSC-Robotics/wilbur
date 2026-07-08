@@ -4,7 +4,7 @@
 
   <!--
   https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/swiftnav_duro.urdf.xacro
-  https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/gnss_antenna.urdf.xacro 
+  https://github1s.com/clearpathrobotics/clearpath_common/blob/jazzy/clearpath_sensors_description/urdf/gnss_antenna.urdf.xacro
   -->
 
   <xacro:macro name="swiftnav_duro" params="name parent *origin type:='spherical'">

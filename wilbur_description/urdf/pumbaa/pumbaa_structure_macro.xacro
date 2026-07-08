@@ -102,7 +102,7 @@
 
 
     <!-- Fenders were commented out originally -->
-    <!-- 
+    <!--
     <link name="fender_keep_out">
       <visual>
         <geometry>
@@ -120,7 +120,7 @@
       <child link="fender_keep_out" />
       <origin xyz="0. 0.55 0.305" rpy="0.0 0.0 0.0" />
     </joint>
-    
+
     <link name="fender_keep_out_2">
       <visual>
         <geometry>
@@ -131,13 +131,13 @@
         </material>
       </visual>
     </link>
-    
+
     <joint
       name="fender_keep_out_2_joint" type="fixed">
       <parent link="default_mount" />
       <child link="fender_keep_out_2" />
       <origin xyz="0. -0.55 0.305" rpy="0.0 0.0 0.0" />
-    </joint> 
+    </joint>
     -->
 
   </xacro:macro>

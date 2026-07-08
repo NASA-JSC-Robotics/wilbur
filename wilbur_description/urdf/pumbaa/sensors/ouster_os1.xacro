@@ -219,13 +219,13 @@
   <xacro:macro name="ouster_os1_gz"
     params="
     name
-    samples_h:=1024 min_ang_h:=${-pi} 
+    samples_h:=1024 min_ang_h:=${-pi}
     max_ang_h:=${pi}
     samples_v:=64
-    min_ang_v:=${-21.2 * pi/180} 
+    min_ang_v:=${-21.2 * pi/180}
     max_ang_v:=${21.2 * pi/180}
-    update_rate:=10 
-    min_range:=0.5 
+    update_rate:=10
+    min_range:=0.5
     max_range:=170.0
     ">
 
