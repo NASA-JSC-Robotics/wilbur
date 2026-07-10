@@ -1,11 +1,32 @@
 <?xml version="1.0"?>
 <robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Includes -->
-  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+  <xacro:arg name="sim_speed" default="1.0" />
+  <xacro:arg name="base_joint_type" default="floating"/>
+  <xacro:arg name="use_pregenerated_mjcf" default="false"/>
 
   <xacro:property name="force_abs_paths" value="False" scope="global" />
 
-  <xacro:wilbur />
+  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+
+  <xacro:wilbur
+  />
+  <!-- special inputs for mujoco processing-->
+  <xacro:include
+    filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_raw_inputs.xacro" />
+  <xacro:include
+    filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_processed_inputs.xacro" />
+  <xacro:include filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_scene.xacro" />
+
+  <mujoco_inputs>
+        <raw_inputs>
+            <xacro:wilbur_mujoco_raw_inputs />
+        </raw_inputs>
+        <processed_inputs>
+            <xacro:wilbur_mujoco_processed_inputs />
+        </processed_inputs>
+        <xacro:wilbur_mujoco_scene />
+    </mujoco_inputs>
 
   <ros2_control name="MujocoSystem" type="system">
     <hardware>
@@ -15,65 +36,65 @@
     </hardware>
 
     <joint name="arm_0_finger_1_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_shoulder_pan_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_shoulder_lift_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_elbow_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">${radians(-143)}</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_wrist_1_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_wrist_2_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">${radians(-90)}</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
     <joint name="arm_0_wrist_3_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
 
     <joint name="front_left_wheel_joint">
       <command_interface name="velocity" />
-      <state_interface name="position" >
+      <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity" />
@@ -81,7 +102,7 @@
     </joint>
     <joint name="front_right_wheel_joint">
       <command_interface name="velocity" />
-      <state_interface name="position" >
+      <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity" />
@@ -89,7 +110,7 @@
     </joint>
     <joint name="rear_left_wheel_joint">
       <command_interface name="velocity" />
-      <state_interface name="position" >
+      <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity" />
@@ -97,7 +118,7 @@
     </joint>
     <joint name="rear_right_wheel_joint">
       <command_interface name="velocity" />
-      <state_interface name="position" >
+      <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity" />
@@ -107,12 +128,12 @@
     <sensor name="arm_0_tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       <param name="mujoco_sensor_name">arm_0_tcp_fts_sensor</param>
-      <state_interface name="force.x"/>
-      <state_interface name="force.y"/>
-      <state_interface name="force.z"/>
-      <state_interface name="torque.x"/>
-      <state_interface name="torque.y"/>
-      <state_interface name="torque.z"/>
+      <state_interface name="force.x" />
+      <state_interface name="force.y" />
+      <state_interface name="force.z" />
+      <state_interface name="torque.x" />
+      <state_interface name="torque.y" />
+      <state_interface name="torque.z" />
     </sensor>
 
   </ros2_control>

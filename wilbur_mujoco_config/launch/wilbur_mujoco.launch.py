@@ -66,7 +66,7 @@ def generate_launch_description():
 
     wilbur_mujoco_package_name = "wilbur_mujoco_config"
     wilbur_mujoco_description_file = "wilbur_mujoco_xacro.urdf"
-    rviz_config_file = os.path.join(get_package_share_directory("wilbur_mujoco_config"), "rviz", "lidar_and_odom_config.rviz")
+    rviz_config_file = os.path.join(get_package_share_directory("wilbur_mujoco_config"), "rviz", "mujoco.rviz")
 
     mjcf_robot_description_content = Command(
         [
@@ -124,7 +124,7 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "use_fake_hardware": "true",
+            "platform": "mock_hardware",
             "robot_description_package": "wilbur_mujoco_config",
             "robot_description_file": "wilbur_mujoco_xacro.urdf",
             "use_sim_time": "true",

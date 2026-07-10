@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:macro name="wilbur"
     params="tf_prefix:=''
             ns:=''
-            parent:=wolrd
+            parent:=world
             sim_ignition:=false
             use_mock_hardware:=false
+            generate_ros2_control_tag:=false
             include_ur:=true
             gripper_com_port:=/dev/ttyUSB0
             wilbur_ur10e_initial_positions:='$(find wilbur_deploy)/config/ur_initial_positions.yaml'
@@ -47,7 +48,6 @@
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description"
             file_path="meshes/control_frame.stl" />
         </geometry>
-        <material name="clearpath_dark_grey" />
       </collision>
     </link>
 
@@ -92,6 +92,7 @@
     <xacro:w200
       wheel="default"
       tf_prefix="${tf_prefix}"
+      
       ns="${ns}"
     />
 

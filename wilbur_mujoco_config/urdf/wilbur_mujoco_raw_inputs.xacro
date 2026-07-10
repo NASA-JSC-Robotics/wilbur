@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="wilbur_mujoco_raw_inputs">
+
+    <option integrator="implicitfast"/>
+
+    <default>
+      <default class="wilbur">
+        <material specular="0.5" shininess="0.25"/>
+        <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+        <position ctrlrange="-6.2831 6.2831"/>
+        <general biastype="affine" ctrlrange="-6.2831 6.2831"/>
+        <default class="size4">
+          <joint damping="10"/>
+          <general forcerange="-330 330" gainprm="100000" biasprm="0 -100000 -10000"/>
+        </default>
+        <default class="size3">
+          <joint damping="5"/>
+          <general forcerange="-150 150" gainprm="40000" biasprm="0 -40000 -4000"/>
+          <default class="size3_limited">
+            <joint range="-3.1415 3.1415"/>
+            <general ctrlrange="-3.1415 3.1415"/>
+          </default>
+        </default>
+        <default class="size2">
+          <joint damping="2"/>
+          <general forcerange="-56 56" gainprm="10000" biasprm="0 -10000 -1000"/>
+        </default>
+        <default class="hande">
+          <joint damping="2"/>
+          <general forcerange="-50 50" ctrlrange="0.0 0.025" gainprm="1000" biasprm="0 -1000 -100"/>
+        </default>
+        <default class="visual">
+          <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+        </default>
+        <default class="collision">
+          <geom group="3" type="mesh"/>
+        </default>
+      </default>
+    </default>
+
+    <actuator>
+      <position joint="arm_0_finger_1_joint" name="arm_0_finger_1_joint" kp="10000" dampratio="100.0" ctrlrange="0.0 0.025" forcerange="-50 50"/>
+
+      <general class="size4" name="arm_0_shoulder_pan_joint" joint="arm_0_shoulder_pan_joint"/>
+      <general class="size4" name="arm_0_shoulder_lift_joint" joint="arm_0_shoulder_lift_joint"/>
+      <general class="size3_limited" name="arm_0_elbow_joint" joint="arm_0_elbow_joint"/>
+      <general class="size2" name="arm_0_wrist_1_joint" joint="arm_0_wrist_1_joint"/>
+      <general class="size2" name="arm_0_wrist_2_joint" joint="arm_0_wrist_2_joint"/>
+      <general class="size2" name="arm_0_wrist_3_joint" joint="arm_0_wrist_3_joint"/>
+
+      <velocity name="front_right_wheel_joint" joint="front_right_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+      <velocity name="front_left_wheel_joint" joint="front_left_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+      <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+      <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint" ctrlrange="-15 15" kv="2000"/>
+    </actuator>
+
+    <contact>
+
+      <exclude body1="base_link" body2="rear_left_wheel_link"/>
+      <exclude body1="base_link" body2="rear_right_wheel_link"/>
+      <exclude body1="base_link" body2="front_left_wheel_link"/>
+      <exclude body1="base_link" body2="front_right_wheel_link"/>
+
+      <pair geom1="rear_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+      <pair geom1="rear_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+      <pair geom1="front_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+      <pair geom1="front_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
+    </contact>
+
+    <tendon>
+      <fixed name="left_split">
+        <joint joint="arm_0_finger_1_joint" coef="0.5"/>
+        <joint joint="arm_0_finger_2_joint" coef="0.5"/>
+      </fixed>
+    </tendon>
+
+    <equality>
+      <joint joint1="arm_0_finger_1_joint" joint2="arm_0_finger_2_joint" polycoef="0 1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    </equality>
+
+    <sensor>
+      <force name="arm_0_tcp_fts_sensor_force" site="arm_0_ft_frame"/>
+      <torque name="arm_0_tcp_fts_sensor_torque" site="arm_0_ft_frame"/>
+    </sensor>
+    
+    <sensor>
+      <framequat name="imu_sensor_quat" objtype="site" objname="imu_0_link" />
+      <gyro name="imu_sensor_gyro" site="imu_0_link" />
+      <accelerometer name="imu_sensor_accel" site="imu_0_link" />
+    </sensor>
+  
+  </xacro:macro>
+
+</robot>

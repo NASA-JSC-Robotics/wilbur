@@ -54,7 +54,6 @@ def launch_setup(context, *args, **kwargs):
     sim_ignition = "false"
     mock_hardware = "false"
     use_fake_hardware = "false"
-
     # Decide which platfrom we are using
     match platform:
         case "sim_ignition":
