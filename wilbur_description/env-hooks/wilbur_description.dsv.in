@@ -1,0 +1,10 @@
+prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;share/@PROJECT_NAME@/models
+prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;share/@PROJECT_NAME@/worlds
+prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;share/@PROJECT_NAME@/meshes
+prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;share
+set-if-unset;MESA_GL_VERSION_OVERRIDE;3.3
+prepend-non-duplicate;SDF_PATH;share/@PROJECT_NAME@/models
+prepend-non-duplicate;SDF_PATH;share/@PROJECT_NAME@/worlds
+prepend-non-duplicate;GZ_SIM_FILE_PATH;share/@PROJECT_NAME@/models
+prepend-non-duplicate;GZ_SIM_FILE_PATH;share/@PROJECT_NAME@/worlds
+prepend-non-duplicate;GZ_SIM_FILE_PATH;share/@PROJECT_NAME@/meshes
