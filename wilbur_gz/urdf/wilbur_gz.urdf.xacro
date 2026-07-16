@@ -32,10 +32,18 @@
     <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
     <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
 
-    <xacro:wilbur_gz_ros2_control
-        gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
-        ns="$(arg ns)"
-    />
+    <xacro:if value="$(arg include_ur)">
+        <xacro:wilbur_gz_ros2_control
+            gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
+            ns="$(arg ns)"
+        />
+    </xacro:if>
+    <xacro:unless value="$(arg include_ur)">
+        <xacro:wilbur_gz_ros2_control
+            gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers_no_ur.yaml"
+            ns="$(arg ns)"
+        />
+    </xacro:unless>
     <xacro:wilbur_gz />
 
     <xacro:w200_ros2_control

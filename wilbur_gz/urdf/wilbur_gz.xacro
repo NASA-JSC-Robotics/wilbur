@@ -19,7 +19,7 @@
     params="
     name
     tf_prefix
-    include_ur:=false
+    include_ur:=true
   ">
     <ros2_control name="${name}" type="system">
       <hardware>

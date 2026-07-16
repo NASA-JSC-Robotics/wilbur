@@ -41,6 +41,7 @@
     </default>
 
     <actuator>
+
       <position joint="arm_0_finger_1_joint" name="arm_0_finger_1_joint" kp="10000" dampratio="100.0" ctrlrange="0.0 0.025" forcerange="-50 50"/>
 
       <general class="size4" name="arm_0_shoulder_pan_joint" joint="arm_0_shoulder_pan_joint"/>
@@ -56,18 +57,21 @@
       <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint" ctrlrange="-15 15" kv="2000"/>
     </actuator>
 
-    <contact>
 
+<!--      
+    <contact>
       <exclude body1="base_link" body2="rear_left_wheel_link"/>
       <exclude body1="base_link" body2="rear_right_wheel_link"/>
       <exclude body1="base_link" body2="front_left_wheel_link"/>
       <exclude body1="base_link" body2="front_right_wheel_link"/>
 
+    
       <pair geom1="rear_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
       <pair geom1="rear_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
       <pair geom1="front_left_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
       <pair geom1="front_right_wheel_link" geom2="floor" condim="3" friction="1.0 1.0 0.005 0.0001 0.0001" solimp="0.0 0.99 0.03 0.5 2"/>
-    </contact>
+
+    </contact>  -->
 
     <tendon>
       <fixed name="left_split">
@@ -84,7 +88,7 @@
       <force name="arm_0_tcp_fts_sensor_force" site="arm_0_ft_frame"/>
       <torque name="arm_0_tcp_fts_sensor_torque" site="arm_0_ft_frame"/>
     </sensor>
-    
+
     <sensor>
       <framequat name="imu_sensor_quat" objtype="site" objname="imu_0_link" />
       <gyro name="imu_sensor_gyro" site="imu_0_link" />

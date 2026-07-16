@@ -10,9 +10,10 @@ find_package(ament_cmake REQUIRED)
 
 install(
   DIRECTORY
-    description
     launch
     urdf
+    mjcf_data
+    config
     rviz
   DESTINATION
     share/${PROJECT_NAME}

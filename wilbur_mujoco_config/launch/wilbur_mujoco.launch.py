@@ -139,4 +139,4 @@ def generate_launch_description():
             output="log",
             arguments=["-d", rviz_config_file],
         )
-    return LaunchDescription(declared_arguments + [generate_mjcf, control_launch, rviz_launch])
+    return LaunchDescription(declared_arguments + [generate_mjcf, control_launch])
