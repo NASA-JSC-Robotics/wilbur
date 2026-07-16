@@ -14,9 +14,14 @@
     <xacro:arg name="wilbur_ur10e_initial_positions"
         default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
+        "
+
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+    <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
+    <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
 
     <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
+    <xacro:property name="generate_ros2_control_tag" value="false" />
 
     <xacro:wilbur
         tf_prefix="$(arg tf_prefix)"
@@ -27,16 +32,17 @@
         include_ur="$(arg include_ur)"
         gripper_com_port="$(arg gripper_com_port)"
         wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+        generate_ros2_control_tag="${generate_ros2_control_tag}"
     />
 
     <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />
     <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.xacro" />
 
     <xacro:if value="$(arg include_ur)">
-        <xacro:wilbur_gz_ros2_control
-            gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
-            ns="$(arg ns)"
-        />
+    <xacro:wilbur_gz_ros2_control
+        gazebo_controllers_config_file="$(find wilbur_gz)/config/gazebo_controllers.yaml"
+        ns="$(arg ns)"
+    />
     </xacro:if>
     <xacro:unless value="$(arg include_ur)">
         <xacro:wilbur_gz_ros2_control
@@ -44,11 +50,7 @@
             ns="$(arg ns)"
         />
     </xacro:unless>
+    
     <xacro:wilbur_gz />
-
-    <xacro:w200_ros2_control
-        name="wilbur"
-        tf_prefix="$(arg tf_prefix)"
-        include_ur="$(arg include_ur)" />
 
 </robot>

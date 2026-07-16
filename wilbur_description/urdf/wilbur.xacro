@@ -66,6 +66,7 @@
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_plate_mount"
         initial_positions="${xacro.load_yaml(initial_positions_file)}"
+        generate_ros2_control_tag="${generate_ros2_control_tag}"
       >
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:wilbur_ur10e>
@@ -76,6 +77,7 @@
 
       <xacro:dextivr_hande
         name="dextivr_hande"
+        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
         sim_ignition="${sim_ignition}"
@@ -92,7 +94,6 @@
     <xacro:w200
       wheel="default"
       tf_prefix="${tf_prefix}"
-      
       ns="${ns}"
     />
 

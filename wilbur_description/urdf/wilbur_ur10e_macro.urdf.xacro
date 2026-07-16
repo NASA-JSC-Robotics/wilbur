@@ -9,6 +9,7 @@
             *origin
             parent:='world'
             initial_positions='$(find wilbur_deploy)/config/ur_initial_positions.yaml'
+            generate_ros2_control_tag:=false
             ">
 
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />

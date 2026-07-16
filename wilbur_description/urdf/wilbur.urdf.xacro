@@ -11,6 +11,7 @@
   <xacro:arg name="gripper_com_port" default="/dev/ttyUSB0" />
   <xacro:arg name="wilbur_ur10e_initial_positions"
     default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
+  <xacro:arg name="generate_ros2_control_tag" default="false" />
 
 
   <!-- Force absolute mesh paths, necessary for Gazebo. -->
@@ -27,6 +28,7 @@
     include_ur="$(arg include_ur)"
     gripper_com_port="$(arg gripper_com_port)"
     wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+    generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
   />
 
 

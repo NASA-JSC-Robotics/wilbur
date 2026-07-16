@@ -15,7 +15,6 @@
     sim_ignition="$(arg sim_ignition)"
     use_fake_hardware="$(arg use_fake_hardware)"
     ns="$(arg ns)"
-    generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
   />
 
 </robot>
