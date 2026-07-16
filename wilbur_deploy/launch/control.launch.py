@@ -34,9 +34,14 @@ from wilbur_deploy.pig_warnings import (
     pig_mockhardware,
     pig_gazebo,
 )
+from ament_index_python.packages import get_package_share_directory
+from launch.conditions import UnlessCondition, IfCondition
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterValue
+from launch_ros.parameter_descriptions import ParameterFile
+
 from launch_ros.actions import Node
+from nav2_common.launch import RewrittenYaml
 
 from wilbur_deploy.launch_utils import AddLaunchDescriptions
 
@@ -50,7 +55,33 @@ def launch_setup(context, *args, **kwargs):
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
     extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
+    controller_prefix = LaunchConfiguration("controller_prefix").perform(context)
 
+    # helper function to get controllers files that we might need
+    def GetControllersFile(file_name):
+        return PathJoinSubstitution(
+            [
+                get_package_share_directory("wilbur_deploy"),
+                "config",
+                file_name,
+            ]
+        )
+    param_substitutions = {
+        'controller_prefix_': controller_prefix
+    }
+
+    # launch controller manager
+
+    # contains update rate
+    controllers_common = GetControllersFile("controllers_common.yaml")
+    # controllers for the base
+    controllers_base = GetControllersFile("controllers_w200.yaml")
+    # controllers for the arm
+    controllers_ur = GetControllersFile("controllers_ur.yaml")
+    
+    # controllers for the end-effector
+    controllers_hande = GetControllersFile("controllers_hande.yaml")
+    
     sim_ignition = "false"
     mock_hardware = "false"
     use_fake_hardware = "false"
@@ -59,10 +90,12 @@ def launch_setup(context, *args, **kwargs):
         case "sim_ignition":
             print("Ignition sim")
             sim_ignition = "true"
+            use_sim_time = True
             pig_gazebo()
         case "mock_hardware":
             print("Mock hardware")
             mock_hardware = "true"
+            use_sim_time = True
             use_fake_hardware = "true"
             pig_mockhardware()
         case "hardware":
@@ -108,6 +141,28 @@ def launch_setup(context, *args, **kwargs):
         "ns": ns,
     }.items()
 
+    # start the controller manager node with all of the controller config files
+    control_node = Node(
+        package="mujoco_ros2_control",
+        executable="ros2_control_node",
+        namespace=ns,
+        # allow_substs allows tf_prefix to be pulled in
+        parameters=[
+            ParameterFile(controllers_common, allow_substs=True),
+            ParameterFile(controllers_base, allow_substs=True),
+            ParameterFile(controllers_ur, allow_substs=True),
+            ParameterFile(controllers_hande, allow_substs=True),
+            {"use_sim_time": use_sim_time},
+        ],
+        output="both",
+        condition=IfCondition(use_fake_hardware)
+
+    )
+
+    print("******************************************************")
+    print("******************", include_ur, "*******************")
+    print("******************************************************")
+
     # List to keep track of launch file names to start
     launch_file_names = []
     launch_file_names.append("spawn_controllers.launch.py")
@@ -119,6 +174,7 @@ def launch_setup(context, *args, **kwargs):
         launch_args=common_launch_args,
     )
     launch_files.append(robot_state_publisher_node)
+    launch_files.append(control_node)
     return launch_files
 
 
@@ -180,6 +236,13 @@ def generate_launch_description():
             default_value="",
             description="Extra args to add for making a robot description. "
             "Should be in the format of 'arg1:=value1 arg2:=value2'",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "controller_prefix",
+            default_value="wilbur_",
+            description="prefix used in the yaml controllers files",
         )
     )
 
