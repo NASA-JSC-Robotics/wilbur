@@ -78,7 +78,6 @@ def launch_setup(context, *args, **kwargs):
     controllers_base = GetControllersFile("controllers_w200.yaml")
     # controllers for the arm
     controllers_ur = GetControllersFile("controllers_ur.yaml")
-    
     # controllers for the end-effector
     controllers_hande = GetControllersFile("controllers_hande.yaml")
     
@@ -156,12 +155,7 @@ def launch_setup(context, *args, **kwargs):
         ],
         output="both",
         condition=IfCondition(use_fake_hardware)
-
     )
-
-    print("******************************************************")
-    print("******************", include_ur, "*******************")
-    print("******************************************************")
 
     # List to keep track of launch file names to start
     launch_file_names = []
@@ -174,7 +168,7 @@ def launch_setup(context, *args, **kwargs):
         launch_args=common_launch_args,
     )
     launch_files.append(robot_state_publisher_node)
-    launch_files.append(control_node)
+#    launch_files.append(control_node)
     return launch_files
 
 

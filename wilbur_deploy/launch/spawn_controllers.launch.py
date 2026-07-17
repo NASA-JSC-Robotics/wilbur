@@ -60,17 +60,27 @@ def generate_launch_description():
             description="Start robot with simulated hardware mirroring command to its states.",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "include_hande",
+            default_value="false",
+            description="Start gripper controller.",
+        )
+    )
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
     include_ur = LaunchConfiguration("include_ur")
+    include_hande = LaunchConfiguration("include_hande")
 
     controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
     controllers_to_spawn = []
+
     controllers_to_spawn.append(
         SpawnController(controller_manager_name, "velocity_controller")
     )
+
     controllers_to_spawn.append(
         SpawnController(controller_manager_name, "joint_state_broadcaster")
     )
@@ -82,12 +92,12 @@ def generate_launch_description():
             condition=IfCondition(include_ur),
         )
     )
-    controllers_to_spawn.append(
-        SpawnController(
-            controller_manager_name,
-            "robotiq_gripper_hande_controller",
-            condition=IfCondition(include_ur),
-        )
-    )
+#    controllers_to_spawn.append(
+#        SpawnController(
+#            controller_manager_name,
+#            "robotiq_gripper_hande_controller",
+#            condition=IfCondition(include_hande),
+#        )
+#    )
 
     return LaunchDescription(declared_arguments + controllers_to_spawn)

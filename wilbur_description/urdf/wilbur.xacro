@@ -21,8 +21,7 @@
     <xacro:include filename="$(find wilbur_description)/urdf/gen_mesh.xacro" />
     <!-- Sub-robots -->
     <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
-    <xacro:include filename="$(find wilbur_description)/urdf/wilbur_ur10e_macro.urdf.xacro" />
-    <xacro:include filename="$(find dextivr_hande_description)/urdf/dextivr_hande.xacro" />
+    <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
 
 
     <!-- Attachments -->
@@ -59,6 +58,8 @@
 
     <!-- Manipulators -->
     <xacro:if value="${include_ur}">
+      <xacro:include filename="$(find wilbur_description)/urdf/wilbur_ur10e_macro.urdf.xacro" />
+      <xacro:include filename="$(find dextivr_hande_description)/urdf/dextivr_hande.xacro" />
       <xacro:property name="initial_positions_file" value="${wilbur_ur10e_initial_positions}" />
       <!-- todo expose out args for hardware-->
       <xacro:wilbur_ur10e
@@ -66,7 +67,6 @@
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_plate_mount"
         initial_positions="${xacro.load_yaml(initial_positions_file)}"
-        generate_ros2_control_tag="${generate_ros2_control_tag}"
       >
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:wilbur_ur10e>
@@ -75,9 +75,8 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:frame>
 
-      <xacro:dextivr_hande
+      <!--xacro:dextivr_hande
         name="dextivr_hande"
-        generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
         sim_ignition="${sim_ignition}"
@@ -87,7 +86,7 @@
         marker_opacity="0.5"
         finger_xacro="fngr_v6">
         <origin xyz="0 0 0" rpy="0 0 ${radians(-90)}" />
-      </xacro:dextivr_hande>
+      </xacro:dextivr_hande-->
 
     </xacro:if>
 
@@ -96,6 +95,14 @@
       tf_prefix="${tf_prefix}"
       ns="${ns}"
     />
+
+    <xacro:if value="${generate_ros2_control_tag}">
+      <xacro:w200_ros2_control
+        name=''
+        use_fake_hardware="${use_mock_hardware}"
+        tf_prefix="${tf_prefix">
+      </xacro:w200_ros2_control>
+    </xacro:if>
 
 
   </xacro:macro>

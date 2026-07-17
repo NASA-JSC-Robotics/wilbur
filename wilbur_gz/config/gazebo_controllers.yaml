@@ -101,22 +101,16 @@ velocity_controller:
     publish_wheel_data: True
     linear.x.has_velocity_limits: True
     linear.x.has_acceleration_limits: True
-    linear.x.has_jerk_limits: False
     linear.x.max_velocity: 5.0
     linear.x.min_velocity: -5.0
     linear.x.max_acceleration: 50.0
     linear.x.min_acceleration: -50.0
-    linear.x.max_jerk: 0.0
-    linear.x.min_jerk: 0.0
     angular.z.has_velocity_limits: True
     angular.z.has_acceleration_limits: True
-    angular.z.has_jerk_limits: False
     angular.z.max_velocity: 4.0
     angular.z.min_velocity: -4.0
     angular.z.max_acceleration: 40.0
     angular.z.min_acceleration: -40.0
-    angular.z.max_jerk: 0.0
-    angular.z.min_jerk: 0.0
 
 joint_trajectory_controller:
   ros__parameters:
@@ -145,7 +139,8 @@ joint_trajectory_controller:
       wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
       wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
 
-robotiq_gripper_hande_controller:
-  ros__parameters:
-    default: true
-    joint: arm_0_finger_1_joint
+  robotiq_gripper_hande_controller:
+    ros__parameters:
+      default: true
+      joint: arm_0_finger_1_joint
+  
