@@ -17,12 +17,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-
+import os
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
+    IncludeLaunchDescription,
     OpaqueFunction,
 )
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -33,6 +35,7 @@ from wilbur_deploy.pig_warnings import (
     pig_hardware,
     pig_mockhardware,
     pig_gazebo,
+    pig_mujoco,
 )
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterValue
@@ -67,8 +70,12 @@ def launch_setup(context, *args, **kwargs):
         case "hardware":
             print("Launching hardware")
             pig_hardware()
+        case "sim_mujoco":
+            pig_mujoco()
         case _:
             raise AttributeError
+
+    launch_files = []
 
     # This is the main robot description for Wilbur.
     robot_description_content = Command(
@@ -89,14 +96,7 @@ def launch_setup(context, *args, **kwargs):
             extra_xacro_args,
         ]
     )
-    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
 
-    robot_state_publisher_node = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="both",
-        parameters=[robot_description],
-    )
     # common launch args shared across different nodes
     common_launch_args = {
         "sim_ignition": sim_gazebo,
@@ -116,13 +116,25 @@ def launch_setup(context, *args, **kwargs):
 
     launch_file_names.append("spawn_controllers.launch.py")
 
-    # Generate the launch files based on launch_file_names which has been configured
+    ## Generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
         package_name="wilbur_deploy",
         launch_file_names=launch_file_names,
         launch_args=common_launch_args,
     )
-    launch_files.append(robot_state_publisher_node)
+
+    if platform != "sim_mujoco":
+        robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+        robot_state_publisher_node = Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            output="both",
+            parameters=[robot_description],
+        )
+        launch_files.append(robot_state_publisher_node)
+
+        print("******************************", "running standard state publisher", "*********************************")
+
     return launch_files
 
 
@@ -151,7 +163,7 @@ def generate_launch_description():
             "platform",
             default_value="hardware",
             description="Whether to run the robot on hardware, mock_hardware, or sim_gazebo.",
-            choices=["hardware", "mock_hardware", "sim_gazebo"],
+            choices=["hardware", "mock_hardware", "sim_gazebo", "sim_mujoco"],
         )
     )
     declared_arguments.append(

@@ -6,7 +6,6 @@
   <xacro:arg name="sim_gazebo" default="false" />
   <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this
   use_mock_hardware to be forward leaning-->
-  <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
 
   <xacro:include filename="$(find wilbur_description)/urdf/w200_macro.urdf.xacro" />
 
@@ -16,7 +15,6 @@
     sim_gazebo="$(arg sim_gazebo)"
     use_fake_hardware="$(arg use_fake_hardware)"
     ns="$(arg ns)"
-    generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
   />
 
 </robot>

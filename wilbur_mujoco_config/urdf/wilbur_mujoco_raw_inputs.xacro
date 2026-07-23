@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="wilbur_mujoco_raw_inputs">
+
+    <xacro:property name="wheel_joint_force_limit" value="10000" />
+    <xacro:property name="steering_joint_force_limit" value="10000" />
+
+   
+    <option integrator="implicitfast" impratio="20" cone="elliptic" noslip_iterations="5">
+    <flag multiccd="enable"/>
+    </option>
+    <default>
+        <default class="wilbur">
+            <default class="visual">
+                <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+            </default>
+            <default class="collision">
+                <geom group="3" type="mesh"/>
+            </default>
+        </default>
+    </default>
+
+
+    <!--extension>
+        <plugin plugin="mujoco.plugin.lidar">
+            <instance name="lidar3d_0">
+                <config key="resolution" value="120 1"/>
+                <config key="azimuth_range" value="-1.55 1.55"/>
+                <config key="elevation_range" value="0.0, 0.3"/>
+                <config key="max_range" value="15.0"/>
+                <config key="min_range" value="0.05"/>
+                <config key="update_rate" value="4.0"/>
+            </instance>
+        </plugin>
+    </extension-->
+    <!--sensor>
+        <plugin name="lidar3d_0" instance="lidar3d_0" objtype="site" objname="lidar3d_0_laser"/>
+    </sensor-->
+    <!--sensor>
+        <framequat name="imu_sensor_quat" objtype="site" objname="imu_0_link" />
+        <gyro name="imu_sensor_gyro" site="imu_0_link" />
+        <accelerometer name="imu_sensor_accel" site="imu_0_link" />
+    </sensor-->
+    
+    <actuator>
+        <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint" ctrlrange="-15 15" kv="500000" forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}"/>
+        <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint" ctrlrange="-15 15" kv="500000" forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}"/>
+        <velocity name="front_right_wheel_joint" joint="rear_right_wheel_joint" ctrlrange="-15 15" kv="500000" forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}"/>
+        <velocity name="front_left_wheel_joint" joint="rear_left_wheel_joint" ctrlrange="-15 15" kv="500000" forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}"/>
+    </actuator>
+
+    <contact>
+        <exclude body1="base_link" body2="front_left_wheel_link"/>
+        <exclude body1="base_link" body2="front_right_wheel_link"/>
+        <exclude body1="base_link" body2="rear_left_wheel_link"/>
+        <exclude body1="base_link" body2="rear_right_wheel_link"/>
+
+    </contact>
+
+  </xacro:macro>
+
+</robot>
