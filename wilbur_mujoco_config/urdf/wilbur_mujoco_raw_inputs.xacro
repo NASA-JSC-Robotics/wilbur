@@ -21,10 +21,6 @@
            <flag multiccd="enable" />
         </option>
 
-        <!--option
-            integrator="implicitfast" impratio="20" cone="elliptic" noslip_iterations="5" >
-            <flag multiccd="enable" />
-        </option-->
         <default>
             <default class="wilbur">
                 <default class="visual">
@@ -34,16 +30,6 @@
                     <geom group="3" type="mesh" friction="1.0 0.005 0.0001" />
                 </default>
                 <default class="wheel">
-                    <!--geom
-                    group="3" type="mesh" friction="1.0 0.005 0.0001" solref="0.0${wheel_ctrl_rng} 1"
-                        solimp="0.9 0.95 0.001 0.5 2" /-->
-                    <!--geom type="capsule" size="0.3 0.0125" euler="90 0 0" condim="4"
-                          friction="1.0 0.005 0.01" solref="0.004 1" solimp="0.95 0.99 0.001" group="3"/-->
-                    <!-- 
-              condim="6" enables 2D sliding, 1D torsional (spinning), and 2D rolling friction.
-              friction order: [sliding_x, sliding_y, torsional, rolling_x, rolling_y]
-              solimp/solref: tuned for Newton solver stability to prevent numerical jitter.
-            -->
                     <geom type="mesh" 
                         mass="15.0"
                         zaxis="0 1 0"

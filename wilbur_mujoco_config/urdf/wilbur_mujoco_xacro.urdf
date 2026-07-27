@@ -9,8 +9,8 @@
   <!-- special inputs for mujoco processing-->
   <xacro:include
       filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_raw_inputs.xacro" />
-  <!--xacro:include
-      filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_processed_inputs.xacro" /-->
+  <xacro:include
+      filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_processed_inputs.xacro" />
   <xacro:include filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_scene.xacro" />
   <xacro:include filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_ros2_control.xacro" />
 
@@ -24,10 +24,11 @@
 
   <mujoco_inputs>
       <raw_inputs>
-          <xacro:wilbur_mujoco_raw_inputs />
+          <xacro:wilbur_mujoco_raw_inputs include_ur="$(arg include_ur)"/>
       </raw_inputs>
       <!--processed_inputs>
-          <xacro:wilbur_mujoco_processed_inputs />
+          <xacro:wilbur_mujoco_processed_inputs include_ur="$(arg include_ur)"
+            hand_type=''/>
       </processed_inputs-->
       <xacro:wilbur_mujoco_scene />
   </mujoco_inputs>
