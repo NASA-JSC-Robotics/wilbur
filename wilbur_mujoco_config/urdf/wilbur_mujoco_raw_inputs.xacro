@@ -1,14 +1,28 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-    <xacro:macro name="wilbur_mujoco_raw_inputs">
+    <xacro:macro name="wilbur_mujoco_raw_inputs" params="
+        tf_prefix:=''
+        hand_type:='hande'
+        hande_finger_type:='fngr_v6'
+        include_ur:='true'
+    ">
 
         <xacro:property name="wheel_joint_force_limit" value="100000" />
-        <xacro:property name="wheel_kv" value="125" />
+        <xacro:property name="wheel_kv" value="400" />
+        <xacro:property name="wheel_ctrl_rng" value="5" />
 
+
+        <option
+           solver="Newton"
+           cone="elliptic"
+           noslip_iterations="3"
+            tolerance="1e-10">
+           <flag multiccd="enable" />
+        </option>
 
         <!--option
-            integrator="implicitfast" impratio="20" cone="elliptic" noslip_iterations="5">
+            integrator="implicitfast" impratio="20" cone="elliptic" noslip_iterations="5" >
             <flag multiccd="enable" />
         </option-->
         <default>
@@ -21,13 +35,43 @@
                 </default>
                 <default class="wheel">
                     <!--geom
-                    group="3" type="mesh" friction="1.0 0.005 0.0001" solref="0.015 1"
+                    group="3" type="mesh" friction="1.0 0.005 0.0001" solref="0.0${wheel_ctrl_rng} 1"
                         solimp="0.9 0.95 0.001 0.5 2" /-->
-                    <geom group="3" type="cylinder" size="0.3 0.125"
-                        friction="0.9 0.1 0.1"
-                        solref="0.02 1.0"
-                        solimp="0.01 0.95 0.001 0.5 2" />
+                    <!--geom type="capsule" size="0.3 0.0125" euler="90 0 0" condim="4"
+                          friction="1.0 0.005 0.01" solref="0.004 1" solimp="0.95 0.99 0.001" group="3"/-->
+                    <!-- 
+              condim="6" enables 2D sliding, 1D torsional (spinning), and 2D rolling friction.
+              friction order: [sliding_x, sliding_y, torsional, rolling_x, rolling_y]
+              solimp/solref: tuned for Newton solver stability to prevent numerical jitter.
+            -->
+                    <geom type="mesh" 
+                        mass="15.0"
+                        zaxis="0 1 0"
+                        material="rubber"
+                        condim="6" 
+                        friction="1.0 0.005 0.0001"
+                        priority="1"/>
                 </default>
+            </default>
+            <default class="size5">
+                <joint actuatorfrclimited="true" actuatorfrcrange="-1000 1000"/>
+                <position ctrlrange="0.0 0.7" kp="75000" dampratio="1.0" forcerange="-1000 1000"/>
+            </default>
+            <default class="size4">
+                <joint damping="10" actuatorgravcomp="true"/>
+                <general forcerange="-330 330" gainprm="100000" biasprm="0 -100000 -10000"/>
+            </default>
+            <default class="size3">
+                <joint damping="5" actuatorgravcomp="true"/>
+                <general forcerange="-${wheel_ctrl_rng}0 ${wheel_ctrl_rng}0" gainprm="100000" biasprm="0 -100000 -5000"/>
+                <default class="size3_limited">
+                    <joint range="-3.14${wheel_ctrl_rng} 3.14${wheel_ctrl_rng}"/>
+                    <general ctrlrange="-3.14${wheel_ctrl_rng} 3.14${wheel_ctrl_rng}"/>
+                </default>
+            </default>
+            <default class="size2">
+                <joint damping="2" actuatorgravcomp="true" />
+                <general forcerange="-56 56" gainprm="10000" biasprm="0 -10000 -1000"/>
             </default>
         </default>
 
@@ -38,7 +82,7 @@
                 <config key="resolution" value="120 1"/>
                 <config key="azimuth_range" value="-1.55 1.55"/>
                 <config key="elevation_range" value="0.0, 0.3"/>
-                <config key="max_range" value="15.0"/>
+                <config key="max_range" value="${wheel_ctrl_rng}.0"/>
                 <config key="min_range" value="0.05"/>
                 <config key="update_rate" value="4.0"/>
             </instance>
@@ -54,17 +98,26 @@
     </sensor-->
 
         <actuator>
+            <xacro:if value="${include_ur}">
+                <general class="size4" name="${tf_prefix}arm_0_shoulder_pan_joint" joint="${tf_prefix}arm_0_shoulder_pan_joint"/>
+                <general class="size4" name="${tf_prefix}arm_0_shoulder_lift_joint" joint="${tf_prefix}arm_0_shoulder_lift_joint"/>
+                <general class="size3_limited" name="${tf_prefix}arm_0_elbow_joint" joint="${tf_prefix}arm_0_elbow_joint"/>
+                <general class="size2" name="${tf_prefix}arm_0_wrist_1_joint" joint="${tf_prefix}arm_0_wrist_1_joint"/>
+                <general class="size2" name="${tf_prefix}arm_0_wrist_2_joint" joint="${tf_prefix}arm_0_wrist_2_joint"/>
+                <general class="size2" name="${tf_prefix}arm_0_wrist_3_joint" joint="${tf_prefix}arm_0_wrist_3_joint"/>
+            </xacro:if>
+
             <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint"
-                ctrlrange="-15 15" kv="${wheel_kv}"
+                ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
             <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint"
-                ctrlrange="-15 15" kv="${wheel_kv}"
+                ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
             <velocity name="front_right_wheel_joint" joint="front_right_wheel_joint"
-                ctrlrange="-15 15" kv="${wheel_kv}"
+                ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
             <velocity name="front_left_wheel_joint" joint="front_left_wheel_joint"
-                ctrlrange="-15 15" kv="${wheel_kv}"
+                ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
         </actuator>
 
