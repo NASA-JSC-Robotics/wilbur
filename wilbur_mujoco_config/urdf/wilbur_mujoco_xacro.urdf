@@ -37,5 +37,6 @@
   />
 
 
-  <xacro:wilbur />
+  <xacro:wilbur
+    include_ur="$(arg include_ur)" />
 </robot>
