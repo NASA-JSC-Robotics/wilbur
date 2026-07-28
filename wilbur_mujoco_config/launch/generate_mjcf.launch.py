@@ -45,10 +45,20 @@ def generate_launch_description():
         )
     )
 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "include_ur",
+            default_value="true",
+            choices=["true", "false"],
+            description="Whether or not to include the UR10e in the converted MCJF",
+        )
+    )
+
     wilbur_mujoco_package_name = "wilbur_mujoco_config"
     wilbur_mujoco_description_file = "wilbur_mujoco_xacro.urdf"
 
     use_pregenerated_assets_dir = LaunchConfiguration("use_pregenerated_assets_dir")
+    include_ur = LaunchConfiguration("include_ur")
 
     # main robot description for wilbur
     robot_description_content = Command(
@@ -63,6 +73,8 @@ def generate_launch_description():
                 ]
             ),
             " base_joint_type:=floating",
+            " include_ur:=",
+            include_ur,
         ]
     )
 
