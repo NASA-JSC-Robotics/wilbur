@@ -62,7 +62,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "incude_ur",
+            "include_ur",
             default_value="true",
             description="Build model including ur arm",
         )

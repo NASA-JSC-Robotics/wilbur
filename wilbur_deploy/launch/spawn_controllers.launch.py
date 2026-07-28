@@ -24,7 +24,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
-from wilbur_deploy.launch_utils import SpawnController
+from wilbur_deploy.launch_utils import spawn_controller
 from launch.conditions import IfCondition
 
 
@@ -52,22 +52,35 @@ def generate_launch_description():
     controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
     controllers_to_spawn = []
-    controllers_to_spawn.append(SpawnController(controller_manager_name, "velocity_controller"))
-    controllers_to_spawn.append(SpawnController(controller_manager_name, "joint_state_broadcaster"))
+    controllers_to_spawn.append(spawn_controller("velocity_controller", controller_manager_name=controller_manager_name))
+    controllers_to_spawn.append(spawn_controller("joint_state_broadcaster", controller_manager_name=controller_manager_name))
+
 
     controllers_to_spawn.append(
-        SpawnController(
-            controller_manager_name,
-            "joint_trajectory_controller",
-            condition=IfCondition(include_ur),
+        spawn_controller(
+            "imu_broadcaster",
+             controller_manager_name=controller_manager_name,
+             controller_ros_args="--ros-args --remap /imu_broadcaster/imu:=/sensors/imu_0/data_raw",
         )
     )
-    controllers_to_spawn.append(
-        SpawnController(
-            controller_manager_name,
-            "robotiq_gripper_hande_controller",
-            condition=IfCondition(include_ur),
-        )
-    )
+
+#    controllers_to_spawn.append(
+#        spawn_controller(
+#            controller_manager_name,
+#            "joint_trajectory_controller",
+#            condition=IfCondition(include_ur),
+#        )
+#    )
+#    controllers_to_spawn.append(
+#        spawn_controller(
+#            controller_manager_name,
+#            "robotiq_gripper_hande_controller",
+#            condition=IfCondition(include_ur),
+#        )
+#    )
+
+
+
+
 
     return LaunchDescription(declared_arguments + controllers_to_spawn)
