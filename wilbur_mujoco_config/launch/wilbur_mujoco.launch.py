@@ -119,12 +119,8 @@ def generate_launch_description():
 
         RegisterEventHandler(OnShutdown(on_shutdown=cleanup)),
         
-        print("***********************************", tmp.name, "*******************************************")
-        
         with open(tmp.name, 'r') as infp:
                 robot_description_content = infp.read()
-
-        print("*************************************************************************************************************")
 
         robot_state_publisher_node = Node(
             package="robot_state_publisher",
