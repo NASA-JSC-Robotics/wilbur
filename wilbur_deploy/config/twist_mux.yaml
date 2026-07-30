@@ -1,0 +1,19 @@
+/**:
+  twist_mux:
+    ros__parameters:
+      use_stamped: True
+      topics.joy.topic: 'joy_teleop/cmd_vel'
+      topics.joy.timeout: 0.5
+      topics.joy.priority: 10
+      topics.nav.topic: 'cmd_vel_nav'
+      topics.nav.timeout: 0.5
+      topics.nav.priority: 15
+      topics.interactive_marker.topic: 'twist_marker_server/cmd_vel'
+      topics.interactive_marker.timeout: 0.5
+      topics.interactive_marker.priority: 8
+      locks.e_stop.topic: 'platform/emergency_stop'
+      locks.e_stop.timeout: 0.0
+      locks.e_stop.priority: 255
+      locks.safety_stop.topic: 'platform/safety_stop'
+      locks.safety_stop.timeout: 0.0
+      locks.safety_stop.priority: 254
