@@ -18,6 +18,13 @@
 # under the License.
 
 
+from wilbur_deploy.pig_warnings import (
+    pig_hardware,
+    pig_mockhardware,
+    pig_gazebo,
+    pig_mujoco,
+)
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import (
@@ -41,6 +48,14 @@ def generate_launch_description():
             "sim_gazebo",
             default_value="false",
             description="Start robot in Gazebo simulator.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "platform",
+            default_value="hardware",
+            description="Whether to run the robot on hardware, mock_hardware, or sim_gazebo.",
+            choices=["hardware", "mock_hardware", "sim_gazebo", "sim_mujoco"],
         )
     )
     declared_arguments.append(
@@ -86,27 +101,27 @@ def generate_launch_description():
     # so by default it will attempt to load all hardware interfaces defined in the ros2 control xacro.
     # In this case the full robot description is used
 
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
-            " ",
-            "sim_gazebo:=",
-            sim_gazebo,
-            " ",
-            "use_fake_hardware:=",
-            use_fake_hardware,
-            " ",
-            "tf_prefix:=",
-            tf_prefix,
-            " ",
-            "ns:=",
-            ns,
-            " ",
-        ]
-    )
-    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+#    robot_description_content = Command(
+#        [
+#            PathJoinSubstitution([FindExecutable(name="xacro")]),
+#            " ",
+#            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+#            " ",
+#            "sim_gazebo:=",
+#            sim_gazebo,
+#            " ",
+#            "use_fake_hardware:=",
+#            use_fake_hardware,
+#            " ",
+#            "tf_prefix:=",
+#            tf_prefix,
+#            " ",
+#            "ns:=",
+#            ns,
+#            " ",
+#        ]
+#    )
+#    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
 
     # helper function to get controllers files that we might need
     def GetControllersFile(file_name):
@@ -128,21 +143,20 @@ def generate_launch_description():
     controllers_hande = GetControllersFile("controllers_hande.yaml")
 
     # Declare nodes
-    nodes = []
 
     # start the controller manager node with all of the controller config files
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[
-            robot_description,
             ParameterFile(controllers_common, allow_substs=True),
             ParameterFile(controllers_w200, allow_substs=True),
-            ParameterFile(controllers_ur, allow_substs=True),
-            ParameterFile(controllers_hande, allow_substs=True),
+#            ParameterFile(controllers_ur, allow_substs=True),
+#            ParameterFile(controllers_hande, allow_substs=True),
+            {"robot_description": "/robot_description"},
         ],
         output="both",
     )
-    nodes.append(control_node)
+   
 
-    return LaunchDescription(declared_arguments + nodes)
+    return LaunchDescription(declared_arguments + [control_node])

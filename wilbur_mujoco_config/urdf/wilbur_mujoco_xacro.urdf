@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot name="wilbur" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Includes -->
+  <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
+
+  <xacro:property name="force_abs_paths" value="False" scope="global" />
+  <xacro:arg name="include_ur" default="true"/>
+  <xacro:arg name="base_joint_type" default="floating"/>
+  <!-- special inputs for mujoco processing-->
+  <xacro:include
+      filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_raw_inputs.xacro" />
+  <xacro:include
+      filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_processed_inputs.xacro" />
+  <xacro:include filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_scene.xacro" />
+  <xacro:include filename="$(find wilbur_mujoco_config)/urdf/wilbur_mujoco_ros2_control.xacro" />
+
+  <link name="world" />
+  
+  <joint name="floating_base_joint" type="$(arg base_joint_type)">
+      <parent link="world" />
+      <child link="base_link" />
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <mujoco_inputs>
+      <raw_inputs>
+          <xacro:wilbur_mujoco_raw_inputs include_ur="$(arg include_ur)"/>
+      </raw_inputs>
+      <!--processed_inputs>
+          <xacro:wilbur_mujoco_processed_inputs include_ur="$(arg include_ur)"
+            hand_type=''/>
+      </processed_inputs-->
+      <xacro:wilbur_mujoco_scene />
+  </mujoco_inputs>
+
+  <xacro:wilbur_mujoco_ros2_control
+    include_ur="$(arg include_ur)"
+  />
+
+
+  <xacro:wilbur
+    include_ur="$(arg include_ur)" />
+</robot>

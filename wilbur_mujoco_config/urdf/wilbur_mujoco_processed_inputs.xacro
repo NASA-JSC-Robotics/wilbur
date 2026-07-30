@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="wilbur_mujoco_processed_inputs" params="
+    tf_prefix:=''
+    hand_type:='hande'
+    hande_finger_type:='fngr_v6'
+    include_ur:='true'
+  ">
+
+        <!-- Process arguments for the URDF -->
+        <xacro:if value="$(arg include_ur)">
+            <!-- Decompose the finger meshes based on the finger types available. hw2-->
+            <!--xacro:if value="$(arg hand_type) == 'hande'">
+                <xacro:if value="$(arg hande_finger_type) == 'fngr_original' or right_hande_finger_type == 'fngr_original'}">
+                <decompose_mesh mesh_name="finger_1" threshold="0.05"/>
+                </xacro:if>
+                <xacro:if value="$(arg hande_finger_type) == 'fngr_nail_v2'}">
+                <decompose_mesh mesh_name="hande_fngr_nail_v2" threshold="0.05"/>
+                </xacro:if>
+                <xacro:if value="$(arg hande_finger_type) == 'fngr_v2_m'}">
+                <decompose_mesh mesh_name="imetro_finger_v2_m_vis" threshold="0.05"/>
+                </xacro:if>
+                <xacro:if value="$(arg hande_finger_type) == 'fngr_v6'}">
+                <decompose_mesh mesh_name="finger_v6" threshold="0.05"/>
+                </xacro:if>
+            </xacro:if-->
+
+            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_pan_joint" class="size4"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_lift_joint" class="size4"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_elbow_joint" class="size3_limited"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_1_joint" class="size2"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_2_joint" class="size2"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_3_joint" class="size2"/>
+
+
+            <!--xacro:if value="$(arg hand_type) == 'hande'">
+                <modify_element type="joint" name="${tf_prefix}finger_1_joint" armature="0.5" frictionloss="5.0" />
+                <modify_element type="joint" name="${tf_prefix}finger_2_joint" armature="0.5" frictionloss="5.0" />
+            </xacro:if-->
+        </xacro:if>
+    </xacro:macro>
+</robot>

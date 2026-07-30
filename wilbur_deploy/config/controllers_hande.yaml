@@ -9,13 +9,13 @@ $(var controller_prefix)controller_manager:
     robotiq_activation_controller:
       type: robotiq_controllers/RobotiqActivationController
 
-$(var controller_prefix)hande_joint_state_broadcaster:
-  ros__parameters:
-    joints:
-      - arm_0_finger_1_joint
-    interfaces:
-      - position
-      - velocity
+#$(var controller_prefix)hande_joint_state_broadcaster:
+#  ros__parameters:
+#    joints:
+#      - arm_0_finger_1_joint
+#    interfaces:
+#      - position
+#      - velocity
 
 $(var controller_prefix)robotiq_gripper_hande_controller:
   ros__parameters:

@@ -4,6 +4,7 @@
     params="
     name
     use_fake_hardware:=false
+    include_ur:=false
     sim_gazebo:=false
     tf_prefix
   ">
