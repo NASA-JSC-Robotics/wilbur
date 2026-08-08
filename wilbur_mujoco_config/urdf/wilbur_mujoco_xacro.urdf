@@ -5,6 +5,7 @@
 
   <xacro:property name="force_abs_paths" value="False" scope="global" />
   <xacro:arg name="include_ur" default="true"/>
+  <xacro:arg name="on_blocks" default="false"/>
   <xacro:arg name="base_joint_type" default="floating"/>
   <!-- special inputs for mujoco processing-->
   <xacro:include
@@ -24,12 +25,14 @@
 
   <mujoco_inputs>
       <raw_inputs>
-          <xacro:wilbur_mujoco_raw_inputs include_ur="$(arg include_ur)"/>
+          <xacro:wilbur_mujoco_raw_inputs 
+            include_ur="$(arg include_ur)"
+            on_blocks="$(arg on_blocks)"/>
       </raw_inputs>
-      <!--processed_inputs>
+      <processed_inputs>
           <xacro:wilbur_mujoco_processed_inputs include_ur="$(arg include_ur)"
             hand_type=''/>
-      </processed_inputs-->
+      </processed_inputs>
       <xacro:wilbur_mujoco_scene />
   </mujoco_inputs>
 
