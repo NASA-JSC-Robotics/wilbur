@@ -63,8 +63,15 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "include_ur",
-            default_value="true",
+            default_value="false",
             description="Build model including ur arm",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "on_blocks",
+            default_value="false",
+            description="Suspend the model in the air to check wheel commands",
         )
     )
 
@@ -84,6 +91,7 @@ def generate_launch_description():
             ),
             " base_joint_type:=floating",
             " include_ur:=", LaunchConfiguration("include_ur"),
+            " on_blocks:=", LaunchConfiguration("on_blocks"),
 
         ]
     )
