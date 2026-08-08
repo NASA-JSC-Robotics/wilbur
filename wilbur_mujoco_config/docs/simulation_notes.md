@@ -12,7 +12,7 @@ Error was measured using comparing the  */velocity_controller/odom* topic to */s
 
 #### Wheel Geom
 
-Wheels are modeled as meshes.  I have tried cylinders and capsules, but have not gotten any better action.  I think the best model is a cylinder with carefully tuned friction constants and this is a work in progress.  It would be helpful to have real robot data to match.  The values here are from some testing and a lot of googling for constants for rubber tires.
+Wheels are modeled as meshes.  I have tried cylinders and capsules, but have not gotten any better action.  I think the best model is a cylinder with carefully tuned friction constants and this is a work in progress.  It would be helpful to have real robot data to match.  The values here are from some testing and a lot of googling for constants for rubber tires.  In theory, capsules should work the best, but still trying.
 
 ##### friction="1.0 0.005 0.0001"
 
@@ -53,3 +53,66 @@ Ideally, we would set up contact pairs with the floor and each of the wheels -- 
  > Testing:
  >
  > Adding these values for solimp and solref reduced straight-away error by about 0.6 %  or about 3 cm over 5 meters.
+
+#### Other Parameters
+
+
+##### wheel_joint_force_limit" value="100000"
+
+##### wheel_kv" value="400"
+
+Velocity gain on the wheel controller.
+
+> Testing:
+>
+> value = 100 -- vehicle would not turn
+>
+> value = 300 -- vehicle turns, but cannot achieve desired rate (1 rad/sec)
+>
+> value = 400 -- vehicle turns , but cannot achieve desired rate (1 rad/sec)
+>
+> value = 600 -- vehicle turns and can achieve near 1m/s with 1% error
+> value = 1000 -- vehicle achieves desired rate, but the turning error goes way up (nearly 1 radian / radian)
+
+##### wheel_ctrl_rng" value="5"
+
+#### Options
+
+##### integrator="implicitfast" (default "Euler")
+ 
+ > Testing:
+ >
+ > integrator="implicitfast"  This is recommended, but it makes the robot "twitchy". Works if the timestep is also set to 0.001
+ >
+
+## Systematic Tuning Steps
+
+[Low Forcerange] ──> Robot stalls / Cannot turn laterally
+       │
+       ▼ (Increase forcerange or decrease lateral friction)
+[High Friction]  ──> Robot shakes, hops, or flips over
+       │
+       ▼ (Soften solref/solimp & lower torsional friction)
+[Balanced Tune]  ──> Smooth forward drive & stable skidding turns
+
+
+   1. Test Forward Drive: Command all wheels to move forward. Adjust kv until the robot reaches target speed quickly without oscillating.
+   2. Test Pivot Turn: Command the left wheels forward and right wheels backward.
+   3. Fix Stalling: If the wheels lock up and refuse to rotate, gradually increase the actuator forcerange or lower the second value in the wheel's friction attribute.
+   4. Fix Hopping: If the robot chatters or bounces up and down while turning, increase the damping term in solref or decrease the wheel mass.
+
+
+
+## Other things...
+
+Probably want to us intvelocity rather than velocity for control.  intvelocity doesn't seem to be supported by mujoco_ros2_control
+
+To tune a skid-steer robot in MuJoCo, you must balance the friction coefficients of the wheels against the torque limits and velocity gains of your actuators. Because skid-steering relies entirely on slipping during turns, default simulator parameters often cause the robot to get stuck or bounce violently.
+## 1. Actuator Configuration
+Use velocity actuators with explicit torque limits to prevent the motors from exerting infinite force.
+
+* 
+* Set kv (Velocity Gain): Start with a modest gain ($k_v = 10$ to 50) to ensure a snappy response without introducing high-frequency chatter.
+* Define forcerange: Limit the maximum torque. If the torque is too low, the wheels cannot overcome static friction to slide. If it is too high, the robot will violently jerk or flip.
+* Match Left/Right Sides: Group your left wheels and right wheels into synchronized control signals via your controller script.
+* 
