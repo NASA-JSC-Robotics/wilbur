@@ -2,6 +2,17 @@
 
 ## 30 July 2026
 
+> [!NOTE]
+> ### **Important Notes**
+> -  Match control and simulation rates.
+>
+>The mujoco timestep -- set in *wilbur_mujoco_config/urdf/wilbur_mujoco_raw_inputs.xacro* under *options* need to match the rate used for the ROS controller -- set in *wilbur_deploy/config/controllers_common.yaml*.  The sim will not behave correctly if these do not match.
+> - If you are using a GPU add **MUJOCO_GL="egl"** to your .env file
+
+### Wilbur only Notes
+
+- The mesh wheels are not 0.3m in radius.  More like 0.269m.  This has to match across the velocity controller wheel radius and the simulated wheel.  Would be better to use a non-mesh wheel for collision.
+
 ### Base Simulation State
 
 The hardest thing to get right here is to get just the right amount of wheel slip so that the robot will turn -- lateral and even longitudinal slip is required for the robot to turn -- and still have good traction.
@@ -14,7 +25,7 @@ Error was measured using comparing the  */velocity_controller/odom* topic to */s
 
 Wheels are modeled as meshes.  I have tried cylinders and capsules, but have not gotten any better action.  I think the best model is a cylinder with carefully tuned friction constants and this is a work in progress.  It would be helpful to have real robot data to match.  The values here are from some testing and a lot of googling for constants for rubber tires.  In theory, capsules should work the best, but still trying.
 
-##### friction="1.0 0.005 0.0001"
+##### friction="1.0 0.005 0.0001"  -- turns out none of this actually was getting into the simulation
 
 - Sliding (1st component, default: 1.0): For differential drive wheels, a reasonable value is 1.0 to 1.5 to prevent unwanted side-slipping when turning.
 - Torsional (2nd component, default: 0.005): Resistance to spinning the wheel or contact patch around the contact normal axis. Keeping this small or near default allows smooth rotation-in-place (pivot turns).
@@ -32,13 +43,13 @@ I've tried a bunch of different values here, but need to do a set of individual 
 
 Setting condim="6" enables rolling friction explicitly, helping the wheel "grip" and stop rolling when no driving torque is applied.
 
-##### priority=1
+##### priority=1 
 
 Ensures that the wheel friction and solimp values are used for contacts.  Makes the "floor" values irrelevant.
 
 Ideally, we would set up contact pairs with the floor and each of the wheels -- would allow us to have different values on pavement, indoor floor and gravel.  In order to do that, the wheel geoms would have to have names.
 
-##### solimp="0.015 1.0 0.9 0.95 2"
+##### solimp="0.015 1.0 0.9 0.95 2" -- turns out none of this actually was getting into the simulation
 
 - dmin (Minimum Impedance: e.g., 0.015 – 0.025)Determines the softness/compliance at zero or minimal penetration (\(r=0\)).Lower values make the initial touch point of the rubber feel softer and more compliant, helping absorb minor surface irregularities.
 - dmax (Maximum Impedance: e.g., 0.95 – 1.0)Determines the maximum hardness/resistance when the tire reaches its structural limit under heavy load or deep penetration.
@@ -46,7 +57,7 @@ Ideally, we would set up contact pairs with the floor and each of the wheels -- 
 - midpoint (Midpoint: e.g., 0.95 or 0.5)Where the transition curve reaches the halfway point between dmin and dmax. A higher midpoint (0.95) means the tire stays relatively soft through most of its compliance range and firms up sharply near full deflection.
 - power (Curve Exponent: e.g., 2)Controls the shape (curvature) of the transition. A power of 2 provides a smooth, non-linear quadratic increase in stiffness as the tire deforms.
 
-##### solref="0.02 1.0"
+##### solref="0.02 1.0" -- turns out none of this actually was getting into the simulation
 
  Time constant and damping ratio to govern the actual contact spring-damper dynamics. For rubber tires, pair your solimp with a critically damped or slightly overdamped. 0.02 s is the time constant for response recovery and 1.0 is critical damping to prevent bouncing/oscillation.
 
@@ -59,7 +70,7 @@ Ideally, we would set up contact pairs with the floor and each of the wheels -- 
 
 ##### wheel_joint_force_limit" value="100000"
 
-##### wheel_kv" value="400"
+##### wheel_kv" value="350"
 
 Velocity gain on the wheel controller.
 
@@ -69,12 +80,9 @@ Velocity gain on the wheel controller.
 >
 > value = 300 -- vehicle turns, but cannot achieve desired rate (1 rad/sec)
 >
-> value = 400 -- vehicle turns , but cannot achieve desired rate (1 rad/sec)
->
-> value = 600 -- vehicle turns and can achieve near 1m/s with 1% error
-> value = 1000 -- vehicle achieves desired rate, but the turning error goes way up (nearly 1 radian / radian)
+> value = 400 -- vehicle turns, but the wheels twitch on stand stil
 
-##### wheel_ctrl_rng" value="5"
+##### wheel_ctrl_rng" value="30"
 
 #### Options
 
@@ -108,6 +116,7 @@ Velocity gain on the wheel controller.
 Probably want to us intvelocity rather than velocity for control.  intvelocity doesn't seem to be supported by mujoco_ros2_control
 
 To tune a skid-steer robot in MuJoCo, you must balance the friction coefficients of the wheels against the torque limits and velocity gains of your actuators. Because skid-steering relies entirely on slipping during turns, default simulator parameters often cause the robot to get stuck or bounce violently.
+
 ## 1. Actuator Configuration
 Use velocity actuators with explicit torque limits to prevent the motors from exerting infinite force.
 
