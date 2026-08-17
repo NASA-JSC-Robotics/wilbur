@@ -9,7 +9,7 @@
   ">
 
         <!-- Process arguments for the URDF -->
-        <xacro:if value="$(arg include_ur)">
+        <xacro:if value="${include_ur}">
             <!-- Decompose the finger meshes based on the finger types available. hw2-->
             <!--xacro:if value="$(arg hand_type) == 'hande'">
                 <xacro:if value="$(arg hande_finger_type) == 'fngr_original' or right_hande_finger_type == 'fngr_original'}">
