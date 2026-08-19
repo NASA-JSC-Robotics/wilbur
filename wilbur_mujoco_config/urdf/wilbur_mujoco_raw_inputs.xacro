@@ -19,10 +19,10 @@
         <option
             solver="Newton"
             cone="elliptic"
-            noslip_iterations="5"
+            noslip_iterations="2"
             integrator="implicitfast"
             timestep="0.002"
-            impratio="15.0"
+            impratio="100"
             tolerance="1e-10">
             <flag multiccd="enable" />
         </option>
@@ -68,7 +68,8 @@
                 <general forcerange="-56 56" gainprm="10000" biasprm="0 -10000 -1000" />
             </default>
             <default class="wheel_joint">
-                <joint frictionloss="0.05" armature="0.5" damping="0.8"/>
+                <!--joint armature="0.5" damping="10" /-->
+                <!--joint frictionloss="0.05" armature="0.5" damping="10" /-->
             </default>
         </default>
 
@@ -113,18 +114,22 @@
 
             <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
+                forcelimited="true"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
                 gear="${wheel_gear}"/>
             <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
+                forcelimited="true"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
                 gear="${wheel_gear}"/>
             <velocity name="front_right_wheel_joint" joint="front_right_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
+                forcelimited="true"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
                 gear="${wheel_gear}"/>
             <velocity name="front_left_wheel_joint" joint="front_left_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
+                forcelimited="true"
                 forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
                 gear="${wheel_gear}"/>
 
