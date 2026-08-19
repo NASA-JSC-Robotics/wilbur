@@ -18,20 +18,26 @@ class CmdPublisher : public rclcpp::Node
   public:
     CmdPublisher()
       : Node("cmd_publisher")
-      , count_(0)
     {
       this->declare_parameter("x_dot", 0.0);
       this->declare_parameter("theta_dot", 0.0);
-      this->declare_parameter("count", 100);
+      this->declare_parameter("time", 1000);
 
       x_dot_ = this->get_parameter("x_dot").as_double();
       theta_dot_ = this->get_parameter("theta_dot").as_double();
-      max_count_ = this->get_parameter("count").as_int();
+      max_time_ = this->get_parameter("time").as_int();
 
       std::string topic = "/velocity_controller/cmd_vel";
       publisher_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(topic, 10);
-      timer_ = this->create_wall_timer(
-      100ms, std::bind(&CmdPublisher::timer_callback, this));
+      timer_ = this->create_wall_timer(100ms, std::bind(&CmdPublisher::timer_callback, this));
+
+      shutdownTimer_ = this->create_wall_timer(
+            std::chrono::milliseconds(max_time_),
+            std::bind(&CmdPublisher::time_out_callback, this));
+    }
+    ~CmdPublisher()
+    {
+        publish_stop();
     }
 
   private:
@@ -48,19 +54,37 @@ class CmdPublisher : public rclcpp::Node
       msg.twist.angular.z = theta_dot_;
 
       publisher_->publish(msg);
-      ++count_;
-      if(count_ >= max_count_) 
-      {
-        timer_->cancel();
-        RCLCPP_INFO(this->get_logger(), "Done!");
-      }
     }
+
+    void time_out_callback() 
+    {
+        RCLCPP_INFO(this->get_logger(), "Time limit reached. Shutting down node. Done!");
+        timer_->cancel();
+        publish_stop();
+        rclcpp::shutdown();
+    }
+
+    void publish_stop()
+    {
+      geometry_msgs::msg::TwistStamped msg;
+      msg.header.stamp = this->now();
+      msg.header.frame_id = "base_link";
+      msg.twist.linear.x = 0.0;
+      msg.twist.linear.y = 0.0;
+      msg.twist.linear.z = 0.0;
+      msg.twist.angular.x = 0.0;
+      msg.twist.angular.y = 0.0;
+      msg.twist.angular.z = 0.0;
+
+      publisher_->publish(msg);
+    }
+  
     rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::TimerBase::SharedPtr shutdownTimer_;
     rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr publisher_;
-    size_t count_;
     double x_dot_;
     double theta_dot_;
-    size_t max_count_;
+    int32_t max_time_;
 };
 
 

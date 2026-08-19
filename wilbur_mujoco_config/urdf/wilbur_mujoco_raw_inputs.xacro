@@ -10,20 +10,20 @@
         on_blocks:='false'
     ">
 
-        <xacro:property name="wheel_joint_force_limit" value="100000" />
-        <xacro:property name="wheel_kv" value="350" />
+        <xacro:property name="wheel_joint_force_limit" value="10000000" />
+        <xacro:property name="wheel_kv" value="60000" />
         <xacro:property name="wheel_ctrl_rng" value="30" />
         <xacro:property name="wheel_gear" value="1" />
-        <xacro:property name="wheel_mass" value="23.0" />
 
 
         <option
             solver="Newton"
             cone="elliptic"
-            noslip_iterations="3"
+            noslip_iterations="5"
             integrator="implicitfast"
             timestep="0.002"
-            tolerance="1e-6">
+            impratio="15.0"
+            tolerance="1e-10">
             <flag multiccd="enable" />
         </option>
         
@@ -35,19 +35,16 @@
                 <default class="collision">
                     <geom group="3" type="mesh" friction="1.0 0.005 0.0001" />
                 </default>
-                <!-- this is not used in the code - would like to be able to change the collision properties on the wheel
-                <default class="wheel">
+                <!-- this is not used in the code - would like to be able to change the collision properties on the wheel -->
+                <!--default class="wheel">
                     <geom type="mesh"
-                        mass="${wheel_mass}"
-                        zaxis="0 1 0"
-                        material="rubber"
                         condim="6"
-                        friction="3.0 0.005 0.0001"
-                        solimp="0.015 1.0 0.9 0.95 2"
+                        friction="1.0 0.005 0.00001"
+                        solimp=".5 1.0 0.9 0.95 2"
                         solref="0.02 1.0"
                         priority="1" />
-                </default>
-            -->
+                </default-->
+           
             </default>
             <default class="size5">
                 <joint actuatorfrclimited="true" actuatorfrcrange="-1000 1000" />
@@ -71,7 +68,7 @@
                 <general forcerange="-56 56" gainprm="10000" biasprm="0 -10000 -1000" />
             </default>
             <default class="wheel_joint">
-                <joint damping="0.001" armature="0.01"/>
+                <joint frictionloss="0.05" armature="0.5" damping="0.8"/>
             </default>
         </default>
 
