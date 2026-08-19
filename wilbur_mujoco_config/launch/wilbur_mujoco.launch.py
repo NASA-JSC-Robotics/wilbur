@@ -69,6 +69,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "wheel_separation_multiplier",
+            default_value="1.65",
+            description="Multiplier for the velocity_controller effective wheel separation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "on_blocks",
             default_value="false",
             description="Suspend the model in the air to check wheel commands",
@@ -163,11 +170,11 @@ def generate_launch_description():
                 get_package_share_directory("wilbur_deploy"),
                 "launch",
                 "control.launch.py",
-            )
+            ),
         ),
         launch_arguments={
             "platform": "sim_mujoco",
-#            "use_sim_time": use_sime_time,
+            "wheel_separation_multiplier": LaunchConfiguration("wheel_separation_multiplier"),
             "extra_xacro_args": extra_xacro_args,
             "extra_controller_params_file": extra_controller_params_file,
         }.items(),

@@ -19,6 +19,7 @@
 
 import os
 from launch import LaunchDescription
+from ament_index_python.packages import get_package_share_directory
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
@@ -56,6 +57,9 @@ def launch_setup(context, *args, **kwargs):
 
     sim_gazebo = "false"
     use_mock_hardware = "false"
+
+
+    pkg_deploy = get_package_share_directory("wilbur_deploy")
 
     # Decide which platform we are using
     match platform:
@@ -106,7 +110,7 @@ def launch_setup(context, *args, **kwargs):
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,
-    }.items()
+    }
 
     # List to keep track of launch file names to start
     launch_file_names = []
@@ -114,13 +118,25 @@ def launch_setup(context, *args, **kwargs):
     if platform != "sim_gazebo":
         launch_file_names.append("controller_manager.launch.py")
 
-    launch_file_names.append("spawn_controllers.launch.py")
+#    launch_file_names.append("spawn_controllers.launch.py")
+
 
     ## Generate the launch files based on launch_file_names which has been configured
     launch_files = AddLaunchDescriptions(
         package_name="wilbur_deploy",
         launch_file_names=launch_file_names,
-        launch_args=common_launch_args,
+        launch_args=common_launch_args.items(),
+    )
+
+    spawn_launch_args = common_launch_args
+    spawn_launch_args.update({"wheel_separation_multiplier": LaunchConfiguration("wheel_separation_multiplier")})
+
+    launch_files.append(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pkg_deploy, "launch", "spawn_controllers.launch.py")),
+            launch_arguments=
+                spawn_launch_args.items()
+        )
     )
 
     if platform != "sim_mujoco":
@@ -132,8 +148,6 @@ def launch_setup(context, *args, **kwargs):
             parameters=[robot_description],
         )
         launch_files.append(robot_state_publisher_node)
-
-        print("******************************", "running standard state publisher", "*********************************")
 
     return launch_files
 
@@ -188,6 +202,13 @@ def generate_launch_description():
             "ns",
             default_value="",
             description="Namespace for the hardware robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "wheel_separation_multiplier",
+            default_value="",
+            description="Multiplier for the velocity_controller effective wheel separation",
         )
     )
     declared_arguments.append(
