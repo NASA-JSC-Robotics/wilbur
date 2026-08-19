@@ -1,0 +1,59 @@
+# Full set of configurations
+- ros_topic_name: "cmd_vel_unstamped"
+  gz_topic_name: "cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "ignition.msgs.Twist"
+  direction: GZ_TO_ROS
+
+# IMU
+- ros_topic_name: "imu_0/data_raw"
+  gz_topic_name: "sensors/imu_0/data_raw"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "ignition.msgs.IMU"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "imu_1/data_raw"
+  gz_topic_name: "sensors/imu_1/data_raw"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "ignition.msgs.IMU"
+  direction: GZ_TO_ROS
+
+# GPS
+- ros_topic_name: "gps_0/fix"
+  gz_topic_name: "/sensors/gps_0/navsat"
+  ros_type_name: "sensor_msgs/msg/NavSatFix"
+  gz_type_name: "gz.msgs.NavSat"
+  direction: GZ_TO_ROS
+
+# Lidar 3d
+- ros_topic_name: "lidar3d_0/scan"
+  gz_topic_name: /sensors/lidar3d_0/scan
+  ros_type_name: sensor_msgs/msg/LaserScan
+  gz_type_name: gz.msgs.LaserScan
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "lidar3d_0/points"
+  gz_topic_name: /sensors/lidar3d_0/scan/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS
+
+# RGBD Camera
+
+- ros_topic_name: camera_0/color/camera_info
+  gz_topic_name: /sensors/camera_0/camera_info
+  ros_type_name: sensor_msgs/msg/CameraInfo
+  gz_type_name: gz.msgs.CameraInfo
+  direction: GZ_TO_ROS
+
+- ros_topic_name: camera_0/depth/camera_info
+  gz_topic_name: /sensors/camera_0/camera_info
+  ros_type_name: sensor_msgs/msg/CameraInfo
+  gz_type_name: gz.msgs.CameraInfo
+  direction: GZ_TO_ROS
+
+- ros_topic_name: camera_0/points
+  gz_topic_name: /sensors/camera_0/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS

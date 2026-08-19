@@ -7,7 +7,7 @@
   <xacro:arg name="sim_gazebo" default="false" />
   <xacro:arg name="use_mock_hardware" default="true" />
   <xacro:arg name="parent" default="world" />
-  <xacro:arg name="include_ur" default="true" />
+  <xacro:arg name="include_ur" default="false" />
   <xacro:arg name="gripper_com_port" default="/dev/ttyUSB0" />
   <xacro:arg name="wilbur_ur10e_initial_positions"
     default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
@@ -23,10 +23,18 @@
     parent="$(arg parent)"
     sim_gazebo="$(arg sim_gazebo)"
     use_mock_hardware="$(arg use_mock_hardware)"
-    include_ur="$(arg include_ur)"
+    include_ur="false"
     gripper_com_port="$(arg gripper_com_port)"
     wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
   />
 
+  <!-- Pumbaa's structural components -->
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/pumbaa_structure_macro.xacro" />
+  <xacro:extrusion_rails />
+  <xacro:electronics_box />
+  <xacro:mast_structure />
+
+  <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/pumbaa_sensors.xacro" />
+  <xacro:pumbaa_sensors />
 
 </robot>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Adapting pumbaa_description/models/pumbaa_robot/robot.yaml -->
+
+  <xacro:macro name="pumbaa_sensors_gz">
+    <!-- Lidar3d -->
+    <xacro:include filename="$(find wilbur_gz)/urdf/pumbaa/sensors/ouster_os1_gz.xacro" />
+    <xacro:ouster_os1_gz name="lidar3d_0" />
+
+    <!-- IMU -->
+    <xacro:include filename="$(find wilbur_gz)/urdf/pumbaa/sensors/microstrain_imu_gz.xacro" />
+    <xacro:microstrain_imu_gz name="imu_0" />
+    <xacro:microstrain_imu_gz name="imu_1" />
+
+    <!-- GPS -->
+    <xacro:include filename="$(find wilbur_gz)/urdf/pumbaa/sensors/swiftnav_duro_gz.xacro" />
+    <xacro:swiftnav_duro_gz name="gps_0" />
+
+    <!-- Realsense camera -->
+    <xacro:include filename="$(find wilbur_gz)/urdf/pumbaa/sensors/rgbd_gz.xacro" />
+    <xacro:rgbd_camera name="camera_0" />
+
+  </xacro:macro>
+
+</robot>
