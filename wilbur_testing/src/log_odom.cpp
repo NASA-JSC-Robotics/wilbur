@@ -15,6 +15,8 @@
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
+#define SQ(x)((x)*(X))
+
 template <typename T>
 std::string to_string_with_precision(const T value, const int precision = 2) {
     std::ostringstream out;
@@ -56,25 +58,30 @@ class OdomSubscriber : public rclcpp::Node
         std::string basefilename = "gt_" + x_dot_str + "_theta_" + theta_dot_str + "_";
         std::string filename = generate_timestamp_filename(basefilename, "csv");
         fptr[GT] = fopen(filename.c_str(), "w");
-        fprintf(fptr[GT],"time, gt_x, gt_y, gt_theta, gt_x_rate, gt_theta_rate\n");
+        fprintf(fptr[GT],"time, gt_x, gt_y, gt_theta, gt_x_rate, gt_theta_rate, gt_total_x, gt_total_theta\n");
         
         basefilename = "od_" + x_dot_str + "_theta_" + theta_dot_str + "_";
         filename = generate_timestamp_filename(basefilename, "csv");
         fptr[OD] = fopen(filename.c_str(), "w");
-        fprintf(fptr[OD],"time, od_x, od_y, od_theta, od_x_rate, od_theta_rate\n");
+        fprintf(fptr[OD],"time, od_x, od_y, od_theta, od_x_rate, od_theta_rate, od_total_x, od_total_theta\n");
       }
       else
       {
-        std::string basefilename = "gt_od_" + x_dot_str + "_theta_" + theta_dot_str + "_";
+        std::string basefilename = "gt_od_x_" + x_dot_str + "_theta_" + theta_dot_str + "_";
         std::string filename = generate_timestamp_filename(basefilename, "csv");
         fptr[0] = fopen(filename.c_str(), "w");
-        fprintf(fptr[0],"time, gt_x, gt_y, gt_theta, gt_x_rate, gt_theta_rate, od_x, od_y, od_theta, od_x_rate, od_theta_rate\n");
+        fprintf(fptr[0],"time, gt_x, gt_y, gt_theta, gt_x_rate, gt_theta_rate, gt_total_x, gt_total_theta, od_x, od_y, od_theta, od_x_rate, od_theta_rate, od_total_x, od_total_theta\n");
 
       }
     }
 
     ~OdomSubscriber()
     {
+        double xErr = std::abs(gtState_[TOTAL_X] - odState_[TOTAL_X]);
+        double thetaErr = std::abs(gtState_[TOTAL_THETA] - odState_[TOTAL_THETA]);
+        RCLCPP_INFO(this->get_logger(), "X error = %0.3lf, -- %0.2lf %%", xErr, xErr/std::abs(gtState_[TOTAL_X])*100.0);
+        RCLCPP_INFO(this->get_logger(), "Theta error = %0.3lf, -- %0.2lf %%", thetaErr, thetaErr/std::abs(gtState_[TOTAL_THETA])*100.0);
+
         if(fptr[0]) 
         {
             fclose(fptr[0]);
@@ -89,7 +96,7 @@ class OdomSubscriber : public rclcpp::Node
 
   private:
   
-    enum {X = 0, Y, YAW, X_RATE, YAW_RATE, LAST_TIME, NUM_STATE};
+    enum {X = 0, Y, YAW, X_RATE, YAW_RATE, TOTAL_X, TOTAL_THETA, LAST_TIME, NUM_STATE};
     enum{GT = 0, OD, BOTH};
 
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr gtSubscription_;
@@ -145,9 +152,12 @@ class OdomSubscriber : public rclcpp::Node
       tf2::Quaternion q(msg->pose.pose.orientation.x, msg->pose.pose.orientation.y, msg->pose.pose.orientation.z, msg->pose.pose.orientation.w);
       if(init)
       {
-         state[X_RATE]= (msg->pose.pose.position.x - state[X])/dt;
+         double xDiff = std::sqrt(std::pow((msg->pose.pose.position.x - state[X]),2) + std::pow((msg->pose.pose.position.y - state[Y]),2));
          double yawDiff = angles::shortest_angular_distance(tf2::getYaw(q), state[YAW]);
-         state[YAW_RATE]= std::abs(yawDiff)/dt;
+         state[YAW_RATE] = std::abs(yawDiff)/dt;
+         state[X_RATE] = xDiff/dt;
+         state[TOTAL_X] += xDiff;
+         state[TOTAL_THETA] += yawDiff;
       }
       state[X] = msg->pose.pose.position.x;
       state[Y] = msg->pose.pose.position.y;
@@ -162,16 +172,16 @@ class OdomSubscriber : public rclcpp::Node
       {
         case BOTH:
           fprintf(fptr[0], "%lf,", timeA);
-          fprintf(fptr[0], "%lf, %lf, %lf, %lf, %lf,", gtState_[0], gtState_[1], gtState_[2], gtState_[X_RATE], gtState_[YAW_RATE]);
-          fprintf(fptr[0], "%lf, %lf, %lf, %lf, %lf\n", odState_[0], odState_[1], odState_[2], odState_[X_RATE], odState_[YAW_RATE]);
+          fprintf(fptr[0], "%lf, %lf, %lf, %lf, %lf, %lf, %lf,",  gtState_[0], gtState_[1], gtState_[2], gtState_[X_RATE], gtState_[YAW_RATE], gtState_[TOTAL_X], gtState_[TOTAL_THETA]);
+          fprintf(fptr[0], "%lf, %lf, %lf, %lf, %lf, %lf, %lf\n", odState_[0], odState_[1], odState_[2], odState_[X_RATE], odState_[YAW_RATE], odState_[TOTAL_X], odState_[TOTAL_THETA]);
           break;
         case GT:
           fprintf(fptr[GT], "%lf,", timeA);
-          fprintf(fptr[GT], "%lf, %lf, %lf, %lf, %lf\n", gtState_[0], gtState_[1], gtState_[2], gtState_[X_RATE], gtState_[YAW_RATE]);
+          fprintf(fptr[GT], "%lf, %lf, %lf, %lf, %lf, %lf, %lf\n", gtState_[0], gtState_[1], gtState_[2], gtState_[X_RATE], gtState_[YAW_RATE], gtState_[TOTAL_X], gtState_[TOTAL_THETA]);
           break;
         case OD:
           fprintf(fptr[OD], "%lf,", timeA);
-          fprintf(fptr[OD], "%lf, %lf, %lf, %lf, %lf\n", odState_[0], odState_[1], odState_[2], odState_[X_RATE], odState_[YAW_RATE]);
+          fprintf(fptr[OD], "%lf, %lf, %lf, %lf, %lf, %lf, %lf\n", odState_[0], odState_[1], odState_[2], odState_[X_RATE], odState_[YAW_RATE], odState_[TOTAL_X], odState_[TOTAL_THETA]);
           break;
       }
     }
