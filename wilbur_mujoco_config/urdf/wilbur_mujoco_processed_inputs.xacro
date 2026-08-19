@@ -39,5 +39,11 @@
                 <modify_element type="joint" name="${tf_prefix}finger_2_joint" armature="0.5" frictionloss="5.0" />
             </xacro:if-->
         </xacro:if>
+
+        <modify_element type="joint" name="front_left_wheel_joint" class="wheel_joint" />
+        <modify_element type="joint" name="front_right_wheel_joint" class="wheel_joint" />
+        <modify_element type="joint" name="rear_left_wheel_joint" class="wheel_joint" />
+        <modify_element type="joint" name="rear_right_wheel_joint" class="wheel_joint" />
+
     </xacro:macro>
 </robot>
