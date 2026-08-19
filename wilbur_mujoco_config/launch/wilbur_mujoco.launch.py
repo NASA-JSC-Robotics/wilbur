@@ -74,9 +74,17 @@ def generate_launch_description():
             description="Suspend the model in the air to check wheel commands",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="true",
+            description="Use simulation time",
+        )
+    )
 
     use_pregenerated_mjcf = LaunchConfiguration("use_pregenerated_mjcf")
     sim_speed = LaunchConfiguration("sim_speed")
+    use_sim_time = LaunchConfiguration("use_sim_time")
 
     wilbur_mujoco_package_name = "wilbur_mujoco_config"
     wilbur_mujoco_description_file = "wilbur_mujoco_xacro.urdf"
@@ -134,7 +142,8 @@ def generate_launch_description():
             package="robot_state_publisher",
             executable="robot_state_publisher",
             output="both",
-            parameters=[{'robot_description': robot_description_content}],
+            parameters=[{'robot_description': robot_description_content},
+                        {'use_sim_time': use_sim_time}],
         )
         nodes = [generate_mjcf_node, robot_state_publisher_node]
         return(nodes)
@@ -158,7 +167,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "platform": "sim_mujoco",
-            "use_sim_time": "true",
+#            "use_sim_time": use_sime_time,
             "extra_xacro_args": extra_xacro_args,
             "extra_controller_params_file": extra_controller_params_file,
         }.items(),
