@@ -8,8 +8,6 @@
   <license>Apache License, Version 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <depend>mujoco_vendor</depend>
-  <depend>libglfw3</depend>
   <depend>libglfw3-dev</depend>
 
   <exec_depend>joint_state_publisher_gui</exec_depend>
