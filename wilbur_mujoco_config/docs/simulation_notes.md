@@ -15,6 +15,16 @@ On a straight drive, the translational error is $\approx 2\%$ and the rotational
 $\hspace{10mm}$
 ![theta_dot_plot](./final_rotation.png)]
 
+The command
+
+```
+ros2 launch wilbur_testing check_odometry.launch.py x_dot:=3.0 theta_dot:=0.5 time_ms:=10000
+```
+
+was given.  The overall translation error (total distance traveled) was 1.45 % and the overall rotational error (total radians turned) was 5.69 %.  As you can see from this chart, a small amount of rotational error results in large positional errors.  The only way to really fix this is to add an imu.
+
+![position_plot](./circle.png)
+
 Error was measured using comparing the  */velocity_controller/odom* topic to */simulator/floating_base_state*.
 
 # Tuning
