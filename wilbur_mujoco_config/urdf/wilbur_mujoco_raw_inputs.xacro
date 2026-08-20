@@ -22,7 +22,7 @@
             noslip_iterations="2"
             integrator="implicitfast"
             timestep="0.002"
-            impratio="100"
+            impratio="1"
             tolerance="1e-10">
             <flag multiccd="enable" />
         </option>
@@ -35,15 +35,6 @@
                 <default class="collision">
                     <geom group="3" type="mesh" friction="1.0 0.005 0.0001" />
                 </default>
-                <!-- this is not used in the code - would like to be able to change the collision properties on the wheel -->
-                <!--default class="wheel">
-                    <geom type="mesh"
-                        condim="6"
-                        friction="1.0 0.005 0.00001"
-                        solimp=".5 1.0 0.9 0.95 2"
-                        solref="0.02 1.0"
-                        priority="1" />
-                </default-->
            
             </default>
             <default class="size5">
