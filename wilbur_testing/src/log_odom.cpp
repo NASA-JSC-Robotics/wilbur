@@ -153,7 +153,7 @@ class OdomSubscriber : public rclcpp::Node
       if(init)
       {
          double xDiff = std::sqrt(std::pow((msg->pose.pose.position.x - state[X]),2) + std::pow((msg->pose.pose.position.y - state[Y]),2));
-         double yawDiff = angles::shortest_angular_distance(tf2::getYaw(q), state[YAW]);
+         double yawDiff = angles::shortest_angular_distance(state[YAW], tf2::getYaw(q));
          state[YAW_RATE] = std::abs(yawDiff)/dt;
          state[X_RATE] = xDiff/dt;
          state[TOTAL_X] += xDiff;
