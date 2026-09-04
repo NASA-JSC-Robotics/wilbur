@@ -207,7 +207,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "wheel_separation_multiplier",
-            default_value="",
+            default_value="1.0",
             description="Multiplier for the velocity_controller effective wheel separation",
         )
     )
