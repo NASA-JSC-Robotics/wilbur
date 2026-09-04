@@ -15,7 +15,6 @@
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
-#define SQ(x)((x)*(X))
 
 template <typename T>
 std::string to_string_with_precision(const T value, const int precision = 2) {
