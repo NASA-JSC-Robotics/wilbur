@@ -63,12 +63,14 @@ def generate_launch_description():
     abs_mesh_paths = LaunchConfiguration("abs_mesh_paths")
     include_ur = LaunchConfiguration("include_ur")
 
+    robot_description_package = LaunchConfiguration("wilbur_description")
+    robot_description_file = LaunchConfiguration("wilbur.urdf.xacro")
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
+                [FindPackageShare(robot_description_package), "urdf", robot_description_file]
             ),
             " ",
             "tf_prefix:=",

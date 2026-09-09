@@ -85,12 +85,14 @@ def generate_launch_description():
     # due to the fact that the controller managers's resource manager is not paramerizable in Humble,
     # so by default it will attempt to load all hardware interfaces defined in the ros2 control xacro.
     # In this case the full robot description is used
+    robot_description_package = LaunchConfiguration("wilbur_description")
+    robot_description_file = LaunchConfiguration("wilbur.urdf.xacro")
 
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution([FindPackageShare(robot_description_package), "urdf", robot_description_file]),
             " ",
             "sim_ignition:=",
             sim_ignition,

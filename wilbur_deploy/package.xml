@@ -14,12 +14,15 @@
   <exec_depend>clearpath_common</exec_depend>
   <exec_depend>clearpath_simulator</exec_depend>
   <exec_depend>clearpath_desktop</exec_depend>
+  <exec_depend>clearpath_firmware</exec_depend>
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>joint_trajectory_controller</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
   <exec_depend>topic_tools</exec_depend>
+  <exec_depend>proton_ros2</exec_depend>
+  <exec_depend>clearpath_ros2_socketcan_interface</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

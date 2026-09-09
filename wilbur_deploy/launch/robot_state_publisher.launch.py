@@ -71,12 +71,14 @@ def generate_launch_description():
 
     # The intention here is for this to be the one true robot state publisher for all of wilbur, so this
     # should have the complete robot description without any of the omissions from the other controllers.
+    robot_description_package = LaunchConfiguration("wilbur_description")
+    robot_description_file = LaunchConfiguration("wilbur.urdf.xacro")    
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]
+                [FindPackageShare(robot_description_package), "urdf", robot_description_file]
             ),
             " ",
             "sim_ignition:=",

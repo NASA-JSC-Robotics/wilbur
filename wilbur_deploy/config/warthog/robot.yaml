@@ -1,0 +1,47 @@
+serial_number: w200-0095
+version: 0
+system:
+  hosts:
+#    - hostname: cpr-w200-0095
+    - hostname: js-er-wilbur-controls
+      ip: 192.168.131.1
+  ros2:
+    username: robot
+    namespace: w200_0095
+    domain_id: 24
+    middleware:
+      implementation: rmw_fastrtps_cpp
+      discovery: server
+      servers:
+#        - hostname: cpr-w200-0095
+        - hostname: js-er-wilbur-controls
+    workspaces:
+      - /home/robot/colcon_ws/install/setup.bash
+
+platform:
+  mcu:
+    protocol: proton
+  battery:
+    model: VALENCE_U27_12XP
+    configuration: S4P1
+  extras:
+    launch:
+      package: jaco03_bringup
+      path: launch/numato_relay.launch.py
+    urdf:
+      package: jaco03_description
+      path: urdf/jaco03.urdf.xacro
+manipulators:
+  arms:
+    - model: universal_robots
+      parent: mount_frame_link
+      xyz: [0.588, 0.0, 0.205]
+      rpy: [-0.436332, 0.0, -1.5708]
+      ur_type: ur10e
+      robot_ip: 192.168.131.40
+      reverse_port: 50001
+      script_sender_port: 50002
+      trajectory_port: 50003
+      script_command_port: 50004
+      headless: false
+      kinematics_parameters_file: "$(find jaco03_bringup)/config/20255201256.yaml"

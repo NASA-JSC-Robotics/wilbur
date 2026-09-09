@@ -43,8 +43,8 @@ from wilbur_deploy.launch_utils import AddLaunchDescriptions
 
 def launch_setup(context, *args, **kwargs):
     # Initialize Arguments
-    robot_description_package = LaunchConfiguration("robot_description_package")
-    robot_description_file = LaunchConfiguration("robot_description_file")
+    robot_description_package = LaunchConfiguration("wilbur_description")
+    robot_description_file = LaunchConfiguration("wilbur.urdf.xacro")
     platform = LaunchConfiguration("platform").perform(context)
     include_ur = LaunchConfiguration("include_ur").perform(context)
     tf_prefix = LaunchConfiguration("tf_prefix")
