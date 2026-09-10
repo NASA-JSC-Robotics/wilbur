@@ -38,20 +38,36 @@ def launch_setup(context, *args, **kwargs):
     ns = LaunchConfiguration("ns")
     include_ur = LaunchConfiguration("include_ur")
     wheel_separation_multiplier = LaunchConfiguration("wheel_separation_multiplier").perform(context)
+    use_sim_time = LaunchConfiguration("use_sim_time").perform(context)
 
-    velocity_controller_args = "--ros-args -p wheel_separation_multiplier:=" + wheel_separation_multiplier
+    velocity_controller_args = "--ros-args -p wheel_separation_multiplier:=" + wheel_separation_multiplier + " -p use_sim_time:=" + use_sim_time
+    joint_state_broadcaster_args = "--ros-args -p use_sim_time:=" + use_sim_time
+    imu_broadcaster_args = "--ros-args --remap /imu_broadcaster/imu:=/sensors/imu_0/data_raw -p use_sim_time:=" + use_sim_time
+
     controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
 
     controllers_to_spawn = []
-    controllers_to_spawn.append(spawn_controller("velocity_controller",controller_manager_name=controller_manager_name, controller_ros_args=velocity_controller_args))
-    controllers_to_spawn.append(spawn_controller("joint_state_broadcaster", controller_manager_name=controller_manager_name))
+    controllers_to_spawn.append(
+        spawn_controller(
+            "velocity_controller",
+            controller_manager_name=controller_manager_name, 
+            controller_ros_args=velocity_controller_args
+        )
+    )
 
+    controllers_to_spawn.append(
+        spawn_controller(
+            "joint_state_broadcaster", 
+            controller_manager_name=controller_manager_name, 
+            controller_ros_args=joint_state_broadcaster_args
+        )
+    )
 
     controllers_to_spawn.append(
         spawn_controller(
             "imu_broadcaster",
              controller_manager_name=controller_manager_name,
-             controller_ros_args="--ros-args --remap /imu_broadcaster/imu:=/sensors/imu_0/data_raw"
+             controller_ros_args=imu_broadcaster_args
         )
     )
     return(controllers_to_spawn)
@@ -79,6 +95,13 @@ def generate_launch_description():
             "wheel_separation_multiplier",
             default_value="1.0",
             description="Multiplier for the velocity_controller effective wheel separation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="false",
+            description="Flag to use simulation clock",
         )
     )
     

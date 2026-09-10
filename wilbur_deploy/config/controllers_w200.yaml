@@ -1,6 +1,5 @@
 controller_manager:
   ros__parameters:
-    use_sim_time: True
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -16,7 +15,6 @@ controller_manager:
 
 w200_joint_state_broadcaster:
   ros__parameters:
-    use_sim_time: True
     joints:
       - front_left_wheel_joint
       - rear_left_wheel_joint
@@ -28,7 +26,6 @@ w200_joint_state_broadcaster:
 
 velocity_controller:
   ros__parameters:
-    use_sim_time: True
     left_wheel_names:
       - front_left_wheel_joint
       - rear_left_wheel_joint
@@ -81,6 +78,5 @@ velocity_controller:
 
 imu_broadcaster:
     ros__parameters:
-      use_sim_time: True
       sensor_name: "$(var tf_prefix)imu_sensor"
       frame_id:  "$(var tf_prefix)imu_0_link"

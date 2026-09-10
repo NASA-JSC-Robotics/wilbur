@@ -53,6 +53,7 @@ def launch_setup(context, *args, **kwargs):
     include_ur = LaunchConfiguration("include_ur").perform(context)
     tf_prefix = LaunchConfiguration("tf_prefix")
     ns = LaunchConfiguration("ns")
+    use_sim_time = LaunchConfiguration("use_sim_time").perform(context)
     extra_xacro_args = LaunchConfiguration("extra_xacro_args").perform(context)
 
     sim_gazebo = "false"
@@ -109,6 +110,7 @@ def launch_setup(context, *args, **kwargs):
         "use_fake_hardware": use_mock_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
+        "use_sim_time": use_sim_time,
         "ns": ns,
     }
 
@@ -209,6 +211,13 @@ def generate_launch_description():
             "wheel_separation_multiplier",
             default_value="1.0",
             description="Multiplier for the velocity_controller effective wheel separation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="",
+            description="Flag to use the simulation clock",
         )
     )
     declared_arguments.append(

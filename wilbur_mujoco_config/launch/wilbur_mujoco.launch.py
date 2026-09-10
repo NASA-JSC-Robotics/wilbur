@@ -174,6 +174,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "platform": "sim_mujoco",
+            "use_sim_time": use_sim_time,
             "wheel_separation_multiplier": LaunchConfiguration("wheel_separation_multiplier"),
             "extra_xacro_args": extra_xacro_args,
             "extra_controller_params_file": extra_controller_params_file,
@@ -184,6 +185,7 @@ def generate_launch_description():
             executable="rviz2",
             name="rviz2",
             output="log",
+            parameters=[{'use_sim_time': use_sim_time}],
             arguments=["-d", rviz_config_file],
         )
     return LaunchDescription(declared_arguments + [generate_mjcf_nodes, control_launch])
