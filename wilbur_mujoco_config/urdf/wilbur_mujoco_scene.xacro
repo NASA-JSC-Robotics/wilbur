@@ -28,7 +28,12 @@
         <worldbody>
             <light pos="0 0 3" dir="0 0 -1" directional="true" castshadow="false"/>
             <!-- Keeping the floor because the floor isn't defined in the URDF -->
-            <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" friction="1.0 0.005 0.0001" solimp="0.1 0.95 0.005 0.1 6" condim="6" priority="1"/>
+            <geom name="floor" size="0 0 0.5" type="plane" material="groundplane" 
+                  friction = "0.4 0.005 0.0001" 
+                  solimp="0.015 .7 0.5 0.95 1" 
+                  solref="0.003 0.3"
+                  condim="6" 
+                  priority="1"/>
         </worldbody>
     </scene>
 

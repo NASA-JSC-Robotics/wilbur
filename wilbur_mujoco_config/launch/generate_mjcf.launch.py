@@ -86,8 +86,10 @@ def generate_launch_description():
         generate_mjcf = Node(
             package="mujoco_ros2_control",
             executable="make_mjcf_from_robot_description.py",
+            name="generate_mjcf"
             output="both",
             emulate_tty=True,
+            parameters=[{use_sim_time = "true"}]
             arguments=default_arguments,
         )
 

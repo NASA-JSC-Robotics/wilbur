@@ -19,14 +19,58 @@
 
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import (
+    DeclareLaunchArgument,
+    OpaqueFunction
+)
 from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
+    PythonExpression
 )
+from launch_ros.actions import Node
 from wilbur_deploy.launch_utils import spawn_controller
 from launch.conditions import IfCondition
 
+def launch_setup(context, *args, **kwargs):
+    # Initialize Arguments
+
+    ns = LaunchConfiguration("ns")
+    include_ur = LaunchConfiguration("include_ur")
+    wheel_separation_multiplier = LaunchConfiguration("wheel_separation_multiplier").perform(context)
+    use_sim_time = LaunchConfiguration("use_sim_time").perform(context)
+
+    velocity_controller_args = "--ros-args -p wheel_separation_multiplier:=" + wheel_separation_multiplier + " -p use_sim_time:=" + use_sim_time
+    joint_state_broadcaster_args = "--ros-args -p use_sim_time:=" + use_sim_time
+    imu_broadcaster_args = "--ros-args --remap /imu_broadcaster/imu:=/sensors/imu_0/data_raw -p use_sim_time:=" + use_sim_time
+
+    controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
+
+    controllers_to_spawn = []
+    controllers_to_spawn.append(
+        spawn_controller(
+            "velocity_controller",
+            controller_manager_name=controller_manager_name, 
+            controller_ros_args=velocity_controller_args
+        )
+    )
+
+    controllers_to_spawn.append(
+        spawn_controller(
+            "joint_state_broadcaster", 
+            controller_manager_name=controller_manager_name, 
+            controller_ros_args=joint_state_broadcaster_args
+        )
+    )
+
+    controllers_to_spawn.append(
+        spawn_controller(
+            "imu_broadcaster",
+             controller_manager_name=controller_manager_name,
+             controller_ros_args=imu_broadcaster_args
+        )
+    )
+    return(controllers_to_spawn)
 
 def generate_launch_description():
 
@@ -46,41 +90,19 @@ def generate_launch_description():
             description="Start robot with simulated hardware mirroring command to its states.",
         )
     )
-    ns = LaunchConfiguration("ns")
-    include_ur = LaunchConfiguration("include_ur")
-
-    controller_manager_name = PathJoinSubstitution([ns, "controller_manager"])
-
-    controllers_to_spawn = []
-    controllers_to_spawn.append(spawn_controller("velocity_controller", controller_manager_name=controller_manager_name))
-    controllers_to_spawn.append(spawn_controller("joint_state_broadcaster", controller_manager_name=controller_manager_name))
-
-
-    controllers_to_spawn.append(
-        spawn_controller(
-            "imu_broadcaster",
-             controller_manager_name=controller_manager_name,
-             controller_ros_args="--ros-args --remap /imu_broadcaster/imu:=/sensors/imu_0/data_raw",
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "wheel_separation_multiplier",
+            default_value="1.0",
+            description="Multiplier for the velocity_controller effective wheel separation",
         )
     )
-
-#    controllers_to_spawn.append(
-#        spawn_controller(
-#            controller_manager_name,
-#            "joint_trajectory_controller",
-#            condition=IfCondition(include_ur),
-#        )
-#    )
-#    controllers_to_spawn.append(
-#        spawn_controller(
-#            controller_manager_name,
-#            "robotiq_gripper_hande_controller",
-#            condition=IfCondition(include_ur),
-#        )
-#    )
-
-
-
-
-
-    return LaunchDescription(declared_arguments + controllers_to_spawn)
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="false",
+            description="Flag to use simulation clock",
+        )
+    )
+    
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

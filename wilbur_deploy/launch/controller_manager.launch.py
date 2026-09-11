@@ -76,6 +76,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="false",
+            description="Flag to use simulation clock",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "ns",
             default_value="",
             description="Namespace for the hardware robot",
@@ -93,6 +100,7 @@ def generate_launch_description():
     sim_gazebo = LaunchConfiguration("sim_gazebo")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     tf_prefix = LaunchConfiguration("tf_prefix")
+    use_sim_time = LaunchConfiguration("use_sim_time")
     ns = LaunchConfiguration("ns")
 
     # Each controller manager node will need a slightly different robot description to ensure that the
@@ -154,6 +162,7 @@ def generate_launch_description():
 #            ParameterFile(controllers_ur, allow_substs=True),
 #            ParameterFile(controllers_hande, allow_substs=True),
             {"robot_description": "/robot_description"},
+            {"use_sim_time": use_sim_time}
         ],
         output="both",
     )

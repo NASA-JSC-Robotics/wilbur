@@ -6,10 +6,11 @@
     <gazebo>
       <!-- publishes the position of the robot and all its links-->
       <plugin filename="libgz-sim-pose-publisher-system.so"
-        name="gz::sim::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
+        name="gz::sim::systems::PosePublisher"><publish_link_pose>false</publish_link_pose>
+        <publish_model_pose>true</publish_model_pose>
         <publish_nested_model_pose>true</publish_nested_model_pose>
-        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <use_pose_vector_msg>false</use_pose_vector_msg>
+        <publish_visual_pose>false</publish_visual_pose>
         <update_frequency>50</update_frequency>
       </plugin>
     </gazebo>

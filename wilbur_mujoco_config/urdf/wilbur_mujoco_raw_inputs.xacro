@@ -7,21 +7,26 @@
         hand_type:='hande'
         hande_finger_type:='fngr_v6'
         include_ur:='true'
+        on_blocks:='false'
     ">
 
-        <xacro:property name="wheel_joint_force_limit" value="100000" />
-        <xacro:property name="wheel_kv" value="400" />
-        <xacro:property name="wheel_ctrl_rng" value="5" />
+        <xacro:property name="wheel_joint_force_limit" value="10000000" />
+        <xacro:property name="wheel_kv" value="60000" />
+        <xacro:property name="wheel_ctrl_rng" value="30" />
+        <xacro:property name="wheel_gear" value="1" />
 
 
         <option
             solver="Newton"
             cone="elliptic"
-            noslip_iterations="3"
+            noslip_iterations="2"
+            integrator="implicitfast"
+            timestep="0.002"
+            impratio="1"
             tolerance="1e-10">
             <flag multiccd="enable" />
         </option>
-
+        
         <default>
             <default class="wilbur">
                 <default class="visual">
@@ -30,15 +35,7 @@
                 <default class="collision">
                     <geom group="3" type="mesh" friction="1.0 0.005 0.0001" />
                 </default>
-                <default class="wheel">
-                    <geom type="mesh"
-                        mass="15.0"
-                        zaxis="0 1 0"
-                        material="rubber"
-                        condim="6"
-                        friction="1.0 0.005 0.0001"
-                        priority="1" />
-                </default>
+           
             </default>
             <default class="size5">
                 <joint actuatorfrclimited="true" actuatorfrcrange="-1000 1000" />
@@ -50,7 +47,7 @@
             </default>
             <default class="size3">
                 <joint damping="5" actuatorgravcomp="true" />
-                <general forcerange="-${wheel_ctrl_rng}0 ${wheel_ctrl_rng}0" gainprm="100000"
+                <general forcerange="-${wheel_ctrl_rng} ${wheel_ctrl_rng}" gainprm="100000"
                     biasprm="0 -100000 -5000" />
                 <default class="size3_limited">
                     <joint range="-3.14${wheel_ctrl_rng} 3.14${wheel_ctrl_rng}" />
@@ -104,16 +101,25 @@
 
             <velocity name="rear_right_wheel_joint" joint="rear_right_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
-                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
+                forcelimited="true"
+                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
+                gear="${wheel_gear}"/>
             <velocity name="rear_left_wheel_joint" joint="rear_left_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
-                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
+                forcelimited="true"
+                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
+                gear="${wheel_gear}"/>
             <velocity name="front_right_wheel_joint" joint="front_right_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
-                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
+                forcelimited="true"
+                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
+                gear="${wheel_gear}"/>
             <velocity name="front_left_wheel_joint" joint="front_left_wheel_joint"
                 ctrlrange="${-1 * wheel_ctrl_rng} ${wheel_ctrl_rng}" kv="${wheel_kv}"
-                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" />
+                forcelimited="true"
+                forcerange="${-1 * wheel_joint_force_limit}  ${wheel_joint_force_limit}" 
+                gear="${wheel_gear}"/>
+
         </actuator>
 
         <contact>
@@ -126,10 +132,11 @@
 
         <!-- Welds a free-floating body to a fixed/mocap frame in mid-air -->
         <!-- puts the robot "on blocks"-->
-        <!--equality>
-            <weld body1="base_link" body2="world" />
-        </equality-->
-
+        <xacro:if value="${on_blocks}">
+            <equality>
+                <weld body1="base_link" body2="world" />
+            </equality>
+        </xacro:if>
 
     </xacro:macro>
 

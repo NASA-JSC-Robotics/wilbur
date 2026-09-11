@@ -26,36 +26,35 @@ w200_joint_state_broadcaster:
 
 velocity_controller:
   ros__parameters:
-    use_sim_time: True
     left_wheel_names:
       - front_left_wheel_joint
       - rear_left_wheel_joint
     right_wheel_names:
       - front_right_wheel_joint
       - rear_right_wheel_joint
-    wheel_separation: 1.5
-    wheels_per_side: 1
+    wheel_separation: 1.136 # from tf sim # 1.38
+    wheels_per_side: 2
     wheel_radius: 0.3
-    wheel_separation_multiplier: 1.125
+    wheel_separation_multiplier: 1.0
     left_wheel_radius_multiplier: 1.0
     right_wheel_radius_multiplier: 1.0
     publish_rate: 50.0
     odom_frame_id: 'odom'
     base_frame_id: 'chassis_link'
     pose_covariance_diagonal:
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.01
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
     twist_covariance_diagonal:
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.001
-      - 0.01
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
+      - 0.00
     open_loop: False
     enable_odom_tf: True
     tf_frame_prefix_enable: False
@@ -68,17 +67,16 @@ velocity_controller:
     linear.x.has_acceleration_limits: True
     linear.x.max_velocity: 5.0
     linear.x.min_velocity: -5.0
-    linear.x.max_acceleration: 50.0
-    linear.x.min_acceleration: -50.0
+    linear.x.max_acceleration: 10.0
+    linear.x.min_acceleration: -40.0 #this is not used in accel is -max
     angular.z.has_velocity_limits: True
     angular.z.has_acceleration_limits: True
     angular.z.max_velocity: 4.0
     angular.z.min_velocity: -4.0
-    angular.z.max_acceleration: 40.0
-    angular.z.min_acceleration: -40.0
+    angular.z.max_acceleration: 2.0
+    angular.z.min_acceleration: -2.0
 
 imu_broadcaster:
     ros__parameters:
-      use_sim_time: False
       sensor_name: "$(var tf_prefix)imu_sensor"
       frame_id:  "$(var tf_prefix)imu_0_link"

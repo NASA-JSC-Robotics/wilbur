@@ -63,13 +63,35 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "include_ur",
-            default_value="true",
+            default_value="false",
             description="Build model including ur arm",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "wheel_separation_multiplier",
+            default_value="1.65",
+            description="Multiplier for the velocity_controller effective wheel separation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "on_blocks",
+            default_value="false",
+            description="Suspend the model in the air to check wheel commands",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="true",
+            description="Use simulation time",
         )
     )
 
     use_pregenerated_mjcf = LaunchConfiguration("use_pregenerated_mjcf")
     sim_speed = LaunchConfiguration("sim_speed")
+    use_sim_time = LaunchConfiguration("use_sim_time")
 
     wilbur_mujoco_package_name = "wilbur_mujoco_config"
     wilbur_mujoco_description_file = "wilbur_mujoco_xacro.urdf"
@@ -84,6 +106,7 @@ def generate_launch_description():
             ),
             " base_joint_type:=floating",
             " include_ur:=", LaunchConfiguration("include_ur"),
+            " on_blocks:=", LaunchConfiguration("on_blocks"),
 
         ]
     )
@@ -119,18 +142,15 @@ def generate_launch_description():
 
         RegisterEventHandler(OnShutdown(on_shutdown=cleanup)),
         
-        print("***********************************", tmp.name, "*******************************************")
-        
         with open(tmp.name, 'r') as infp:
                 robot_description_content = infp.read()
-
-        print("*************************************************************************************************************")
 
         robot_state_publisher_node = Node(
             package="robot_state_publisher",
             executable="robot_state_publisher",
             output="both",
-            parameters=[{'robot_description': robot_description_content}],
+            parameters=[{'robot_description': robot_description_content},
+                        {'use_sim_time': use_sim_time}],
         )
         nodes = [generate_mjcf_node, robot_state_publisher_node]
         return(nodes)
@@ -150,11 +170,12 @@ def generate_launch_description():
                 get_package_share_directory("wilbur_deploy"),
                 "launch",
                 "control.launch.py",
-            )
+            ),
         ),
         launch_arguments={
             "platform": "sim_mujoco",
-            "use_sim_time": "true",
+            "use_sim_time": use_sim_time,
+            "wheel_separation_multiplier": LaunchConfiguration("wheel_separation_multiplier"),
             "extra_xacro_args": extra_xacro_args,
             "extra_controller_params_file": extra_controller_params_file,
         }.items(),
@@ -164,6 +185,7 @@ def generate_launch_description():
             executable="rviz2",
             name="rviz2",
             output="log",
+            parameters=[{'use_sim_time': use_sim_time}],
             arguments=["-d", rviz_config_file],
         )
     return LaunchDescription(declared_arguments + [generate_mjcf_nodes, control_launch])

@@ -13,17 +13,17 @@
 - ros_topic_name: "cmd_vel_unstamped"
   gz_topic_name: "cmd_vel"
   ros_type_name: "geometry_msgs/msg/Twist"
-  gz_type_name: "ignition.msgs.Twist"
+  gz_type_name: "gz.msgs.Twist"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "imu_0/data_raw"
   gz_topic_name: "sensors/imu_0/data_raw"
   ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "ignition.msgs.IMU"
+  gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "gps_0/data_raw"
-  gz_topic_name: "/sensors/gps_0/data_raw"
-  ros_type_name: "sensor_msgs/msg/NavSatFix"
-  gz_type_name: "ignition.msgs.NavSat"
+- ros_topic_name: "ground_truth/pose"
+  gz_topic_name: "/model/wilbur/pose"
+  ros_type_name: "geometry_msgs/msg/PoseStamped"
+  gz_type_name: "gz.msgs.Pose"
   direction: GZ_TO_ROS

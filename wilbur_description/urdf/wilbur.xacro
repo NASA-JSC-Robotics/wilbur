@@ -74,7 +74,7 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:frame>
 
-      <!--xacro:dextivr_hande
+      <xacro:dextivr_hande
         name="dextivr_hande"
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
@@ -85,7 +85,7 @@
         marker_opacity="0.5"
         finger_xacro="fngr_v6">
         <origin xyz="0 0 0" rpy="0 0 ${radians(-90)}" />
-      </xacro:dextivr_hande-->
+      </xacro:dextivr_hande>
 
     </xacro:if>
 

@@ -24,7 +24,7 @@
         </xacro:unless>
       </hardware>
 
-      <xacro:if value="$(arg include_ur)">
+      <xacro:if value="${include_ur}">
         <joint name="${tf_prefix}arm_0_shoulder_pan_joint">
           <command_interface name="position" />
           <command_interface name="velocity" />

@@ -39,5 +39,6 @@
                 <modify_element type="joint" name="${tf_prefix}finger_2_joint" armature="0.5" frictionloss="5.0" />
             </xacro:if-->
         </xacro:if>
+
     </xacro:macro>
 </robot>
