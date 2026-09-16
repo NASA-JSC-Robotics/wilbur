@@ -6,13 +6,13 @@
         <geometry>
           <mesh filename="${visual}"/>
         </geometry>
-        <material name="clearpath_dark_grey"/>
+        <material name="wilbur_dark_grey"/>
       </visual>
       <collision>
         <geometry>
           <mesh filename="${visual}"/>
         </geometry>
-        <material name="clearpath_dark_grey"/>
+        <material name="wilbur_dark_grey"/>
       </collision>
     </link>
 

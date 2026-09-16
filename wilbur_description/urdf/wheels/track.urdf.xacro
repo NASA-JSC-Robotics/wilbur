@@ -11,7 +11,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/tracks.dae" />
         </geometry>
-        <material name="clearpath_dark_grey" />
+        <material name="wilbur_dark_grey" />
       </visual>
       <collision>
         <origin xyz="-0.281 0 -0.1892" rpy="${math.pi/2} 0 0" />

@@ -26,12 +26,12 @@
                 </xacro:if>
             </xacro:if-->
 
-            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_pan_joint" class="size4"/>
-            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_lift_joint" class="size4"/>
-            <modify_element type="joint" name="${tf_prefix}arm_0_elbow_joint" class="size3_limited"/>
-            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_1_joint" class="size2"/>
-            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_2_joint" class="size2"/>
-            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_3_joint" class="size2"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_pan_joint" class="wilbur_size4"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_shoulder_lift_joint" class="wilbur_size4"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_elbow_joint" class="wilbur_size3_limited"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_1_joint" class="wilbur_size2"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_2_joint" class="wilbur_size2"/>
+            <modify_element type="joint" name="${tf_prefix}arm_0_wrist_3_joint" class="wilbur_size2"/>
 
 
             <!--xacro:if value="$(arg hand_type) == 'hande'">
