@@ -13,9 +13,6 @@
     default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
 
-  <!-- Force absolute mesh paths, necessary for Gazebo. -->
-  <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
-
   <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
 
   <xacro:wilbur
@@ -27,6 +24,7 @@
     include_ur="$(arg include_ur)"
     gripper_com_port="$(arg gripper_com_port)"
     wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+    force_abs_paths="$(arg abs_mesh_paths)"
   />
 
 

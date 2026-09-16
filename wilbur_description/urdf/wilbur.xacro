@@ -10,6 +10,7 @@
             include_ur:=true
             gripper_com_port:=/dev/ttyUSB0
             wilbur_ur10e_initial_positions:='$(find wilbur_deploy)/config/ur_initial_positions.yaml'
+            force_abs_paths:=false
             generate_ros2_control_tag:=true
             ">
 
@@ -30,7 +31,8 @@
       name="bulkhead"
       model="${tf_prefix}arm_plate"
       parent_link="${tf_prefix}default_mount"
-      tf_prefix="${tf_prefix}">
+      tf_prefix="${tf_prefix}"
+      force_abs_paths="${force_abs_paths}">
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:bulkhead>
 
@@ -95,6 +97,7 @@
       wheel="default"
       tf_prefix="${tf_prefix}"
       ns="${ns}"
+      force_abs_paths="${force_abs_paths}"
     />
 
 

@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="w200_track">
 
-  <xacro:macro name="w200_track" params="prefix side *joint_pose">
+  <xacro:macro name="w200_track" params="prefix side force_abs_paths:=false *joint_pose">
     <xacro:property name="rotate" value="${(prefix=='rear')*math.pi}" />
 
     <link name="${tf_prefix}${prefix}_${side}_track_link">

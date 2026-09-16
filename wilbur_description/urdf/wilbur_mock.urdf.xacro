@@ -14,8 +14,6 @@
 
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
 
-    <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
-
     <!-- convert to property to use substitution in function -->
     <xacro:property name="initial_positions_file" default="$(arg wilbur_ur10e_initial_positions)"/>
 
@@ -28,6 +26,7 @@
         include_ur="$(arg include_ur)"
         gripper_com_port="$(arg gripper_com_port)"
         wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+        force_abs_paths="$(arg abs_mesh_paths)"
     />
 
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur_mock.ros2_control.xacro" />

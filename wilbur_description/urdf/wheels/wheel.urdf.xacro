@@ -8,7 +8,7 @@
       izz="${m*(3*r*r+h*h)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="w200_wheel" params="prefix side *joint_pose">
+  <xacro:macro name="w200_wheel" params="prefix side force_abs_paths:=false *joint_pose">
     <link name="${tf_prefix}${prefix}_${side}_wheel_link">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />

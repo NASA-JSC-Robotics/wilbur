@@ -9,6 +9,7 @@
                 tf_prefix
                 color:='yellow'
                 ns
+                force_abs_paths:=false
                 ">
 
     <!-- Include URDF/XACRO Files -->
@@ -106,8 +107,8 @@
     </link>
 
     <!-- Diff. Unit -->
-    <xacro:w200_diff_unit side="left" />
-    <xacro:w200_diff_unit side="right" />
+    <xacro:w200_diff_unit side="left" force_abs_paths="${force_abs_paths}" />
+    <xacro:w200_diff_unit side="right" force_abs_paths="${force_abs_paths}" />
 
     <link name="${tf_prefix}diff_link">
       <visual>
@@ -143,32 +144,32 @@
 
     <!-- Wheels -->
     <xacro:if value="${wheel == 'default'}">
-      <xacro:w200_wheel prefix="front" side="left">
+      <xacro:w200_wheel prefix="front" side="left" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_wheel>
-      <xacro:w200_wheel prefix="front" side="right">
+      <xacro:w200_wheel prefix="front" side="right" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_wheel>
-      <xacro:w200_wheel prefix="rear" side="left">
+      <xacro:w200_wheel prefix="rear" side="left" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*-1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_wheel>
-      <xacro:w200_wheel prefix="rear" side="right">
+      <xacro:w200_wheel prefix="rear" side="right" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*-1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_wheel>
     </xacro:if>
 
     <!-- Tracks -->
     <xacro:if value="${wheel == 'track'}">
-      <xacro:w200_track prefix="front" side="left">
+      <xacro:w200_track prefix="front" side="left" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_track>
-      <xacro:w200_track prefix="front" side="right">
+      <xacro:w200_track prefix="front" side="right" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 0" />
       </xacro:w200_track>
-      <xacro:w200_track prefix="rear" side="left">
+      <xacro:w200_track prefix="rear" side="left" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*-1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 ${PI}" />
       </xacro:w200_track>
-      <xacro:w200_track prefix="rear" side="right">
+      <xacro:w200_track prefix="rear" side="right" force_abs_paths="${force_abs_paths}">
         <origin xyz="${axle_x_offset*-1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 ${PI}" />
       </xacro:w200_track>
     </xacro:if>

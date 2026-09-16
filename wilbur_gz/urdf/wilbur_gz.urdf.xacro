@@ -18,8 +18,6 @@
 
     <xacro:include filename="$(find wilbur_description)/urdf/wilbur.xacro" />
 
-    <xacro:property name="force_abs_paths" value="$(arg abs_mesh_paths)" scope="global" />
-
     <xacro:wilbur
         tf_prefix="$(arg tf_prefix)"
         ns="$(arg ns)"
@@ -29,6 +27,7 @@
         include_ur="$(arg include_ur)"
         gripper_com_port="$(arg gripper_com_port)"
         wilbur_ur10e_initial_positions="$(arg wilbur_ur10e_initial_positions)"
+        force_abs_paths="$(arg abs_mesh_paths)"
     />
 
     <xacro:include filename="$(find wilbur_gz)/urdf/wilbur_gz.ros2_control.xacro" />

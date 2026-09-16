@@ -6,7 +6,7 @@
              izz="${m*(x*x+z*z)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="arm_plate" params="name:=arm_plate model:=default parent_link:=default_mount *origin">
+  <xacro:macro name="arm_plate" params="name:=arm_plate model:=default parent_link:=default_mount force_abs_paths:=false *origin">
     <link name="${name}_link">
       <visual>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>

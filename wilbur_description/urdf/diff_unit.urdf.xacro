@@ -7,7 +7,7 @@
       izz="${m*(x*x+z*z)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="w200_diff_unit" params="side">
+  <xacro:macro name="w200_diff_unit" params="side force_abs_paths:=false">
     <xacro:if value="${side == 'left'}">
       <xacro:property name="flip" value="1" />
     </xacro:if>
