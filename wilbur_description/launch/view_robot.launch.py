@@ -67,7 +67,7 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "wilbur.urdf.xacro"]),
+            PathJoinSubstitution([FindPackageShare("wilbur_description"), "urdf", "pumbaa/pumbaa.urdf.xacro"]),
             " ",
             "tf_prefix:=",
             tf_prefix,

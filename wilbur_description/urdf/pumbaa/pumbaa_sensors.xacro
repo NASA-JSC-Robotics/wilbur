@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Adapting pumbaa_description/models/pumbaa_robot/robot.yaml -->
+
+  <xacro:macro name="pumbaa_sensors">
+    <!-- Lidar3d -->
+    <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/ouster_os1.xacro" />
+    <xacro:ouster_os1 name="lidar3d_0" parent="default_mount">
+      <origin xyz="0.3 0.0 0.35" rpy="0.0 0.0 0.0" />
+    </xacro:ouster_os1>
+
+    <!-- IMU -->
+    <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/microstrain_imu.xacro" />
+    <xacro:microstrain_imu name="imu_1" parent="default_mount">
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0" />
+    </xacro:microstrain_imu>
+
+    <!-- GPS -->
+    <xacro:include filename="$(find wilbur_description)/urdf/pumbaa/sensors/swiftnav_duro.xacro" />
+    <xacro:swiftnav_duro name="gps_1" parent="default_mount">
+      <origin xyz="0.3 -0.32 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:swiftnav_duro>
+
+    <!-- Realsense camera -->
+    <xacro:property name="realsense_materials_defined" value="true" />
+    <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+    <xacro:sensor_d435
+      parent="default_mount"
+      use_nominal_extrinsics="true"
+      use_mesh="true"
+      name="camera_0">
+      <origin xyz="0.3 0.08 0.3" rpy="0.0 0.0 0.0" />
+    </xacro:sensor_d435>
+
+  </xacro:macro>
+
+</robot>

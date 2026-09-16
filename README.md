@@ -18,12 +18,24 @@ For now, description files and a basic Gazebo simulation are included.
 
 To launch the gazebo simulation:
 
+Now supporting Wilbur and Pumbaa
+
+For Wilbur
+
 ```bash
 # Launch the Warthog only
 ros2 launch wilbur_gz sim_gz.launch.py include_ur:=false
 
 # Launch the Warthog and attached UR10e + Gripper
 ros2 launch wilbur_gz sim_gz.launch.py
+```
+
+For Pumbaa
+> **_NOTE:_**  Pumbaa's configuration doesn not have UR arm..
+
+```bash
+# Launch the Pumbaa
+ros2 launch wilbur_gz pumbaa_sim_gz.launch.py
 ```
 
 ## Citation
