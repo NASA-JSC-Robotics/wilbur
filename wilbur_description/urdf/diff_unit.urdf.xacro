@@ -7,7 +7,7 @@
       izz="${m*(x*x+z*z)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="w200_diff_unit" params="side">
+  <xacro:macro name="w200_diff_unit" params="side force_abs_paths:=false">
     <xacro:if value="${side == 'left'}">
       <xacro:property name="flip" value="1" />
     </xacro:if>
@@ -40,7 +40,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/rocker.stl" />
         </geometry>
-        <material name="clearpath_black" />
+        <material name="wilbur_black" />
       </visual>
     </link>
     <joint name="${tf_prefix}${side}_diff_unit_joint" type="fixed">
@@ -59,7 +59,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/light.stl" />
         </geometry>
-        <material name="clearpath_white" />
+        <material name="wilbur_white" />
       </visual>
     </link>
     <joint name="${tf_prefix}${side}_diff_unit_headlight_joint" type="fixed">
@@ -75,7 +75,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/light.stl" />
         </geometry>
-        <material name="clearpath_red" />
+        <material name="wilbur_red" />
       </visual>
     </link>
     <joint name="${tf_prefix}${side}_diff_unit_taillight_joint" type="fixed">

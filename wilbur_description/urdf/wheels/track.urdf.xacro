@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="w200_track">
 
-  <xacro:macro name="w200_track" params="prefix side *joint_pose">
+  <xacro:macro name="w200_track" params="prefix side force_abs_paths:=false *joint_pose">
     <xacro:property name="rotate" value="${(prefix=='rear')*math.pi}" />
 
     <link name="${tf_prefix}${prefix}_${side}_track_link">
@@ -11,7 +11,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/tracks.dae" />
         </geometry>
-        <material name="clearpath_dark_grey" />
+        <material name="wilbur_dark_grey" />
       </visual>
       <collision>
         <origin xyz="-0.281 0 -0.1892" rpy="${math.pi/2} 0 0" />

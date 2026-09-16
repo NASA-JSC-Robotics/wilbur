@@ -6,14 +6,14 @@
              izz="${m*(x*x+z*z)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="arm_plate" params="name:=arm_plate model:=default parent_link:=default_mount *origin">
+  <xacro:macro name="arm_plate" params="name:=arm_plate model:=default parent_link:=default_mount force_abs_paths:=false *origin">
     <link name="${name}_link">
       <visual>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/arm-mount-plate.stl" />
         </geometry>
-        <material name="clearpath_light_grey"/>
+        <material name="wilbur_light_grey"/>
       </visual>
       <collision>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>

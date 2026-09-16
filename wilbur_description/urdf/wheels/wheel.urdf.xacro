@@ -8,7 +8,7 @@
       izz="${m*(3*r*r+h*h)/12}" />
   </xacro:macro>
 
-  <xacro:macro name="w200_wheel" params="prefix side *joint_pose">
+  <xacro:macro name="w200_wheel" params="prefix side force_abs_paths:=false *joint_pose">
     <link name="${tf_prefix}${prefix}_${side}_wheel_link">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -21,7 +21,7 @@
           <!--xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/wheels/cylinder_wheel.stl" /-->
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/wheels/outdoor.stl" />
         </geometry>
-        <material name="clearpath_dark_grey" />
+        <material name="wilbur_dark_grey" />
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${PI/2} 0 0" />

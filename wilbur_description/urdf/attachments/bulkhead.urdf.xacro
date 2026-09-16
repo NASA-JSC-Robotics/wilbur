@@ -6,6 +6,7 @@
     parent_link:=default_mount
     *origin
     tf_prefix
+    force_abs_paths:=false
   ">
     <xacro:include
       filename="$(find wilbur_description)/urdf/w200/attachments/arm_plate.urdf.xacro" />
@@ -15,7 +16,7 @@
         <geometry>
           <xacro:gen_mesh force_abs_path="${force_abs_paths}" pkg_name="wilbur_description" file_path="meshes/w200/bulkhead.stl" />
         </geometry>
-        <material name="clearpath_black">
+        <material name="wilbur_black">
           <color rgba="0.15 0.15 0.15 1.0" />
         </material>
       </visual>
@@ -46,7 +47,7 @@
     </joint>
 
     <xacro:if value="${model == 'arm_plate'}">
-      <xacro:arm_plate parent_link="${name}_mount">
+      <xacro:arm_plate parent_link="${name}_mount" force_abs_paths="${force_abs_paths}">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:arm_plate>
     </xacro:if>
