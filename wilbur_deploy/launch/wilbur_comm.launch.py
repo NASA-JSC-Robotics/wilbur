@@ -11,8 +11,8 @@ import os
 def generate_launch_description():
 
     pkg_wilbur_deploy = 'wilbur_deploy'
-    warthog_deploy_config = os.path.join(pkg_wilbur_deploy, 'config', 'warthog')
-    warthog_deploy_launch = os.path.join(pkg_wilbur_deploy, 'launch', 'warthog')
+    warthog_deploy_config = PathJoinSubstitution([FindPackageShare(pkg_wilbur_deploy), 'config', 'warthog'])
+    warthog_deploy_launch = PathJoinSubstitution([FindPackageShare(pkg_wilbur_deploy), 'launch', 'warthog'])
 
     declared_arguments = [
         DeclareLaunchArgument(
@@ -22,22 +22,22 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "diagnostic_updater_params",
-            default_value=os.path.join(warthog_deploy_config, 'diagnostic_updater.yaml'),
+            default_value=PathJoinSubstitution([warthog_deploy_config, 'diagnostic_updater.yaml']),
             description="",
         ),
         DeclareLaunchArgument(
             "diagnostic_aggregator_params",
-            default_value=os.path.join(warthog_deploy_config, 'diagnostic_aggregator.yaml'),
+            default_value=PathJoinSubstitution([warthog_deploy_config, 'diagnostic_aggregator.yaml']),
             description="",
         ),
         DeclareLaunchArgument(
             "foxglove_bridge_parameters",
-            default_value=os.path.join(warthog_deploy_config, 'foxglove_bridge.yaml'),
+            default_value=PathJoinSubstitution([warthog_deploy_config, 'foxglove_bridge.yaml']),
             description="",
         ),
         DeclareLaunchArgument(
             "imu_filter",
-            default_value=os.path.join(warthog_deploy_config, 'imu_filter.yaml'),
+            default_value=PathJoinSubstitution([warthog_deploy_config, 'imu_filter.yaml']),
             description="",
         ),
     ]
@@ -239,11 +239,11 @@ def generate_launch_description():
     ]
 
     nodes = [
-        # node_battery_state_control,
-        # node_wireless_watcher,
-        # node_imu_filter_madgwick,
-        # node_lighting_node,
-        # node_sevcon_traction_node,
+        node_battery_state_control,
+        node_wireless_watcher,
+        node_imu_filter_madgwick,
+        node_lighting_node,
+        node_sevcon_traction_node,
     ]
 
     return LaunchDescription(declared_arguments + launches + nodes)

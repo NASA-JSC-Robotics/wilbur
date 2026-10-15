@@ -23,6 +23,9 @@
   <exec_depend>topic_tools</exec_depend>
   <exec_depend>proton_ros2</exec_depend>
   <exec_depend>clearpath_ros2_socketcan_interface</exec_depend>
+  <exec_depend>wireless_watcher</exec_depend>
+  <exec_depend>clearpath_hardware_interfaces</exec_depend>
+  <exec_depend>sevcon_traction</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
