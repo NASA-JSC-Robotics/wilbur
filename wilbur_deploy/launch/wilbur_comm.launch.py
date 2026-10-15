@@ -1,10 +1,9 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import EnvironmentVariable, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from ament_index_python.packages import get_package_share_directory
 import os
 
 
@@ -12,7 +11,6 @@ def generate_launch_description():
 
     pkg_wilbur_deploy = 'wilbur_deploy'
     warthog_deploy_config = PathJoinSubstitution([FindPackageShare(pkg_wilbur_deploy), 'config', 'warthog'])
-    warthog_deploy_launch = PathJoinSubstitution([FindPackageShare(pkg_wilbur_deploy), 'launch', 'warthog'])
 
     declared_arguments = [
         DeclareLaunchArgument(
@@ -75,6 +73,7 @@ def generate_launch_description():
             'setup_path': warthog_deploy_config,
             'use_sim_time': 'false',
             'enable_ekf': 'true'
+
         }.items()
     )
 

@@ -72,7 +72,7 @@ def generate_launch_description():
         SpawnController(controller_manager_name, "velocity_controller")
     )
     controllers_to_spawn.append(
-        SpawnController(controller_manager_name, "joint_state_broadcaster")
+        SpawnController(controller_manager_name, "w200_joint_state_broadcaster")
     )
 
     controllers_to_spawn.append(
