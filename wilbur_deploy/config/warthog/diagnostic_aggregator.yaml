@@ -1,4 +1,4 @@
-w200_0095:
+/**:
   diagnostic_aggregator:
     ros__parameters:
       path: 'Clearpath Diagnostics'

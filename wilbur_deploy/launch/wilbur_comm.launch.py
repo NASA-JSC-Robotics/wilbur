@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
@@ -85,14 +85,38 @@ def generate_launch_description():
         }.items()
     )
 
-    launch_diagnostics = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([launch_file_diagnostics]),
-        launch_arguments = {
-            'namespace': default_ns,
-            'updater_parameters': diagnostic_updater_params,
-            'aggregator_parameters': diagnostic_aggregator_params,
-        }.items()
-    )
+    diagnostics_action = GroupAction(
+        [
+            # Aggregator
+            Node(
+                package='diagnostic_aggregator',
+                executable='aggregator_node',
+                name='diagnostic_aggregator',
+                namespace=default_ns,
+                output='screen',
+                parameters=[diagnostic_aggregator_params],
+                remappings=[
+                    ('/diagnostics', 'diagnostics'),
+                    ('/diagnostics_agg', 'diagnostics_agg'),
+                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
+                ],
+            ),
+            # Updater
+            Node(
+                package='clearpath_diagnostics',
+                executable='clearpath_diagnostic_updater',
+                name='clearpath_diagnostic_updater',
+                namespace=default_ns,
+                output='screen',
+                parameters=[diagnostic_aggregator_params],
+                remappings=[
+                    ('/diagnostics', 'diagnostics'),
+                    ('/diagnostics_agg', 'diagnostics_agg'),
+                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
+                ],
+            ),
+        ]
+    )   
 
     # launch_foxglove_bridge = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource([launch_file_foxglove_bridge]),
@@ -232,12 +256,12 @@ def generate_launch_description():
     launches = [
         # launch_platform,
         launch_proton,
-        # launch_diagnostics,
         # launch_foxglove_bridge,
         launch_bms,
     ]
 
     nodes = [
+        diagnostics_action,
         node_battery_state_control,
         node_wireless_watcher,
         node_imu_filter_madgwick,
