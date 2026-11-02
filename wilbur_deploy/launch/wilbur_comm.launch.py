@@ -44,7 +44,7 @@ def generate_launch_description():
     default_ns = "warthog"
     diagnostic_updater_params = LaunchConfiguration('diagnostic_updater_params')
     diagnostic_aggregator_params = LaunchConfiguration('diagnostic_aggregator_params')
-    # foxglove_bridge_parameters = LaunchConfiguration('foxglove_bridge_parameters')
+    foxglove_bridge_parameters = LaunchConfiguration('foxglove_bridge_parameters')
     imu_filter = LaunchConfiguration('imu_filter')
 
     # Include Packages
@@ -60,23 +60,12 @@ def generate_launch_description():
         FindPackageShare(pkg_wilbur_deploy), 'launch', 'warthog', 'proton.launch.py'])
     launch_file_diagnostics = PathJoinSubstitution([
         pkg_clearpath_diagnostics, 'launch', 'diagnostics.launch.py'])
-    # launch_file_foxglove_bridge = PathJoinSubstitution([
-    #     pkg_clearpath_diagnostics, 'launch', 'foxglove_bridge.launch.py'])
+    launch_file_foxglove_bridge = PathJoinSubstitution([
+        pkg_clearpath_diagnostics, 'launch', 'foxglove_bridge.launch.py'])
     launch_file_bms = PathJoinSubstitution([
         pkg_valence_bms_driver, 'launch', 'bms.launch.py'])
 
     # Include launch files
-    launch_platform = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([launch_file_platform]),
-        launch_arguments = {
-            'namespace': default_ns,
-            'setup_path': warthog_deploy_config,
-            'use_sim_time': 'false',
-            'enable_ekf': 'true'
-
-        }.items()
-    )
-
     launch_proton = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([launch_file_proton]),
         launch_arguments = {
@@ -85,46 +74,14 @@ def generate_launch_description():
         }.items()
     )
 
-    diagnostics_action = GroupAction(
-        [
-            # Aggregator
-            Node(
-                package='diagnostic_aggregator',
-                executable='aggregator_node',
-                name='diagnostic_aggregator',
-                namespace=default_ns,
-                output='screen',
-                parameters=[diagnostic_aggregator_params],
-                remappings=[
-                    ('/diagnostics', 'diagnostics'),
-                    ('/diagnostics_agg', 'diagnostics_agg'),
-                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
-                ],
-            ),
-            # Updater
-            Node(
-                package='clearpath_diagnostics',
-                executable='clearpath_diagnostic_updater',
-                name='clearpath_diagnostic_updater',
-                namespace=default_ns,
-                output='screen',
-                parameters=[diagnostic_aggregator_params],
-                remappings=[
-                    ('/diagnostics', 'diagnostics'),
-                    ('/diagnostics_agg', 'diagnostics_agg'),
-                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
-                ],
-            ),
-        ]
-    )   
 
-    # launch_foxglove_bridge = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([launch_file_foxglove_bridge]),
-    #     launch_arguments = {
-    #         'namespace': default_ns,
-    #         'parameters': foxglove_bridge_parameters,
-    #     }.items()
-    # )
+    launch_foxglove_bridge = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([launch_file_foxglove_bridge]),
+        launch_arguments = {
+            'namespace': default_ns,
+            'parameters': foxglove_bridge_parameters,
+        }.items()
+    )
 
     launch_bms = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([launch_file_bms]),
@@ -141,7 +98,7 @@ def generate_launch_description():
         name='battery_state_control',
         executable='battery_state_control',
         package='clearpath_hardware_interfaces',
-        namespace=ns,
+        namespace=default_ns,
         output='screen',
         arguments = {
             '-s': warthog_deploy_config,
@@ -152,7 +109,7 @@ def generate_launch_description():
         name='wireless_watcher',
         executable='wireless_watcher',
         package='wireless_watcher',
-        namespace=ns,
+        namespace=default_ns,
         output='screen',
         remappings = {
             '/diagnostics': 'diagnostics',
@@ -171,7 +128,7 @@ def generate_launch_description():
         name='imu_filter_madgwick',
         executable='imu_filter_madgwick_node',
         package='imu_filter_madgwick',
-        namespace=ns,
+        namespace=default_ns,
         output='screen',
         remappings = [
                 (
@@ -212,7 +169,7 @@ def generate_launch_description():
         name='lighting_node',
         executable='lighting_node',
         package='clearpath_hardware_interfaces',
-        namespace=ns,
+        namespace=default_ns,
         output='screen',
         remappings=
             [
@@ -253,10 +210,42 @@ def generate_launch_description():
         ,
     )
 
+    diagnostics_action = GroupAction(
+        [
+            # Aggregator
+            Node(
+                package='diagnostic_aggregator',
+                executable='aggregator_node',
+                name='diagnostic_aggregator',
+                namespace=default_ns,
+                output='screen',
+                parameters=[diagnostic_aggregator_params],
+                remappings=[
+                    ('/diagnostics', 'diagnostics'),
+                    ('/diagnostics_agg', 'diagnostics_agg'),
+                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
+                ],
+            ),
+            # Updater
+            Node(
+                package='clearpath_diagnostics',
+                executable='clearpath_diagnostic_updater',
+                name='clearpath_diagnostic_updater',
+                namespace=default_ns,
+                output='screen',
+                parameters=[diagnostic_updater_params],
+                remappings=[
+                    ('/diagnostics', 'diagnostics'),
+                    ('/diagnostics_agg', 'diagnostics_agg'),
+                    ('/diagnostics_toplevel_state', 'diagnostics_toplevel_state'),
+                ],
+            ),
+        ]
+    )      
+
     launches = [
-        # launch_platform,
         launch_proton,
-        # launch_foxglove_bridge,
+        launch_foxglove_bridge,
         launch_bms,
     ]
 
