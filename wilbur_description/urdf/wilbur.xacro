@@ -4,7 +4,7 @@
   <xacro:macro name="wilbur"
     params="tf_prefix:=''
             ns:=''
-            parent:=wolrd
+            parent:=world
             sim_ignition:=false
             use_mock_hardware:=false
             include_ur:=true
@@ -94,6 +94,13 @@
       tf_prefix="${tf_prefix}"
       ns="${ns}"
     />
+
+    <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
+    <xacro:w200_ros2_control
+        name="wilbur"
+        use_fake_hardware="${use_mock_hardware}"
+        sim_ignition="${sim_ignition}"
+        tf_prefix=""/>
 
 
   </xacro:macro>
