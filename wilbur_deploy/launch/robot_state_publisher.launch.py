@@ -44,7 +44,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "use_fake_hardware",
+            "use_mock_hardware",
             default_value="true",
             description="Start robot with simulated hardware mirroring command to its states.",
         )
@@ -65,7 +65,7 @@ def generate_launch_description():
     )
 
     sim_ignition = LaunchConfiguration("sim_ignition")
-    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     abs_mesh_paths = LaunchConfiguration("abs_mesh_paths")
     include_ur = LaunchConfiguration("include_ur")
 
@@ -84,8 +84,8 @@ def generate_launch_description():
             "sim_ignition:=",
             sim_ignition,
             " ",
-            "use_fake_hardware:=",
-            use_fake_hardware,
+            "use_mock_hardware:=",
+            use_mock_hardware,
             " ",
             "abs_mesh_paths:=",
             abs_mesh_paths,

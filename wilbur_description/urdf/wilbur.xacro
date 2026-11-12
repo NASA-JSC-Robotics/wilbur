@@ -79,7 +79,7 @@
         tf_prefix="${tf_prefix}arm_0_"
         parent="${tf_prefix}arm_0_end_effector_link"
         sim_ignition="${sim_ignition}"
-        use_fake_hardware="${use_mock_hardware}"
+        use_mock_hardware="${use_mock_hardware}"
         fake_sensor_commands="false"
         com_port="${gripper_com_port}"
         marker_opacity="0.5"
@@ -98,7 +98,7 @@
     <xacro:include filename="$(find wilbur_description)/urdf/w200.ros2_control.xacro" />
     <xacro:w200_ros2_control
         name="wilbur"
-        use_fake_hardware="${use_mock_hardware}"
+        use_mock_hardware="${use_mock_hardware}"
         sim_ignition="${sim_ignition}"
         tf_prefix=""/>
 

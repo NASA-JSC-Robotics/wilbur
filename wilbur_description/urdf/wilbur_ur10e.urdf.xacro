@@ -3,7 +3,7 @@
 
   <xacro:arg name="tf_prefix" default="" />
   <xacro:arg name="sim_ignition" default="false" />
-  <xacro:arg name="use_fake_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
+  <xacro:arg name="use_mock_hardware" default="true" /> <!-- todo look into calling this use_mock_hardware to be forward leaning-->
   <xacro:arg name="generate_ros2_control_tag" default="true" /> <!-- for mujoco cannot have this -->
   <xacro:arg name="wilbur_ur10e_initial_positions" default="$(find wilbur_deploy)/config/ur_initial_positions.yaml" />
 
@@ -18,7 +18,7 @@
     name="arm_0_"
     tf_prefix="$(arg tf_prefix)arm_0_"
     parent="world"
-    use_fake_hardware="$(arg use_fake_hardware)"
+    use_mock_hardware="$(arg use_mock_hardware)"
     sim_ignition="$(arg sim_ignition)"
     initial_positions="${xacro.load_yaml(initial_positions_file)}"
     generate_ros2_control_tag="$(arg generate_ros2_control_tag)"

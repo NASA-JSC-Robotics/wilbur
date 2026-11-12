@@ -53,7 +53,7 @@ def launch_setup(context, *args, **kwargs):
 
     sim_ignition = "false"
     mock_hardware = "false"
-    use_fake_hardware = "false"
+    use_mock_hardware = "false"
 
     # Decide which platfrom we are using
     match platform:
@@ -64,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
         case "mock_hardware":
             print("Mock hardware")
             mock_hardware = "true"
-            use_fake_hardware = "true"
+            use_mock_hardware = "true"
             pig_mockhardware()
         case "hardware":
             print("Launching hardware")
@@ -106,7 +106,7 @@ def launch_setup(context, *args, **kwargs):
     common_launch_args = {
         "sim_ignition": sim_ignition,
         "abs_mesh_paths": sim_ignition,
-        "use_fake_hardware": use_fake_hardware,
+        "use_mock_hardware": use_mock_hardware,
         "include_ur": include_ur,
         "tf_prefix": tf_prefix,
         "ns": ns,

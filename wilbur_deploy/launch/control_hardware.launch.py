@@ -146,7 +146,7 @@ def generate_launch_description():
             ]
         ),
         launch_arguments={
-            'use_fake_hardware': 'false',
+            'use_mock_hardware': 'false',
             'ns': ns,
             'tf_prefix': tf_prefix,
             'use_sim_time': use_sim_time,
