@@ -80,11 +80,12 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([pkg_wilbur_deploy, 
                                    "launch", 
-                                   "control.transport.launch.py"])]
+                                   "control.launch.py"])]
         ),
         launch_arguments={
             "platform": "hardware",
             "ns": ns,
+            "include_ur": "false",
         }.items(),
     )
 

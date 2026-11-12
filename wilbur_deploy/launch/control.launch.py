@@ -88,6 +88,9 @@ def launch_setup(context, *args, **kwargs):
             "include_ur:=",
             include_ur, 
             " ",
+            "use_mock_hardware:=",
+            mock_hardware,
+            " ",
             extra_xacro_args
         ]
     )
