@@ -143,7 +143,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([pkg_wilbur_deploy, 
                                    'launch',
-                                   'controller_manager.transport.launch.py'])
+                                   'controller_manager.launch.py'])
             ]
         ),
         launch_arguments={
